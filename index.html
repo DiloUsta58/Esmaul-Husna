@@ -1,229 +1,330 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <META name="AUTHOR" content="© Dilaver Bölükbaşı 23/11/2024">
-    <META name="KEYWORDS" content="Esmaül Hüsna, Allahin 99 isimleri">
-    <META name="CLASSIFICATION" content="Personal Homepage">
-    <META name="DISTRIBUTION" content="Global">
-    <META name="LANGUAGE" content="Turkish"> 
-    <META name="COPYRIGHT" content="Copyright © Dilaver Bölükbaşı 23/11/2024">   
-    <META name="RATING" content="General">
-    <META name="ROBOTS" content="ALL">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Esmaü'l Hüsna — 99 İsim</title>
+  <meta name="description" content="Esmaü'l Hüsna — 99 isim. Ses, anlam ve ayetlerle senkron.">
+  <style>
+    /* --- Reset & base --- */
+    :root{
+      --bg:#071021;
+      --card: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.7);
+      --accent: #ffd369;
+      --glass: rgba(255,255,255,0.03);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#040612 0%, #071021 60%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    main{
+      width:100%;
+      max-width:1100px;
+      background:var(--card);
+      border-radius:20px;
+      padding:20px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
 
-    <title>Esmâü'L Hüsnâ</title>
-    <link rel="stylesheet" href="css\style.css">
+    header.top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    header.top .meta{font-size:0.9rem; color:var(--muted)}
+    h1{font-size:1.6rem; margin:4px 0 0 0}
+    .subtitle{color:var(--muted); font-size:0.95rem}
+
+    /* --- layout grid --- */
+    .grid{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:18px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    /* --- visual card --- */
+    .visual{
+      background:var(--glass);
+      border-radius:var(--radius);
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      text-align:center;
+    }
+    .visual img{
+      width:100%;
+      max-width:300px;
+      height:auto;
+      border-radius:12px;
+      object-fit:contain;
+      transition: transform .45s cubic-bezier(.2,.9,.3,1), opacity .3s;
+      will-change:transform,opacity;
+    }
+    .name {
+      font-size:1.25rem;
+      color:var(--accent);
+      font-weight:700;
+      margin-top:6px;
+    }
+    .arabic {
+      font-size:1.05rem;
+      opacity:0.95;
+      margin-top:2px;
+    }
+    .meaning {
+      font-size:0.95rem;
+      color:var(--muted);
+      min-height:56px;
+      padding:6px 8px;
+      border-radius:10px;
+      background: rgba(0,0,0,0.12);
+      width:100%;
+      text-align:left;
+    }
+
+    /* --- controls --- */
+    .controls{
+      background:var(--glass);
+      border-radius:var(--radius);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .audio-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    audio{width:100%; max-width:100%}
+    .time-row{display:flex; justify-content:space-between; font-size:0.88rem; color:var(--muted)}
+
+    .actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      background:var(--accent);
+      color:#000;
+      border:none;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s;
+    }
+    .btn:active{transform:translateY(1px)}
+
+    /* search */
+    .search{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-top:4px;
+    }
+    .search input{
+      flex:1;
+      padding:10px 12px;
+      border-radius:12px;
+      border: none;
+      background: rgba(255,255,255,0.03);
+      color:inherit;
+      outline: none;
+    }
+
+    /* list */
+    .list-panel{
+      margin-top:10px;
+      padding:10px;
+      border-radius:12px;
+      background: rgba(255,255,255,0.02);
+    }
+    #listPanel {
+      display: none;
+    }
+
+    #listPanel.open {
+      display: block;
+    }
+
+    table{width:100%; border-collapse:collapse}
+    td{padding:8px 6px; border-bottom:1px solid rgba(255,255,255,0.03); cursor:pointer}
+    td:hover{background:rgba(255,255,255,0.02)}
+    td.active{background:linear-gradient(90deg, rgba(255,210,105,0.12), rgba(255,210,105,0.04)); color:var(--accent); font-weight:700}
+
+    /* progress */
+    .progress-wrap{display:flex; gap:10px; align-items:center; margin-top:8px}
+    .progress{
+      height:10px;
+      background:rgba(255,255,255,0.04);
+      border-radius:999px;
+      width:100%;
+      overflow:hidden;
+    }
+    .progress > i{
+      display:block;
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg,#ffd369,#ffb84d);
+      transition: width .25s linear;
+    }
+    .progress-text{font-size:0.9rem; color:var(--muted); min-width:86px; text-align:right}
+
+    /* video placeholder */
+    .video-frame{
+      display:none;
+      margin-top:14px;
+      border-radius:12px;
+      overflow:hidden;
+    }
+    .video-frame iframe{width:100%; height:300px; border:0}
+
+    footer{display:flex; justify-content:space-between; color:var(--muted); font-size:0.85rem; margin-top:8px}
+    /* accessibility focus */
+    :focus{outline: 3px solid rgba(255,215,105,0.16); outline-offset:3px}
+
+    /* ✅ 5'li yan yana Esma listesi */
+#listPanel table {
+  width: 100%;
+}
+
+#namesBody {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* ✅ 10 yan yana */
+  gap: 8px;
+}
+
+#namesBody tr {
+  display: contents; /* tabloyu grid gibi kullan */
+}
+
+#namesBody td {
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 8px 6px;
+  border: none;
+  cursor: pointer;
+}
+
+#namesBody td:hover {
+  background: rgba(255,211,105,0.15);
+  color: #ffd369;
+}
+
+#namesBody td.active {
+  background: linear-gradient(90deg, #ffd369, #ffb84d);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255,211,105,0.6);
+  transform: scale(1.05);
+}
+
+#namesBody td.active {
+  background: linear-gradient(90deg, #ffd369, #ff9f00);
+  color: #000;
+  box-shadow: 0 0 12px rgba(255, 211, 105, 0.9);
+  transform: scale(1.08);
+  transition: all 0.3s ease;
+}
+
+
+  </style>
 </head>
 <body>
-    
-    <div align="right" id="Okuyan"><font face="Arial" class="Aciklama">
-        Beste / Okuyan: Mustafa Özcan Güneşdoğdu<br>
-        Seslendiren: Uğur Kayabaşı</font></div><br><br>
+  <main role="main" aria-labelledby="pageTitle">
+    <header class="top">
+      <div>
+        <h1 id="pageTitle">Esmaü'l Hüsna — 99 İsim</h1>
+        <div class="subtitle">Sesli, anlamlı ve ayet gösterimli interaktif uygulama</div>
+      </div>
+      <div class="meta">
+        <div>Beste / Okuyan: Mustafa Özcan Güneşdoğdu</div>
+        <div>Seslendiren: Uğur Kayabaşı</div>
+      </div>
+    </header>
 
-        <center><img src="img_w/00_Celle Celâlühu.gif" alt="Celle Celâlühu" height="80" width="80"></center><br>
-    <h1 id="header">Esma'ül Hüsna - (Allah`ın (c.c) En Güzel İsimleri) ve Anlamı</h1>
-    
-    <!--<font face="Arial" size="+1" id="GanzeSekunden" color="white"><b>-</b></font>
-    
-        <video width="480" height="360" controls>
-            <source src="vs\video.mp4" type="video/mp4">
-            Ihr Browser unterstützt das Video-Tag nicht.
-        </video>
-    
-    -->
-    <div align="center" id="VideoPlayer" class="hidden">
-        <iframe src="https://drive.google.com/file/d/1QvZUBhZYqWDIpu8OlvK2JiLvRXuc99Zr/preview" 
-            width="352" 
-            height="288" 
-            allowfullscreen>
-        </iframe><br><br>Video Açılmıyorsa Buraya: <a href="https://drive.google.com/file/d/1QvZUBhZYqWDIpu8OlvK2JiLvRXuc99Zr/view" target="_blank">Tıkla</a>
+    <div class="grid" aria-live="polite">
+      <!-- LEFT: visual -->
+      <section class="visual" aria-label="Görüntü ve anlam">
+        <img id="dynamicImage" src="img_w/01_Allah.gif" alt="Allah görseli" loading="lazy">
+        <div class="name" id="NameOfAllah">Allah الله</div>
+        <div class="arabic" id="ArabicText">الله</div>
+        <div class="meaning" id="Anlamlari">[ Her ismin vasfını ihtiva eden öz adı... ]</div>
+
+        <div class="video-frame" id="videoFrame" aria-hidden="true">
+          <!-- iframe wird von JS sichtbar gemacht -->
+        </div>
+      </section>
+
+      <!-- RIGHT: controls -->
+      <section class="controls" aria-label="Kontroller">
+        <div class="audio-row">
+          <audio id="audioPlayer" preload="metadata" controls>
+            <source src="sounds/Esma'ül Hüsna-1.mp3" type="audio/mpeg">
+            Tarayıcınız audio etiketini desteklemiyor.
+          </audio>
+        </div>
+
+        <div class="time-row">
+          <div id="currentTime">00:00</div>
+          <div id="Duration">00:00</div>
+        </div>
+
+        <div id="Sure" class="sura" aria-live="polite" style="min-height:44px; margin-top:6px; padding:8px; border-radius:10px; background:rgba(0,0,0,0.06); color:var(--muted)"></div>
+
+        <div class="search" role="search" aria-label="İsim ara">
+          <input id="search" type="search" placeholder="İsim ara..." aria-label="İsim ara">
+          <button id="toggleList" class="btn" aria-expanded="false">İsimleri göster!</button>
+        </div>
+
+        <div class="progress-wrap" aria-hidden="false">
+          <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+          <div class="progress-text" id="progressText">0 / 99</div>
+        </div>
+
+
+
+        <div class="list-panel" id="listPanel" aria-hidden="true">
+          <table id="ALLAHIN_ISIMLERI" aria-label="İsimler listesi">
+            <tbody id="namesBody">
+              <!-- JS füllt die 99 Einträge dynamisch (kompatibel mit deinem vorhandenen HTML) -->
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
-    
-    <div align="center">
-        <font face="Arial" size="+1" id="currentTime">00:00 - </b></font>
-        <font face="Arial" size="+1" id="Duration"><b>00:00</b></font>
-    </div>
-    <center>
-        <audio id="audioPlayer" controls>
-            <source src="sounds\Esma'ül Hüsna-1.mp3" type="audio/mpeg">
-            Ihr Browser unterstützt kein Audioelement.
-        </audio>
-        
-            <div id="displayContainer">
-                <img id="dynamicImage" src="img_w\01_Allah.gif" alt="Allah" width="240" height="195px">
-                <div id="textDisplay" style="font-size: 1.7em; text-align: center; color:green";>Allah الله</div>
-                <font face="Arial" size="5.0em" id="NameOfAllah" color="red"><b>Allah</b></font><br><br>
-            </div> 
-        </center>
-<table id="Tabelle_Anlamlari">
- <tr>
-    <td><font face="Arial" size="3.5em" id="Anlamlari" align="center">
-        <b>[ Her ismin vasfını ihtiva eden öz adı. 
-        Kendinden başka ilah bulunmayan tek Allah. Bu ism-i şerif, Cenâb-ı Hakk'ın has ismidir.
-        Bu itibarla diğer isimlerin ifade ettiği bütün güzel vasıfları ve İlâhî sıfatları içine alır. 
-        Diğer isimler ise, yalnız kendi mânalarına delâlet ederler. Bu bakımdan Allah isminin yerini hiçbir isim tutamaz.
-        Bu isim, Allah'tan başkasına mecazen de verilemez. Diğer isimlerinden bazılarının, Allah'tan başkasına isim olarak verilmesi caizdir.
-        İsimlerin sultanı. ]</b></font></td>
-    </tr>
-    <tr>
-        <td ><font face="Arial" size="3em" id="Sure" align="center"><b>1. [ 1:1, 3:18, 5:109, 6:124, 7:180, 8:40, 16:91, 20:8, 57:5, 65:3, 74:56, 85:20 ]</b></font></td>
-    </tr>
-</table><br>
 
-<div style="display: flex; justify-content: space-between; align-items: center;" id="Liste">
-    <!-- Bild auf der linken Seite -->
-    <img id="Allah_Image" src="img_w/01_Allah.gif" style="display: inline-block;" alt="Allah" width="65px" height="44px" >
-    <!-- Button auf der rechten Seite -->
-    <button id="toggleList" style="font-size:16px;padding: 10px 20px;">İsimleri göster!</button>
-</div>
+    <footer>
+      <div>© Dilaver Bölükbaşı 01/12/2024</div>
+      <div id="lastUpdate" data-update="08.12.2025 / 20:07"></div>
+    </footer>
+  </main>
 
+  <!-- legacy protection script (beibehalten) -->
+  <script src="script/sp.js"></script>
 
-<p> <table id="ALLAHIN_ISIMLERI" class="hidden">
-            <tr>
-                <td id="track1" >1. Allah</td>
-                <td id="track2">2. Er-Rahmân</td>
-                <td id="track3">3. Er-Rahîm</td>
-                <td id="track4">4. El-Melik</td>
-                <td id="track5">5. El-Kuddûs</td>
-               </tr>
-               <tr> 
-                   <td id="track6">6. Es-Selâm</td>
-                   <td id="track7">7. El-Mü’min</td>
-                   <td id="track8">8. El-Müheymin</td>
-                   <td id="track9">9. El-Azîz</td>
-                   <td id="track10">10. El-Cebbâr</td>
-                  </tr>
-                  <tr>
-                   <td id="track11">11. El-Mütekebbir</td>
-                   <td id="track12">12. El-Hâlık<br></td>
-                   <td id="track13">13. El-Bâri<br></td>
-                   <td id="track14">14. El-Musavvir</td>
-                   <td id="track15">15. El-Gaffâr</td>
-                  </tr>
-                  <tr> 
-                   <td id="track16">16. El-Kahhâr</td>
-                   <td id="track17">17. El-Vehhâb</td>
-                   <td id="track18">18. Er-Razzâk</td>
-                   <td id="track19">19. El-Fettâh</td>
-                   <td id="track20">20. El-Alîm</td>
-                  </tr>
-                  <tr>
-                   <td id="track21">21. El-Kâbıd</td>
-                   <td id="track22">22. El-Bâsıt</td>
-                   <td id="track23">23. El-Hâfıd</td>
-                   <td id="track24">24. Er-Râfi</td>
-                   <td id="track25">25. El-Mu’ız</td>
-                  </tr>
-                  <tr>
-                   <td id="track26">26. El-Müzil</td>
-                   <td id="track27">27. Es-Semi</td>
-                   <td id="track28">28. El-Basîr</td>
-                   <td id="track29">29. El-Hakem</td>
-                   <td id="track30">30. El-Adl</td>
-                  </tr>
-                  <tr>
-                   <td id="track31">31. El-Latîf</td>
-                   <td id="track32">32. El-Habîr</td>
-                   <td id="track33">33. El-Halîm</td>
-                   <td id="track34">34. El-Azîm</td>
-                   <td id="track35">35. El-Gafûr</td>
-                  </tr>
-                  <tr>
-                   <td id="track36">36. Eş-Şekûr</td>
-                   <td id="track37">37. El-Aliyy</td>
-                   <td id="track38">38. El-Kebîr</td>
-                   <td id="track39">39. El-Hafîz</td>
-                   <td id="track40">40. El-Mukît</td>
-                  </tr>
-                  <tr>
-                   <td id="track41">41. El-Hasîb</td>
-                   <td id="track42">42. El-Celîl</td>
-                   <td id="track43">43. El-Kerîm</td>
-                   <td id="track44">44. Er-Rakîb</td>
-                   <td id="track45">45. El-Mucîb</td>
-                  </tr>
-                  <tr>
-                   <td id="track46">46. El-Vâsi</td>
-                   <td id="track47">47. El-Hakîm</td>
-                   <td id="track48">48. El-Vedûd</td>
-                   <td id="track49">49. El-Mecîd</td>
-                   <td id="track50">50. El-Bâis</td>
-                  </tr>
-                  <tr>
-                   <td id="track51">51. Eş-Şehîd</td>
-                   <td id="track52">52. El-Hak</td>
-                   <td id="track53">53. El-Vekîl</td>
-                   <td id="track54">54. El-Kaviyy</td>
-                   <td id="track55">55. El-Metîn</td>
-                  </tr>
-                  <tr>
-                   <td id="track56">56. El-Veliyy</td>
-                   <td id="track57">57. El-Hamîd</td>
-                   <td id="track58">58. El-Muhsî</td>
-                   <td id="track59">59. El-Mübdi</td>
-                   <td id="track60">60. El-Muîd</td>
-                  </tr>
-                  <tr>
-                   <td id="track61">61. El-Muhyî</td>
-                   <td id="track62">62. El-Mümît</td>
-                   <td id="track63">63. El-Hayy</td>
-                   <td id="track64">64. El-Kayyûm</td>
-                   <td id="track65">65. El-Vâcid</td>
-                  </tr>
-                  <tr>
-                   <td id="track66">66. El-Mâcid</td>
-                   <td id="track67">67. El-Vâhid</td>
-                   <td id="track68">68. Es-Samed</td>
-                   <td id="track69">69. El-Kâdir</td>
-                   <td id="track70">70. El-Muktedir</td>
-                  </tr>
-                  <tr>
-                   <td id="track71">71. El-Mukaddim</td>
-                   <td id="track72">72. El-Muahhir</td>
-                   <td id="track73">73. El-Evvel</td>
-                   <td id="track74">74. El-Âhir</td>
-                   <td id="track75">75. Ez-Zâhir</td>
-                  </tr>
-                  <tr>
-                   <td id="track76">76. El-Bâtın</td>
-                   <td id="track77">77. El-Vâlî</td>
-                   <td id="track78">78. El-Müteâlî</td>
-                   <td id="track79">79. El-Berr</td>
-                   <td id="track80">80. Et-Tevvâb</td>
-                  </tr>
-                  <tr>
-                   <td id="track81">81. El-Müntekım</td>
-                   <td id="track82">82. El-Afüvv</td>
-                   <td id="track83">83. Er-Raûf</td>
-                   <td id="track84">84. Mâlik-ül Mülk</td>
-                   <td id="track85">85. Zül-Celâli vel İkrâm</td>
-                  </tr>
-                  <tr>
-                   <td id="track86">86. El-Muksit</td>
-                   <td id="track87">87. El-Câmi</td>
-                   <td id="track88">88. El-Ganiyy</td>
-                   <td id="track89">89. El-Mugnî</td>
-                   <td id="track90">90. El-Mâni</td>
-                  </tr>
-                  <tr class="result">
-                   <td id="track91">91. Ed-Dârr</td>
-                   <td id="track92">92. En-Nâfi</td>
-                   <td id="track93">93. En-Nûr</td>
-                   <td id="track94">94. El-Hâdî</td>
-                   <td id="track95">95. El-Bedî</td>
-                  </tr>
-                  <tr>
-                   <td id="track96">96. El-Bâkî</td>
-                   <td id="track97">97. El-Vâris</td>
-                   <td id="track98">98. Er-Reşîd</td>
-                   <td id="track99">99. Es-Sabûr</td>
-                   <td id="track100" class="hidden">1. Allah</td>
-            </tr>
-     </table>
-     <script src="script\fs.js"></script>
-     <script src="script\sp.js"></script>
-   <br>
-<div align="right">© Dilaver Bölükbaşı 01/12/2024<br>Son günceleme: 00:30</div>
+  <!-- modernes, robustes fs.js (überschreibt alte version) -->
+  <script src="script/fs.js"></script>
 </body>
 </html>
