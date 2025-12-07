@@ -191,11 +191,56 @@ footer{
 /* =========================
    ACCESSIBILITY
 ========================= */
-:focus{
-  outline:3px solid rgba(255,215,105,0.16);
-  outline-offset:3px;
-}
+
 
 body{
   overflow-y:auto !important;
 }
+
+
+/* ---------- LIST PANEL: scroll ve grid ayarları (EKLE) ---------- */
+
+/* listPanel artık sabit yüksekliğe sahip ve kaydırılabilir */
+#listPanel {
+  display: none; /* toggle ile block oluyor */
+  max-height: 360px;   /* ihtiyaca göre artırabilirsiniz */
+  overflow: auto;      /* burada scroll olur */
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+}
+
+/* namesBody (tbody) grid yapısını koru ama yükseklik ve wrap davranışı düzgün olsun */
+#ALLAHIN_ISIMLERI tbody {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0,1fr)); /* 5 sütun */
+  gap: 8px;
+  align-content: start; /* içerik üstten başlasın */
+}
+
+/* tr display:contents ile layout korunuyor, td blok haline gelsin */
+#ALLAHIN_ISIMLERI tr { display: contents; }
+
+/* Masaüstü için varsayılan (normal boyut) */
+#ALLAHIN_ISIMLERI td{
+  font-size: 0.9rem;   /* ≈ 14.5px */
+  padding: 8px 10px;
+}
+
+/* Tablet ve mobil için daha küçük yazı */
+@media (max-width: 768px){
+  #ALLAHIN_ISIMLERI td{
+    font-size: 0.75rem;  /* ≈ 12px */
+    padding: 6px 8px;
+  }
+}
+
+/* Çok küçük telefonlar için ekstra küçük */
+@media (max-width: 480px){
+  #ALLAHIN_ISIMLERI td{
+    font-size: 0.7rem;   /* ≈ 11px */
+    padding: 6px 6px;
+  }
+}
+

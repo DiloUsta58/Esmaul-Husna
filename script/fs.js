@@ -335,6 +335,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleBtn = document.getElementById("toggleList");
   const listPanel = document.getElementById("listPanel");
 
+  document.body.style.overflow = "auto";
+  document.documentElement.style.overflow = "auto";
+
+
   let currentIndex = 0;
   let idxAnlam = 0;
   let idxSure = 0;
@@ -386,22 +390,25 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =========================
      4) TOGGLE BUTONU (KESİN ÇALIŞAN)
   ========================= */
+ 
   /* =========================
     ✅ İSİM ARAMA SİSTEMİ (DÜZELTİLDİ)
   ========================= */
   const searchInput = document.getElementById("search");
 
-  searchInput.addEventListener("input", function () {
-    const value = this.value.toLowerCase();
+searchInput.addEventListener("input", function () {
+  const value = this.value.trim().toLowerCase();
 
-    document.querySelectorAll("#namesBody td").forEach(td => {
-      if (td.textContent.toLowerCase().includes(value)) {
-        td.style.display = "block";
-      } else {
-        td.style.display = "none";
-      }
-    });
+  document.querySelectorAll("#namesBody td").forEach(td => {
+    if (!value || td.textContent.toLowerCase().includes(value)) {
+      td.style.display = "";
+    } else {
+      td.style.display = "none";
+    }
   });
+});
+
+
   
   listPanel.style.display = "none";
   toggleBtn.textContent = "İsimleri göster!";
@@ -413,6 +420,7 @@ document.addEventListener("DOMContentLoaded", function () {
       listPanel.style.display = "none";
       toggleBtn.textContent = "İsimleri göster!";
     } else {
+      
       listPanel.style.display = "block";
       toggleBtn.textContent = "İsimleri gizle";
     }

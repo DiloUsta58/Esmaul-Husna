@@ -88,7 +88,7 @@
   </main>
 
   <!-- legacy protection script (beibehalten) -->
-  <script src="script/sp.js"></script>
+  <!-- LEFT: visual <script src="script/sp.js"></script> -->
 
   <!-- modernes, robustes fs.js (überschreibt alte version) -->
   <script src="script/fs.js"></script>
