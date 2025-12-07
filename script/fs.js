@@ -495,21 +495,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// ✅ GERÇEK DOSYA KAYIT SAATİNİ SUNUCUDAN AL
-const lastUpdateBox = document.getElementById("lastUpdate");
+// ✅ GERÇEK DOSYA KAYIT SAATİNİ SERVERDAN OKU (XAMPP ÜZERİNDEN)
+fetch(window.location.href, { method: "HEAD" })
+  .then(response => {
+    const lastModified = response.headers.get("Last-Modified");
+    if (!lastModified) return;
 
-if (lastUpdateBox) {
-    fetch("script/last-modified.php")
-        .then(res => res.json())
-        .then(data => {
-            lastUpdateBox.textContent = "Son güncelleme: " + data.timestamp;
-        })
-        .catch(err => {
-            lastUpdateBox.textContent = "Son güncelleme: alınamadı";
-            console.error("Tarih alınamadı:", err);
-        });
-}
+    const d = new Date(lastModified);
 
+    const gun = String(d.getDate()).padStart(2, "0");
+    const ay = String(d.getMonth() + 1).padStart(2, "0");
+    const yil = d.getFullYear();
+    const saat = String(d.getHours()).padStart(2, "0");
+    const dakika = String(d.getMinutes()).padStart(2, "0");
+
+    const lastUpdateBox = document.getElementById("lastUpdate");
+    if (lastUpdateBox) {
+      lastUpdateBox.textContent =
+        `Son güncelleme: ${gun}.${ay}.${yil} / ${saat}:${dakika}`;
+    }
+  });
 
 
 
