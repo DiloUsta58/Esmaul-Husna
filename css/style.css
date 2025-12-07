@@ -17,7 +17,7 @@ html,body{height:100%}
 body{
   margin:0;
   font-family: Inter, system-ui, Arial;
-  background: linear-gradient(180deg,#040612 0%, #071021 60%);
+  background: linear-gradient(180deg,#040612 0%, #071021 90%);
   color:#fff;
   padding:18px;
   display:flex;
