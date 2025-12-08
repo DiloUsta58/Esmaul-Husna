@@ -523,5 +523,21 @@ fetch(window.location.href, { method: "HEAD" })
     }
   });
 
+const audio = document.getElementById("audioPlayer");
+const bar = document.getElementById("progressBar");
+const text = document.getElementById("progressText");
 
+if (audio && bar && text) {
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+
+    const percent = (audio.currentTime / audio.duration) * 100;
+    bar.style.width = percent + "%";
+
+    const current = Math.floor(audio.currentTime);
+    const total = Math.floor(audio.duration);
+
+    text.textContent = current + " / " + total;
+  });
+}
 
