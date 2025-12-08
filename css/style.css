@@ -232,3 +232,15 @@ footer{
   box-shadow: 0 0 6px rgba(255, 152, 0, 0.6);
   transition: width 0.3s linear;
 }
+.favStar {
+  color: var(--btn-bg, #ff9800);
+  opacity: 0.9;
+  transition: transform 0.15s ease, opacity 0.15s;
+  text-align: center;
+  width: 100%;
+}
+
+.favStar:hover {
+  transform: scale(1.15);
+  opacity: 1;
+}

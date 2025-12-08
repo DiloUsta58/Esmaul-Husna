@@ -319,8 +319,8 @@ const timeSureler = [
    2) ANA SİSTEM
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
 
+document.addEventListener("DOMContentLoaded", function () {
   const audio = document.getElementById("audioPlayer");
   const imageEl = document.getElementById("dynamicImage");
   const nameBox = document.getElementById("NameOfAllah");
@@ -333,6 +333,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const namesBody = document.getElementById("namesBody");
   const toggleBtn = document.getElementById("toggleList");
   const listPanel = document.getElementById("listPanel");
+
+  // ✅ FAVORITEN (LocalStorage)
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+function isFavorite(id) {
+  return favorites.includes(id);
+}
+
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
 
   document.body.style.overflow = "auto";
   document.documentElement.style.overflow = "auto";
@@ -357,34 +373,56 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
   }
-
   /* =========================
      3) LİSTEYİ DOLDUR (1–99)
   ========================= */
 
-  namesBody.innerHTML = "";
+    namesBody.innerHTML = "";
 
-  imageChanges.forEach((item, index) => {
-    const tr = document.createElement("tr");
-    const td = document.createElement("td");
+    imageChanges.forEach((item, index) => {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
 
-    td.textContent = (index + 1) + ". " + item.text;
+      // ⭐ Stern setzen
+      const star = isFavorite(index) ? "⭐" : "☆";
+    //⭐ unter dem Namen
+          td.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+              <span>${index + 1}. ${item.text}</span>
+              <span class="favStar" data-id="${index}" 
+                style="margin-top:4px; cursor:pointer; font-size:18px;">
+                ${star}
+              </span>
+            </div>
+          `;
+// Fav zählen
+        function updateFavoriteCounter() {
+          const counter = document.getElementById("favCounter");
+          if (!counter) return;
 
-    td.addEventListener("click", function () {
-      currentIndex = index;
-      audio.currentTime = item.time;
-      updateContent(index);
-      audio.play();
+          counter.textContent = `Favoriten: ${favorites.length} / 99`;
+        }
 
-      // ✅ TIKLAYINCA LİSTE KAPANSIN
-      listPanel.style.display = "none";
-      toggleBtn.textContent = "İsimleri göster!";
+      // ✅ Klick auf Namen
+      td.addEventListener("click", function () {
+        currentIndex = index;
+        audio.currentTime = item.time;
+        updateContent(index);
+        audio.play();
+      });
+
+      // ✅ Klick auf Stern
+      const favBtn = td.querySelector(".favStar");
+      favBtn.addEventListener("click", function (e) {
+        e.stopPropagation(); // verhindert Abspielen
+        toggleFavorite(index);
+        favBtn.textContent = isFavorite(index) ? "⭐" : "☆";
+        /*updateFavoriteCounter();*/
+      });
+
+      tr.appendChild(td);
+      namesBody.appendChild(tr);
     });
-
-
-    tr.appendChild(td);
-    namesBody.appendChild(tr);
-  });
 
   /* =========================
      4) TOGGLE BUTONU (KESİN ÇALIŞAN)
@@ -502,6 +540,23 @@ searchInput.addEventListener("input", function () {
 
 });
 
+// ✅ FAVORITEN (LocalStorage)
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+function isFavorite(id) {
+  return favorites.includes(id);
+}
+
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+
 // ✅ GERÇEK DOSYA KAYIT SAATİNİ SERVERDAN OKU (XAMPP ÜZERİNDEN)
 fetch(window.location.href, { method: "HEAD" })
   .then(response => {
@@ -541,3 +596,11 @@ if (audio && bar && text) {
   });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  updateFavoriteCounter();
+});
+
+window.addEventListener("load", function () {
+  updateFavoriteCounter();
+});
