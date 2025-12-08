@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Esmaü'l Hüsna — 99 İsim</title>
+  <meta name="description" content="Esmaü'l Hüsna — 99 isim. Ses, anlam ve ayetlerle senkron.">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <main role="main" aria-labelledby="pageTitle">
+    <header class="top">
+      <div>
+        <h1 id="pageTitle">Esmaü'l Hüsna — 99 İsim</h1>
+        <div class="subtitle">Sesli, anlamlı ve ayet gösterimli interaktif uygulama</div>
+      </div>
+      <div class="meta">
+        <div>Beste / Okuyan: Mustafa Özcan Güneşdoğdu</div>
+        <div>Seslendiren: Uğur Kayabaşı</div>
+      </div>
+    </header>
+
+    <div class="grid" aria-live="polite">
+      <!-- LEFT: visual -->
+      <section class="visual" aria-label="Görüntü ve anlam">
+        <img id="dynamicImage" src="img_w/01_Allah.gif" alt="Allah görseli" loading="lazy">
+        <div class="name" id="NameOfAllah">Allah الله</div>
+        <div class="arabic" id="ArabicText">الله</div>
+        <div class="meaning" id="Anlamlari">[ Her ismin vasfını ihtiva eden öz adı... ]</div>
+
+        <div class="video-frame" id="videoFrame" aria-hidden="true">
+          <!-- iframe wird von JS sichtbar gemacht -->
+        </div>
+      </section>
+
+      <!-- RIGHT: controls -->
+      <section class="controls" aria-label="Kontroller">
+        <div class="audio-row">
+          <audio id="audioPlayer" preload="metadata" controls>
+            <source src="sounds/Esma'ül Hüsna-1.mp3" type="audio/mpeg">
+            Tarayıcınız audio etiketini desteklemiyor.
+          </audio>
+        </div>
+
+        <div class="time-row">
+          <div id="currentTime">00:00</div>
+          <div id="Duration">00:00</div>
+        </div>
+
+        <div id="Sure" class="sura" aria-live="polite" style="min-height:44px; margin-top:6px; padding:8px; border-radius:10px; background:rgba(0,0,0,0.06); color:var(--muted)"></div>
+
+        <div class="search" role="search" aria-label="İsim ara">
+          <input id="search" type="search" placeholder="İsim ara..." aria-label="İsim ara">
+          <button id="toggleList" class="btn" aria-expanded="false">İsimleri göster!</button>
+        </div>
+
+        <div class="progress-wrap" aria-hidden="false">
+          <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+          <div class="progress-text" id="progressText">0 / 99</div>
+        </div>
+
+        <div class="list-panel" id="listPanel" aria-hidden="true">
+          <table id="ALLAHIN_ISIMLERI" aria-label="İsimler listesi">
+            <tbody id="namesBody">
+              <!-- JS füllt die 99 Einträge dynamisch -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div>© Dilaver Bölükbaşı 01/12/2024</div>
+      <div id="lastUpdate">
+        Son güncelleme: <!-- wird von fs.js automatisch gesetzt -->
+      </div>
+    </footer>
+  </main>
+
+  <!-- modernes, robustes fs.js -->
+  <script src="script/fs.js"></script>
+</body>
+</html>
