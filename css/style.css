@@ -26,8 +26,8 @@ html,body{
 }
 
 main{
-  width:100%;
-  max-width:1100px;
+  width:100%; /* ekranın %95’ini kaplar */
+  max-width:1100px; /* ama çok büyük ekranlarda 1400px’i geçmez */
   background:var(--card);
   border-radius:20px;
   padding:20px;
@@ -78,17 +78,18 @@ h1{font-size:1.6rem; margin:4px 0 0 0}
 
 .visual img{
   width:100%;
-  max-width:300px;
+  max-width:175px;
   border-radius:12px;
   object-fit:contain;
 }
 
 .name{
-  font-size:1.25rem;
+  font-size:1.95rem;
   color:var(--accent);
   font-weight:700;
 }
-.arabic{font-size:1.10rem;}
+.arabic{font-size:3.25rem;}
+
 .meaning{
   font-size:0.95rem;
   color:var(--muted);
