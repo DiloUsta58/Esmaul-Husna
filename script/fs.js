@@ -348,6 +348,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let favPlayPos = 0;
   let showOnlyFavorites = false;
 
+  const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", function () {
+  const query = searchInput.value.toLowerCase();
+
+  // Alle Tabellenzeilen durchgehen
+  document.querySelectorAll("#namesBody tr").forEach(tr => {
+    const text = tr.textContent.toLowerCase();
+    if (text.includes(query)) {
+      tr.style.display = "";
+    } else {
+      tr.style.display = "none";
+    }
+  });
+});
+
+
   // BUTON GÖRÜNÜRLÜK KONTROLÜ: Favori varsa ve liste açıksa göster, aksi halde gizle
   function updateFavButtonsVisibility() {
     const hasFavorites = favorites.length > 0;
