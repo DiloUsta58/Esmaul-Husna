@@ -316,11 +316,11 @@ const timeSureler = [
     { time: 1137, text: "[ 2:153 -> İşte bunu yaptığı takdirde o, Sabûr ismini alır. “Ey iman edenler, sabırla ve namazla (Allah'tan) yardım isteyin. Şüphesiz ki Allah'(ın yardımı) sabredenlerle beraberdir. ]" },
 ]; 
 /* =========================
-   2) ANA SİSTEM
+   4) ANA SİSTEM
 ========================= */
 
-
 document.addEventListener("DOMContentLoaded", function () {
+
   const audio = document.getElementById("audioPlayer");
   const imageEl = document.getElementById("dynamicImage");
   const nameBox = document.getElementById("NameOfAllah");
@@ -333,204 +333,44 @@ document.addEventListener("DOMContentLoaded", function () {
   const namesBody = document.getElementById("namesBody");
   const toggleBtn = document.getElementById("toggleList");
   const listPanel = document.getElementById("listPanel");
-
-  // ✅ FAVORITEN (LocalStorage)
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-function isFavorite(id) {
-  return favorites.includes(id);
-}
-
-function toggleFavorite(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites.push(id);
-  }
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-}
-
-  document.body.style.overflow = "auto";
-  document.documentElement.style.overflow = "auto";
-
+  const playFavBtn = document.getElementById("playFavs");
+  const favOnlyBtn = document.getElementById("favOnlyBtn") || document.getElementById("showFavOnly");
+  const favCounter = document.getElementById("favCounter");
 
   let currentIndex = 0;
   let idxAnlam = 0;
   let idxSure = 0;
 
-  if (!audio || !imageEl || !nameBox || !anlamBox || !sureBox) {
-    console.error("ZORUNLU HTML ELEMANI EKSİK!");
-    return;
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  let favoriteTimes = JSON.parse(localStorage.getItem("favoriteTimes")) || [];
 
-    // ✅ SON KALINAN YERDEN DEVAM
-    const savedIndex = localStorage.getItem("lastIndex");
-    const savedTime = localStorage.getItem("lastTime");
+  let favPlayMode = false;
+  let favPlayPos = 0;
+  let showOnlyFavorites = false;
 
-    if (savedIndex !== null && imageChanges[savedIndex]) {
-      currentIndex = Number(savedIndex);
-      audio.currentTime = Number(savedTime || imageChanges[currentIndex].time);
-      updateContent(currentIndex);
-    }
-
+  // BUTON GÖRÜNÜRLÜK KONTROLÜ: Favori varsa ve liste açıksa göster, aksi halde gizle
+  function updateFavButtonsVisibility() {
+    const hasFavorites = favorites.length > 0;
+    const listOpen = listPanel.style.display === "block";
+    const displayVal = hasFavorites && listOpen ? "inline-block" : "none";
+    playFavBtn.style.display = displayVal;
+    favOnlyBtn.style.display = displayVal;
+    ClearFav.style.display = displayVal;
   }
-  /* =========================
-     3) LİSTEYİ DOLDUR (1–99)
-  ========================= */
 
-    namesBody.innerHTML = "";
+  const clearFavBtn = document.getElementById("ClearFav");
 
-    imageChanges.forEach((item, index) => {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-
-      // ⭐ Stern setzen
-      const star = isFavorite(index) ? "⭐" : "☆";
-    //⭐ unter dem Namen
-          td.innerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
-              <span>${index + 1}. ${item.text}</span>
-              <span class="favStar" data-id="${index}" 
-                style="margin-top:4px; cursor:pointer; font-size:18px;">
-                ${star}
-              </span>
-            </div>
-          `;
-// Fav zählen
-        function updateFavoriteCounter() {
-          const counter = document.getElementById("favCounter");
-          if (!counter) return;
-
-          counter.textContent = `Favoriten: ${favorites.length} / 99`;
-        }
-
-      // ✅ Klick auf Namen
-      td.addEventListener("click", function () {
-        currentIndex = index;
-        audio.currentTime = item.time;
-        updateContent(index);
-        audio.play();
-      });
-
-      // ✅ Klick auf Stern
-      const favBtn = td.querySelector(".favStar");
-      favBtn.addEventListener("click", function (e) {
-        e.stopPropagation(); // verhindert Abspielen
-        toggleFavorite(index);
-        favBtn.textContent = isFavorite(index) ? "⭐" : "☆";
-        /*updateFavoriteCounter();*/
-      });
-
-      tr.appendChild(td);
-      namesBody.appendChild(tr);
-    });
-
-  /* =========================
-     4) TOGGLE BUTONU (KESİN ÇALIŞAN)
-  ========================= */
- 
-  /* =========================
-    ✅ İSİM ARAMA SİSTEMİ (DÜZELTİLDİ)
-  ========================= */
-  const searchInput = document.getElementById("search");
-
-searchInput.addEventListener("input", function () {
-  const value = this.value.trim().toLowerCase();
-
-  document.querySelectorAll("#namesBody td").forEach(td => {
-    if (!value || td.textContent.toLowerCase().includes(value)) {
-      td.style.display = "";
-    } else {
-      td.style.display = "none";
-    }
+  // Favorileri temizle
+  clearFavBtn.addEventListener("click", function () {
+    favorites = []; // listeyi boşalt
+    favoriteTimes = [];
+    localStorage.removeItem("favorites");
+    localStorage.removeItem("favoriteTimes");
+    updateFavoriteCounter();
+    buildNameList();
+    updateFavButtonsVisibility(); // buton görünürlüğünü güncelle
+    alert("Tüm favoriler temizlendi!");
   });
-});
-
-
-  
-  listPanel.style.display = "none";
-  toggleBtn.textContent = "İsimleri göster!";
-
-  toggleBtn.addEventListener("click", function () {
-    const acikMi = listPanel.style.display === "block";
-
-    if (acikMi) {
-      listPanel.style.display = "none";
-      toggleBtn.textContent = "İsimleri göster!";
-    } else {
-      
-      listPanel.style.display = "block";
-      toggleBtn.textContent = "İsimleri gizle";
-    }
-  });
-
-  /* =========================
-     5) SES SENKRON TAKİP
-  ========================= */
-
-  audio.addEventListener("timeupdate", function () {
-    const t = Math.floor(audio.currentTime);
-    timeNow.textContent = formatTime(audio.currentTime);
-    localStorage.setItem("lastIndex", currentIndex);
-    localStorage.setItem("lastTime", audio.currentTime);
-    // ✅ PROGRESS BAR + 1–99 SAYACI
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressBar.style.width = percent + "%";
-    progressText.textContent = (currentIndex + 1) + " / 99";
-
-
-    // ✅ İSİM + RESİM
-    const foundIndex = imageChanges.findIndex(x => x.time <= t && t < x.time + 2);
-    if (foundIndex !== -1 && foundIndex !== currentIndex) {
-      currentIndex = foundIndex;
-      updateContent(currentIndex);
-    }
-
-    // ✅ ANLAM
-    if (timeAnlamı[idxAnlam] && t >= timeAnlamı[idxAnlam].time) {
-      anlamBox.textContent = timeAnlamı[idxAnlam].text;
-      idxAnlam++;
-    }
-
-    // ✅ SURE
-    if (timeSureler[idxSure] && t >= timeSureler[idxSure].time) {
-      sureBox.textContent = timeSureler[idxSure].text;
-      idxSure++;
-    }
-
-    // ✅ AKTİF RENK + OTOMATİK SCROLL
-    document.querySelectorAll("#namesBody td").forEach((td, i) => {
-      if (i === currentIndex) {
-        td.classList.add("active");
-        td.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else {
-        td.classList.remove("active");
-      }
-    });
-  });
-
-  audio.addEventListener("loadedmetadata", function () {
-    durationBox.textContent = formatTime(audio.duration);
-  });
-
-  /* =========================
-     6) GÖRÜNTÜ + METİN GÜNCELLE
-  ========================= */
-
-  function updateContent(index) {
-    const item = imageChanges[index];
-    if (!item) return;
-
-    imageEl.src = item.imageSrc;
-    nameBox.textContent = item.text;
-
-    if (timeAnlamı[index]) {
-      anlamBox.textContent = timeAnlamı[index].text;
-    }
-
-    if (timeSureler[index]) {
-      sureBox.textContent = timeSureler[index].text;
-    }
-  }
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -538,69 +378,246 @@ searchInput.addEventListener("input", function () {
     return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
   }
 
-});
-
-// ✅ FAVORITEN (LocalStorage)
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-function isFavorite(id) {
-  return favorites.includes(id);
-}
-
-function toggleFavorite(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites.push(id);
-  }
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-}
-
-
-// ✅ GERÇEK DOSYA KAYIT SAATİNİ SERVERDAN OKU (XAMPP ÜZERİNDEN)
-fetch(window.location.href, { method: "HEAD" })
-  .then(response => {
-    const lastModified = response.headers.get("Last-Modified");
-    if (!lastModified) return;
-
-    const d = new Date(lastModified);
-
-    const gun = String(d.getDate()).padStart(2, "0");
-    const ay = String(d.getMonth() + 1).padStart(2, "0");
-    const yil = d.getFullYear();
-    const saat = String(d.getHours()).padStart(2, "0");
-    const dakika = String(d.getMinutes()).padStart(2, "0");
-
-    const lastUpdateBox = document.getElementById("lastUpdate");
-    if (lastUpdateBox) {
-      lastUpdateBox.textContent =
-        `Son güncelleme: ${gun}.${ay}.${yil} / ${saat}:${dakika}`;
+  function seekToTime(time) {
+    if (audio.readyState >= 2) {
+      audio.currentTime = time;
+    } else {
+      const once = () => {
+        audio.currentTime = time;
+        audio.removeEventListener("loadedmetadata", once);
+      };
+      audio.addEventListener("loadedmetadata", once);
     }
+  }
+
+  function updateFavoriteCounter() {
+    if (favCounter) {
+      favCounter.textContent = `Favoriten: ${favorites.length} / ${imageChanges.length}`;
+    }
+  }
+
+  function isFavorite(id) {
+    return favorites.includes(id);
+  }
+
+  function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+      favorites = favorites.filter(f => f !== id);
+    } else {
+      favorites.push(id);
+    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    rebuildFavoriteTimes();
+    updateFavoriteCounter();
+    buildNameList();
+    updateFavButtonsVisibility(); // favoriler değişince görünürlüğü güncelle
+  }
+
+  // Zeitliste aus imageChanges bauen und speichern
+  function rebuildFavoriteTimes() {
+    favoriteTimes = favorites
+      .map(i => imageChanges[i]?.time)
+      .filter(t => Number.isFinite(t))
+      .sort((a,b) => a - b);
+    localStorage.setItem("favoriteTimes", JSON.stringify(favoriteTimes));
+  }
+
+  function setListFocus(realIndex) {
+    document.querySelectorAll("#namesBody td").forEach(td => {
+      const idx = Number(td.dataset.realIndex);
+      if (idx === realIndex) {
+        td.classList.add("active");
+        td.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        td.classList.remove("active");
+      }
+    });
+  }
+
+  function buildNameList() {
+    namesBody.innerHTML = "";
+
+    const list = showOnlyFavorites
+      ? favorites.map(i => ({ item: imageChanges[i], realIndex: i }))
+      : imageChanges.map((x, i) => ({ item: x, realIndex: i }));
+
+    list.forEach(row => {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+
+      td.dataset.realIndex = row.realIndex;
+
+      td.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <span>${row.realIndex + 1}. ${row.item.text}</span>
+          <span class="favStar" style="cursor:pointer; margin-top:4px;">
+            ${isFavorite(row.realIndex) ? "⭐" : "☆"}
+          </span>
+        </div>
+      `;
+
+      td.addEventListener("click", function () {
+        favPlayMode = false;
+        currentIndex = row.realIndex;
+        seekToTime(row.item.time);
+        updateContent(row.realIndex);
+        audio.play();
+        setListFocus(row.realIndex);
+      });
+
+      td.querySelector(".favStar").addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleFavorite(row.realIndex);
+      });
+
+      tr.appendChild(td);
+      namesBody.appendChild(tr);
+    });
+
+    setListFocus(currentIndex);
+  }
+
+  // Liste toggle
+  listPanel.style.display = "none";
+  toggleBtn.textContent = "İsimleri göster!";
+  toggleBtn.addEventListener("click", function () {
+    const acikMi = listPanel.style.display === "block";
+    listPanel.style.display = acikMi ? "none" : "block";
+    toggleBtn.textContent = acikMi ? "İsimleri göster!" : "İsimleri gizle";
+    updateFavButtonsVisibility(); // liste aç/kapat
   });
 
-const audio = document.getElementById("audioPlayer");
-const bar = document.getElementById("progressBar");
-const text = document.getElementById("progressText");
+  // Favoritenmodus starten
+  function startFavoritesPlayback() {
+    rebuildFavoriteTimes();
+    if (favoriteTimes.length === 0) {
+      alert("Keine Favoriten ausgewählt!");
+      return;
+    }
+    favPlayMode = true;
+    favPlayPos = 0;
+    playFavoriteAtPos(favPlayPos);
+  }
 
-if (audio && bar && text) {
-  audio.addEventListener("timeupdate", () => {
-    if (!audio.duration) return;
+  function playFavoriteAtPos(pos) {
+    favPlayPos = pos % favoriteTimes.length;
+    const startTime = favoriteTimes[favPlayPos];
+    const idx = imageChanges.findIndex(x => x.time === startTime);
+    if (idx < 0) return;
 
-    const percent = (audio.currentTime / audio.duration) * 100;
-    bar.style.width = percent + "%";
+    currentIndex = idx;
+    updateContent(idx);
 
-    const current = Math.floor(audio.currentTime);
-    const total = Math.floor(audio.duration);
+    audio.pause();
+    seekToTime(startTime);
+    setTimeout(() => {
+      audio.play();
+      setListFocus(idx);
+    }, 100);
+  }
 
-    text.textContent = current + " / " + total;
+  // Segment-Ende berechnen
+  function getSegmentEnd(pos) {
+    const nextPos = (pos + 1) % favoriteTimes.length;
+    return favoriteTimes[nextPos];
+  }
+
+  // Hysterese beim Weiterblättern (2 Sekunden)
+  function maybeAdvanceFavoriteByTime(t) {
+    if (!favPlayMode || favoriteTimes.length === 0) return;
+    const endTime = getSegmentEnd(favPlayPos);
+    if (t >= endTime + 2) { // 2s Puffer
+      favPlayPos = (favPlayPos + 1) % favoriteTimes.length;
+      playFavoriteAtPos(favPlayPos);
+    }
+  }
+
+  // ✅ GERÇEK DOSYA KAYIT SAATİNİ SERVERDAN OKU (XAMPP ÜZERİNDEN)
+  fetch(window.location.href, { method: "HEAD" })
+    .then(response => {
+      const lastModified = response.headers.get("Last-Modified");
+      if (!lastModified) return;
+
+      const d = new Date(lastModified);
+
+      const gun = String(d.getDate()).padStart(2, "0");
+      const ay = String(d.getMonth() + 1).padStart(2, "0");
+      const yil = d.getFullYear();
+      const saat = String(d.getHours()).padStart(2, "0");
+      const dakika = String(d.getMinutes()).padStart(2, "0");
+
+      const lastUpdateBox = document.getElementById("lastUpdate");
+      if (lastUpdateBox) {
+        lastUpdateBox.textContent =
+          `Son güncelleme: ${gun}.${ay}.${yil} / ${saat}:${dakika}`;
+      }
+    });
+
+  playFavBtn.addEventListener("click", startFavoritesPlayback);
+
+  favOnlyBtn.addEventListener("click", function () {
+    showOnlyFavorites = !showOnlyFavorites;
+    favOnlyBtn.textContent = showOnlyFavorites
+      ? "⭐ Hepini Göster"
+      : "⭐ Sadece Favorilerim";
+    buildNameList();
   });
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-  favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  updateFavoriteCounter();
-});
+  audio.addEventListener("timeupdate", function () {
+    const t = audio.currentTime;
+    timeNow.textContent = formatTime(t);
+    const percent = (t / audio.duration) * 100;
+    progressBar.style.width = percent + "%";
+    progressText.textContent = (currentIndex + 1) + " / 99";
 
-window.addEventListener("load", function () {
+    if (!favPlayMode) {
+      for (let i = imageChanges.length - 1; i >= 0; i--) {
+        if (t >= imageChanges[i].time) {
+          if (currentIndex !== i) {
+            currentIndex = i;
+            updateContent(i);
+            setListFocus(i);
+          }
+          break;
+        }
+      }
+    } else {
+      maybeAdvanceFavoriteByTime(t);
+    }
+
+    if (timeAnlamı[idxAnlam] && t >= timeAnlamı[idxAnlam].time) {
+      anlamBox.textContent = timeAnlamı[idxAnlam].text;
+      idxAnlam++;
+    }
+
+    if (timeSureler[idxSure] && t >= timeSureler[idxSure].time) {
+      sureBox.textContent = timeSureler[idxSure].text;
+      idxSure++;
+    }
+
+    localStorage.setItem("lastIndex", currentIndex);
+    localStorage.setItem("lastTime", t);
+  });
+
+  audio.addEventListener("loadedmetadata", function () {
+    durationBox.textContent = formatTime(audio.duration);
+  });
+
+  function updateContent(index) {
+    const item = imageChanges[index];
+    if (!item) return;
+    imageEl.src = item.imageSrc;
+    nameBox.textContent = item.text;
+    if (timeAnlamı[index]) anlamBox.textContent = timeAnlamı[index].text;
+    if (timeSureler[index]) sureBox.textContent = timeSureler[index].text;
+  }
+
   updateFavoriteCounter();
+  buildNameList();
+
+  // favoriteTimes initial aus favorites bauen
+  rebuildFavoriteTimes();
+
+  // Başlangıçta favori buton görünürlüğünü doğru ayarla
+  updateFavButtonsVisibility();
 });

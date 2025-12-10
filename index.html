@@ -59,7 +59,7 @@
       <section class="controls" aria-label="Kontroller">
           <div class="audio-row">
           <audio id="audioPlayer" preload="metadata" controls>
-            <source src="sounds/Esma'ül Hüsna-1.mp3" type="audio/mpeg">
+            <source src="sounds/Esma-ul-Husna-1.mp3" type="audio/mpeg">
             Tarayıcınız audio etiketini desteklemiyor.
           </audio>
         </div>
@@ -79,8 +79,14 @@
           <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
           <div class="progress-text" id="progressText">0 / 99</div>
         </div>
+      <div class="button-group">
+        <button id="showFavOnly" class="btn">⭐ Sade Favori göster</button>  
+        <button id="playFavs" class="btn">▶ Favorilerimi Oynat</button>
+        <button id="ClearFav" class="btn">❌ Favorileri Temizle</button>
+      </div>
+
         <div id="favCounter" style="margin-top:6px; font-size:14px; opacity:0.85;">
-          Favorit: 0 / 99
+         Favorit: 0 / 99 
         </div>
 
         <div class="list-panel" id="listPanel" aria-hidden="true">
@@ -105,4 +111,3 @@
   <script src="script/fs.js"></script>
 </body>
 </html>
-
