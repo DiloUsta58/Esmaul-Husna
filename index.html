@@ -35,12 +35,31 @@
         <h1 id="pageTitle">Esma'ül Hüsna - (Allah`ın (c.c) En Güzel İsimleri)</h1>
         <div class="subtitle">Sesli, anlamlı ve ayet gösterimli interaktif uygulama</div>
       </div>
+
       <div class="meta">
         <div>Beste / Okuyan: Mustafa Özcan Güneşdoğdu</div>
         <div>Seslendiren: Uğur Kayabaşı</div>
       </div>
     </header>
-    
+<!--     
+<section class="info-box" aria-label="Ek bilgi">
+  <h2 class="info-title">Beste / Okuyan:</h2>
+  <p class="info-text">
+        <div>Mustafa Özcan Güneşdoğdu</div>
+        <div>Seslendiren: Uğur Kayabaşı</div>
+  </p>
+</section>
+
+
+<section class="warning-box" aria-label="Uyarı">
+  <h2 class="warning-title">Önemli Uyarı</h2>
+  <p class="warning-text">
+    Bu bölümde kritik bilgiler, hata mesajları veya dikkat edilmesi gereken noktalar yer alır.
+  </p>
+</section>
+-->
+
+
     <div class="grid" aria-live="polite">
       <!-- LEFT: visual -->
       <section class="visual" aria-label="Görüntü ve anlam">
@@ -63,11 +82,6 @@
           </audio>
         </div>
 
-        <div class="time-row">
-          <div id="currentTime">-</div>
-          <div id="Duration">-</div>
-        </div>
-
         <!-- Sure Box jetzt ohne Inline-Styles -->
         <div id="Sure" class="sura" aria-live="polite"></div>
 
@@ -77,10 +91,12 @@
         </div>
 
         <!-- Neue Progressbar-Struktur -->
-        <div id="progressContainer">
-          <div id="progressBar"></div>
-        </div>
-        <div class="progress-text" id="progressText">0 / 99</div>
+      <div id="progressContainer">
+        <div id="progressBar"></div>
+        <div id="progressTooltip" class="progress-tooltip"></div>
+      </div>
+      <div class="progress-text" id="progressText">0:00</div>
+
 
         <div class="button-group">
           <button id="showFavOnly" class="btn">⭐ Sade Favori göster</button>  
