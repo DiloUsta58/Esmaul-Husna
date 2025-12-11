@@ -348,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let favPlayPos = 0;
   let showOnlyFavorites = false;
 
-  // Buttons Sichtbarkeit: nur wenn Favoriten vorhanden und Liste offen
+  // Buttons Sichtbarkeit
   function updateFavButtonsVisibility() {
     const hasFavorites = favorites.length > 0;
     const listOpen = listPanel.style.display === "block";
@@ -401,12 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function setListFocus(realIndex) {
     document.querySelectorAll("#namesBody td").forEach(td => {
       const idx = Number(td.dataset.realIndex);
-      if (idx === realIndex) {
-        td.classList.add("active");
-        td.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else {
-        td.classList.remove("active");
-      }
+      td.classList.toggle("active", idx === realIndex);
     });
   }
 
@@ -420,18 +415,14 @@ document.addEventListener("DOMContentLoaded", function () {
     list.forEach(row => {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
-
       td.dataset.realIndex = row.realIndex;
-
       td.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center;">
           <span>${row.realIndex + 1}. ${row.item.text}</span>
           <span class="favStar" style="cursor:pointer; margin-top:4px;">
             ${isFavorite(row.realIndex) ? "⭐" : "☆"}
           </span>
-        </div>
-      `;
-
+        </div>`;
       td.addEventListener("click", function () {
         favPlayMode = false;
         currentIndex = row.realIndex;
@@ -440,18 +431,16 @@ document.addEventListener("DOMContentLoaded", function () {
         audio.play();
         setListFocus(row.realIndex);
       });
-
       td.querySelector(".favStar").addEventListener("click", function (e) {
         e.stopPropagation();
         toggleFavorite(row.realIndex);
       });
-
       tr.appendChild(td);
       namesBody.appendChild(tr);
     });
 
     setListFocus(currentIndex);
-    applySearchFilter(); // Liste neu aufgebaut → Filter erneut anwenden
+    applySearchFilter(); // Filter nach Neuaufbau anwenden
   }
 
   // Liste toggle
@@ -464,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateFavButtonsVisibility();
   });
 
-  // Favoritenmodus starten (Indices-basiert, Segment-Ende = nächster normaler Index)
+  // Favoriten abspielen (Segment-Ende = nächster normaler Index)
   function startFavoritesPlayback() {
     if (favorites.length === 0) {
       alert("Keine Favoriten ausgewählt!");
@@ -480,10 +469,8 @@ document.addEventListener("DOMContentLoaded", function () {
     favPlayPos = pos % favorites.length;
     const idx = favorites[favPlayPos];
     const startTime = imageChanges[idx].time;
-
     currentIndex = idx;
     updateContent(idx);
-
     audio.pause();
     seekToTime(startTime);
     setTimeout(() => {
@@ -492,7 +479,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 100);
   }
 
-  // Segment-Ende = nächste normale Indexzeit
   function getSegmentEndForIndex(idx) {
     if (idx + 1 < imageChanges.length) {
       return imageChanges[idx + 1].time;
@@ -500,12 +486,11 @@ document.addEventListener("DOMContentLoaded", function () {
     return audio.duration;
   }
 
-  // Favoriten-Playback im timeupdate
   function maybeAdvanceFavoriteByTime(t) {
     if (!favPlayMode || favorites.length === 0) return;
     const idx = favorites[favPlayPos];
     const endTime = getSegmentEndForIndex(idx);
-    if (t >= endTime - 0.2) { // kurz vor nächstem Segment-Ende
+    if (t >= endTime - 0.2) {
       favPlayPos = (favPlayPos + 1) % favorites.length;
       playFavoriteAtPos(favPlayPos);
     }
@@ -514,6 +499,12 @@ document.addEventListener("DOMContentLoaded", function () {
   playFavBtn.addEventListener("click", startFavoritesPlayback);
 
   favOnlyBtn.addEventListener("click", function () {
+    if (favorites.length === 0) {
+      showOnlyFavorites = false;
+      favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
+      buildNameList();
+      return;
+    }
     showOnlyFavorites = !showOnlyFavorites;
     favOnlyBtn.textContent = showOnlyFavorites
       ? "⭐ Hepini Göster"
@@ -526,13 +517,15 @@ document.addEventListener("DOMContentLoaded", function () {
       favorites = [];
       localStorage.removeItem("favorites");
       updateFavoriteCounter();
+      showOnlyFavorites = false; // zurück auf Vollansicht
+      favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
       buildNameList();
       updateFavButtonsVisibility();
       alert("Tüm favoriler temizlendi!");
     });
   }
 
-  // Live-Suche
+  // Suche
   function applySearchFilter() {
     const query = (searchInput?.value || "").toLowerCase();
     document.querySelectorAll("#namesBody tr").forEach(tr => {
@@ -571,7 +564,6 @@ document.addEventListener("DOMContentLoaded", function () {
       anlamBox.textContent = timeAnlamı[idxAnlam].text;
       idxAnlam++;
     }
-
     if (timeSureler[idxSure] && t >= timeSureler[idxSure].time) {
       sureBox.textContent = timeSureler[idxSure].text;
       idxSure++;
