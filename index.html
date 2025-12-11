@@ -28,7 +28,6 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-
 <body>
   <main role="main" aria-labelledby="pageTitle">
     <header class="top">
@@ -42,7 +41,7 @@
       </div>
     </header>
     
-   <div class="grid" aria-live="polite">
+    <div class="grid" aria-live="polite">
       <!-- LEFT: visual -->
       <section class="visual" aria-label="Görüntü ve anlam">
         <img id="dynamicImage" src="img_w/01_Allah.gif" alt="Allah görseli" loading="lazy">
@@ -57,7 +56,7 @@
 
       <!-- RIGHT: controls -->
       <section class="controls" aria-label="Kontroller">
-          <div class="audio-row">
+        <div class="audio-row">
           <audio id="audioPlayer" preload="metadata" controls>
             <source src="sounds/Esma-ul-Husna-1.mp3" type="audio/mpeg">
             Tarayıcınız audio etiketini desteklemiyor.
@@ -69,27 +68,32 @@
           <div id="Duration">-</div>
         </div>
 
-        <div id="Sure" class="sura" aria-live="polite" style="min-height:44px; margin-top:6px; padding:8px; border-radius:10px; background:rgba(0,0,0,0.06); color:var(--muted)"></div>
+        <!-- Sure Box jetzt ohne Inline-Styles -->
+        <div id="Sure" class="sura" aria-live="polite"></div>
+
         <div class="search" role="search" aria-label="İsim ara">
           <input id="search" type="search" placeholder="İsim ara..." aria-label="İsim ara">
           <button id="toggleList" class="btn" aria-expanded="false">İsimleri göster!</button>
         </div>
 
-        <div class="progress-wrap" aria-hidden="false">
-          <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
-          <div class="progress-text" id="progressText">0 / 99</div>
+        <!-- Neue Progressbar-Struktur -->
+        <div id="progressContainer">
+          <div id="progressBar"></div>
         </div>
-      <div class="button-group">
-        <button id="showFavOnly" class="btn">⭐ Sade Favori göster</button>  
-        <button id="playFavs" class="btn">▶ Favorilerimi Oynat</button>
-        <button id="ClearFav" class="btn">❌ Favorileri Temizle</button>
-      </div>
+        <div class="progress-text" id="progressText">0 / 99</div>
+
+        <div class="button-group">
+          <button id="showFavOnly" class="btn">⭐ Sade Favori göster</button>  
+          <button id="playFavs" class="btn">▶ Favorilerimi Oynat</button>
+          <button id="ClearFav" class="btn">❌ Favorileri Temizle</button>
+        </div>
 
         <div id="favCounter" style="margin-top:6px; font-size:14px; opacity:0.85;">
-         Favorit: 0 / 99 
+          Favorit: 0 / 99 
         </div>
 
-        <div class="list-panel" id="listPanel" aria-hidden="true">
+        <!-- List Panel -->
+        <div id="listPanel" aria-hidden="true">
           <table id="ALLAHIN_ISIMLERI" aria-label="İsimler listesi">
             <tbody id="namesBody">
               <!-- JS füllt die 99 Einträge dynamisch -->

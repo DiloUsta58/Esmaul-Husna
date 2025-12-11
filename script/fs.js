@@ -386,12 +386,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return favorites.includes(id);
   }
 
+  // 👉 Favoriten setzen/entfernen + sofort sortieren
   function toggleFavorite(id) {
     if (favorites.includes(id)) {
       favorites = favorites.filter(f => f !== id);
     } else {
       favorites.push(id);
     }
+    // direkt sortieren nach Zeit
+    favorites.sort((a, b) => imageChanges[a].time - imageChanges[b].time);
+
     localStorage.setItem("favorites", JSON.stringify(favorites));
     updateFavoriteCounter();
     buildNameList();
@@ -440,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     setListFocus(currentIndex);
-    applySearchFilter(); // Filter nach Neuaufbau anwenden
+    applySearchFilter();
   }
 
   // Liste toggle
@@ -453,13 +457,12 @@ document.addEventListener("DOMContentLoaded", function () {
     updateFavButtonsVisibility();
   });
 
-  // Favoriten abspielen (Segment-Ende = nächster normaler Index)
+  // Favoriten abspielen
   function startFavoritesPlayback() {
     if (favorites.length === 0) {
       alert("Keine Favoriten ausgewählt!");
       return;
     }
-    favorites.sort((a,b) => imageChanges[a].time - imageChanges[b].time);
     favPlayMode = true;
     favPlayPos = 0;
     playFavoriteAtPos(favPlayPos);
@@ -517,9 +520,12 @@ document.addEventListener("DOMContentLoaded", function () {
       favorites = [];
       localStorage.removeItem("favorites");
       updateFavoriteCounter();
-      showOnlyFavorites = false; // zurück auf Vollansicht
+      showOnlyFavorites = false;
       favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
+      favPlayMode = false; // zurück in Normalmodus
       buildNameList();
+      setListFocus(currentIndex);
+      updateContent(currentIndex);
       updateFavButtonsVisibility();
       alert("Tüm favoriler temizlendi!");
     });
@@ -537,7 +543,6 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput.addEventListener("input", applySearchFilter);
   }
 
-  // Zeit- und Fortschritt-Update
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
     timeNow.textContent = formatTime(t);
