@@ -326,8 +326,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const nameBox = document.getElementById("NameOfAllah");
   const anlamBox = document.getElementById("Anlamlari");
   const sureBox = document.getElementById("Sure");
-  const timeNow = document.getElementById("currentTime");
-  const durationBox = document.getElementById("Duration");
   const progressBar = document.getElementById("progressBar");
   const progressText = document.getElementById("progressText");
   const namesBody = document.getElementById("namesBody");
@@ -338,6 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const favCounter = document.getElementById("favCounter");
   const clearFavBtn = document.getElementById("ClearFav");
   const searchInput = document.getElementById("search");
+  const progressContainer = document.getElementById("progressContainer");
+  const progressTooltip = document.getElementById("progressTooltip");
 
   let currentIndex = 0;
   let idxAnlam = 0;
@@ -393,25 +393,32 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       favorites.push(id);
     }
-    // direkt sortieren nach Zeit
     favorites.sort((a, b) => imageChanges[a].time - imageChanges[b].time);
-
     localStorage.setItem("favorites", JSON.stringify(favorites));
     updateFavoriteCounter();
     buildNameList();
     updateFavButtonsVisibility();
   }
 
-  function setListFocus(realIndex) {
-    document.querySelectorAll("#namesBody td").forEach(td => {
-      const idx = Number(td.dataset.realIndex);
-      td.classList.toggle("active", idx === realIndex);
-    });
-  }
+function setListFocus(realIndex) {
+  document.querySelectorAll("#namesBody td").forEach(td => {
+    const idx = Number(td.dataset.realIndex);
+    const isActive = idx === realIndex;
+    td.classList.toggle("active", isActive);
+
+    if (isActive) {
+      // automatisch ins Sichtfeld scrollen
+      td.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+  });
+}
+
 
   function buildNameList() {
     namesBody.innerHTML = "";
-
     const list = showOnlyFavorites
       ? favorites.map(i => ({ item: imageChanges[i], realIndex: i }))
       : imageChanges.map((x, i) => ({ item: x, realIndex: i }));
@@ -466,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
     favPlayMode = true;
     favPlayPos = 0;
     playFavoriteAtPos(favPlayPos);
+    playFavBtn.classList.add("playing");
   }
 
   function playFavoriteAtPos(pos) {
@@ -522,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
       updateFavoriteCounter();
       showOnlyFavorites = false;
       favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
-      favPlayMode = false; // zurück in Normalmodus
+      favPlayMode = false;
       buildNameList();
       setListFocus(currentIndex);
       updateContent(currentIndex);
@@ -543,12 +551,13 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput.addEventListener("input", applySearchFilter);
   }
 
+  // Audio Events mit Progressbar + Tooltip
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
-    timeNow.textContent = formatTime(t);
+    
     const percent = audio.duration ? (t / audio.duration) * 100 : 0;
     progressBar.style.width = percent + "%";
-    progressText.textContent = (currentIndex + 1) + " / 99";
+    progressText.textContent = `${formatTime(t)} / ${formatTime(audio.duration)}`;
 
     if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
@@ -556,6 +565,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (currentIndex !== i) {
             currentIndex = i;
             updateContent(i);
+    // … Fortsetzung innerhalb von audio.addEventListener("timeupdate")
             setListFocus(i);
           }
           break;
@@ -578,10 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("lastTime", t);
   });
 
-  audio.addEventListener("loadedmetadata", function () {
-    durationBox.textContent = formatTime(audio.duration);
-  });
-
+  // Inhalt aktualisieren
   function updateContent(index) {
     const item = imageChanges[index];
     if (!item) return;
@@ -591,8 +598,53 @@ document.addEventListener("DOMContentLoaded", function () {
     if (timeSureler[index]) sureBox.textContent = timeSureler[index].text;
   }
 
+  // ===============================
+  // Progressbar Tooltip + Jump
+  // ===============================
+  progressContainer.addEventListener("mousemove", (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    const hoverTime = percent * audio.duration;
+
+    if (!isNaN(hoverTime)) {
+      progressTooltip.textContent = formatTime(hoverTime);
+      progressTooltip.style.left = `${x}px`;
+      progressTooltip.classList.add("visible");
+    }
+  });
+
+  progressContainer.addEventListener("mouseleave", () => {
+    progressTooltip.classList.remove("visible");
+  });
+
+  progressContainer.addEventListener("click", (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    const newTime = percent * audio.duration;
+
+    if (!isNaN(newTime)) {
+      audio.currentTime = newTime;
+    }
+  });
+
+  // ===============================
   // Initialisierung
+  // ===============================
   updateFavoriteCounter();
   buildNameList();
   updateFavButtonsVisibility();
+
+  // Letzten Stand wiederherstellen (optional)
+  const lastIndex = Number(localStorage.getItem("lastIndex"));
+  const lastTime = Number(localStorage.getItem("lastTime"));
+  if (!isNaN(lastIndex)) {
+    currentIndex = lastIndex;
+    updateContent(currentIndex);
+    setListFocus(currentIndex);
+  }
+  if (!isNaN(lastTime)) {
+    seekToTime(lastTime);
+  }
 });
