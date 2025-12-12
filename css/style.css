@@ -131,6 +131,12 @@ h1{font-size:1.6rem; margin:4px 0 0 0}
 
 .audio-row{display:flex; gap:8px;}
 audio{width:100%}
+/* Zeit-Anzeige im Audio-Player ausblenden */
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  display: none !important;
+}
+
 
 /* Fokus-Effekt beim Abspielen */
 audio:focus {
@@ -295,6 +301,34 @@ font-size: 0.95rem;
   transform: scale(1.3);
 }
 
+#Sure {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: 2px solid var(--accent); /* Rahmenfarbe */
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* leichtes Glas-Effekt */
+  color: #ffd369;
+  font-size: 0.75rem;
+  box-shadow: 0 0 12px rgba(255, 211, 105, 0.4); /* Glow-Effekt */
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  text-align: center;
+}
+
+#Sure {
+  animation: fadeInGlow 0.4s ease-in-out;
+}
+
+@keyframes fadeInGlow {
+  from {
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(255, 211, 105, 0);
+  }
+  to {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(255, 211, 105, 0.4);
+  }
+}
+
 /* =========================
    PROGRESSBAR
 ========================= */
@@ -362,6 +396,8 @@ footer {
     font-size: 0.85rem;
     width: 100%; /* Buttons über volle Breite */
   }
+
+
   #ALLAHIN_ISIMLERI tbody {
     grid-template-columns: 1fr;
     justify-items: center;

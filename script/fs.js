@@ -348,6 +348,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let favPlayPos = 0;
   let showOnlyFavorites = false;
 
+  document.getElementById("toggleList").addEventListener("click", () => {
+  listPanel.classList.toggle("open");
+  if (listPanel.classList.contains("open")) {
+    listPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
+
+
   // Buttons Sichtbarkeit
   function updateFavButtonsVisibility() {
     const hasFavorites = favorites.length > 0;
@@ -555,9 +563,18 @@ function setListFocus(realIndex) {
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
     
+      // wenn gerade gesprungen wird → nichts durchlaufen
+  if (audio.seeking) return;
+  
     const percent = audio.duration ? (t / audio.duration) * 100 : 0;
     progressBar.style.width = percent + "%";
-    progressText.textContent = `${formatTime(t)} / ${formatTime(audio.duration)}`;
+    const d = audio.duration || 0;
+    const current = formatTime(t);
+    const remaining = formatTime(Math.max(0, d - t));
+    const total = formatTime(d);
+
+    progressText.textContent = `${current} / - ${remaining} /  ${total}`;
+
 
     if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
@@ -587,6 +604,36 @@ function setListFocus(realIndex) {
     localStorage.setItem("lastIndex", currentIndex);
     localStorage.setItem("lastTime", t);
   });
+
+  // Wenn der Benutzer im Player springt → sofort Inhalte setzen
+audio.addEventListener("seeked", function () {
+  const t = audio.currentTime;
+
+  // Index für Namen finden
+  for (let i = imageChanges.length - 1; i >= 0; i--) {
+    if (t >= imageChanges[i].time) {
+      currentIndex = i;
+      updateContent(i);
+      setListFocus(i);
+      break;
+    }
+  }
+
+  // Direkt den passenden Anlam setzen
+  let newIdxAnlam = timeAnlamı.findIndex(a => t < a.time);
+  idxAnlam = newIdxAnlam === -1 ? timeAnlamı.length : newIdxAnlam;
+  if (idxAnlam > 0) {
+    anlamBox.textContent = timeAnlamı[idxAnlam - 1].text;
+  }
+
+  // Direkt den passenden Sure setzen
+  let newIdxSure = timeSureler.findIndex(s => t < s.time);
+  idxSure = newIdxSure === -1 ? timeSureler.length : newIdxSure;
+  if (idxSure > 0) {
+    sureBox.textContent = timeSureler[idxSure - 1].text;
+  }
+});
+
 
   // Inhalt aktualisieren
   function updateContent(index) {
