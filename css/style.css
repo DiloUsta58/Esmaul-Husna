@@ -66,9 +66,6 @@ h1{font-size:1.6rem; margin:4px 0 0 0}
   grid-template-columns: 360px 1fr;
   gap:18px;
 }
-@media (max-width:900px){
-  .grid{grid-template-columns:1fr}
-}
 
 /* =========================
    VISUAL
@@ -305,6 +302,50 @@ footer{
 /* =========================
    RESPONSIVE
 ========================= */
+
+/* Smartphones (bis 480px) */
+@media (max-width: 480px) {
+  main {
+    padding: 12px;
+    gap: 12px;
+  }
+  h1 { font-size: 1.2rem; }
+  .subtitle { font-size: 0.8rem; }
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    width: 100%; /* Buttons über volle Breite */
+  }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: 1fr; /* nur 1 Spalte */
+  }
+}
+
+/* Tablets (481px bis 900px) */
+@media (min-width: 481px) and (max-width: 900px) {
+  h1 { font-size: 1.4rem; }
+  .btn { font-size: 0.9rem; }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten */
+  }
+  .grid {
+    grid-template-columns: 1fr; /* Visual und Controls untereinander */
+  }
+}
+
+/* Desktop (ab 901px) */
+@media (min-width: 901px) {
+  h1 { font-size: 1.6rem; }
+  .btn { font-size: 1rem; }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+  }
+  .grid {
+    grid-template-columns: 360px 1fr; /* Visual links, Controls rechts */
+  }
+}
+
+
 @media (max-width:768px){
   #ALLAHIN_ISIMLERI td{
     font-size:0.75rem;
@@ -321,6 +362,11 @@ footer{
     font-size: 0.85rem;
   }
 }
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+}
+
 
 /* Tooltip für Progressbar */
 #progressContainer {
