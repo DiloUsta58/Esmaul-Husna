@@ -227,6 +227,12 @@ audio:focus {
   background: rgba(255,255,255,0.05);
 }
 
+#ALLAHIN_ISIMLERI {
+  margin: 0 auto;            /* horizontale Zentrierung */
+  display: block;            /* wichtig für auto-Margin */
+  max-width: 100%;           /* verhindert Überlauf */
+}
+
 #ALLAHIN_ISIMLERI tbody {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -234,6 +240,7 @@ audio:focus {
   align-content: start;
   background-color: #161b2c;
   justify-items: center; /* Zentriert */
+width: 100%;
 }
 
 #ALLAHIN_ISIMLERI td{
