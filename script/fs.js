@@ -315,8 +315,115 @@ const timeSureler = [
     { time: 1125, text: "[ 21:51 ]" },
     { time: 1137, text: "[ 2:153 -> İşte bunu yaptığı takdirde o, Sabûr ismini alır. “Ey iman edenler, sabırla ve namazla (Allah'tan) yardım isteyin. Şüphesiz ki Allah'(ın yardımı) sabredenlerle beraberdir. ]" },
 ]; 
+
 /* =========================
-   4) ANA SİSTEM
+   4) ISIM (1–99) - Türkce
+========================= */
+
+const timeIsimler = [
+  { time: 1, text: "1- Allah" },
+  { time: 9, text: "2- Er-Rahman" },
+  { time: 20, text: "3- Er-Rahim" },
+  { time: 32, text: "4- El-Melik" },
+  { time: 44, text: "5- El-Kuddus" },
+  { time: 55, text: "6- Es-Selam" },
+  { time: 67, text: "7- El-Mumin" },
+  { time: 78, text: "8- El-Muheymin" },
+  { time: 90, text: "9- El-Aziz" },
+  { time: 102, text: "10- El-Cebbar" },
+  { time: 113, text: "11- El-Mutekebbir" },
+  { time: 125, text: "12- El-Halik" },
+  { time: 136, text: "13- El-Bari" },
+  { time: 148, text: "14- El-Musavvir" },
+  { time: 160, text: "15- El-Gaffar" },
+  { time: 171, text: "16- El-Kahhar" },
+  { time: 183, text: "17- El-Vehhab" },
+  { time: 195, text: "18- Er-Rezzak" },
+  { time: 207, text: "19- El-Fettah" },
+  { time: 218, text: "20- El-Alim" },
+  { time: 230, text: "21- El-Kabid" },
+  { time: 241, text: "22- El-Basit" },
+  { time: 253, text: "23- El-Hafid" },
+  { time: 265, text: "24- Er-Rafi" },
+  { time: 276, text: "25- El-Muizz" },
+  { time: 289, text: "26- El-Muzill" },
+  { time: 300, text: "27- Es-Semi" },
+  { time: 311, text: "28- El-Basir" },
+  { time: 323, text: "29- El-Hakem" },
+  { time: 335, text: "30- El-Adl" },
+  { time: 346, text: "31- El-Latif" },
+  { time: 358, text: "32- El-Habir" },
+  { time: 369, text: "33- El-Halim" },
+  { time: 381, text: "34- El-Azim" },
+  { time: 392, text: "35- El-Gafur" },
+  { time: 404, text: "36- Es-Sekur" },
+  { time: 415, text: "37- El-Aliyy" },
+  { time: 426, text: "38- El-Kebir" },
+  { time: 438, text: "39- El-Hafiz" },
+  { time: 450, text: "40- El-Mukit" },
+  { time: 461, text: "41- El-Hasib" },
+  { time: 473, text: "42- El-Celil" },
+  { time: 485, text: "43- El-Kerim" },
+  { time: 497, text: "44- Er-Rakib" },
+  { time: 508, text: "45- El-Mucib" },
+  { time: 520, text: "46- El-Vasi" },
+  { time: 532, text: "47- El-Hakim" },
+  { time: 543, text: "48- El-Vedud" },
+  { time: 555, text: "49- El-Mecid" },
+  { time: 566, text: "50- El-Bais" },
+  { time: 581, text: "51- Es-Sehid" },
+  { time: 592, text: "52- El-Hakk" },
+  { time: 604, text: "53- El-Vekil" },
+  { time: 616, text: "54- El-Kaviyy" },
+  { time: 627, text: "55- El-Metin" },
+  { time: 639, text: "56- El-Veliyy" },
+  { time: 651, text: "57- El-Hamid" },
+  { time: 662, text: "58- El-Muhsi" },
+  { time: 674, text: "59- El-Mubdi" },
+  { time: 685, text: "60- El-Muid" },
+  { time: 697, text: "61- El-Muhyi" },
+  { time: 709, text: "62- El-Mumit" },
+  { time: 720, text: "63- El-Hayy" },
+  { time: 732, text: "64- El-Kayyum" },
+  { time: 743, text: "65- El-Vacid" },
+  { time: 755, text: "66- El-Macid" },
+  { time: 767, text: "67- El-Vahid" },
+  { time: 778, text: "68- Es-Samed" },
+  { time: 790, text: "69- El-Kadir" },
+  { time: 801, text: "70- El-Muktedir" },
+  { time: 813, text: "71- El-Mukaddim" },
+  { time: 825, text: "72- El-Muahhir" },
+  { time: 836, text: "73- El-Evvel" },
+  { time: 848, text: "74- El-Ahir" },
+  { time: 858, text: "75- Ez-Zahir" },
+  { time: 870, text: "76- El-Batin" },
+  { time: 881, text: "77- El-Vali" },
+  { time: 893, text: "78- El-Muteali" },
+  { time: 905, text: "79- El-Berr" },
+  { time: 916, text: "80- Et-Tevvab" },
+  { time: 927, text: "81- El-Muntekim" },
+  { time: 939, text: "82- El-Afuvv" },
+  { time: 951, text: "83- Er-Rauf" },
+  { time: 962, text: "84- Malikul-Mulk" },
+  { time: 974, text: "85- Zul-Celali-vel-Ikram" },
+  { time: 985, text: "86- El-Muksit" },
+  { time: 997, text: "87- El-Cami" },
+  { time: 1009, text: "88- El-Ganiyy" },
+  { time: 1020, text: "89- El-Mugni" },
+  { time: 1032, text: "90- El-Mani" },
+  { time: 1043, text: "91- Ed-Darr" },
+  { time: 1055, text: "92- En-Nafi" },
+  { time: 1067, text: "93- En-Nur" },
+  { time: 1078, text: "94- El-Hadi" },
+  { time: 1090, text: "95- El-Bedi" },
+  { time: 1102, text: "96- El-Baki" },
+  { time: 1113, text: "97- El-Varis" },
+  { time: 1125, text: "98- Er-Resid" },
+  { time: 1137, text: "99- Es-Sabur" },
+];
+
+/* =========================
+   5) ANA SİSTEM
 ========================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -342,6 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentIndex = 0;
   let idxAnlam = 0;
   let idxSure = 0;
+  let idxISIM = 0;
 
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   let favPlayMode = false;
@@ -573,8 +681,8 @@ function setListFocus(realIndex) {
     const remaining = formatTime(Math.max(0, d - t));
     const total = formatTime(d);
 
-    progressText.textContent = `${current} / - ${remaining} /  ${total}`;
-
+    progressText.textContent = `${current} / - ${remaining}`;
+    GesamtZeit.textContent = ` ${total}`;
 
     if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
@@ -582,7 +690,6 @@ function setListFocus(realIndex) {
           if (currentIndex !== i) {
             currentIndex = i;
             updateContent(i);
-    // … Fortsetzung innerhalb von audio.addEventListener("timeupdate")
             setListFocus(i);
           }
           break;
@@ -600,6 +707,15 @@ function setListFocus(realIndex) {
       sureBox.textContent = timeSureler[idxSure].text;
       idxSure++;
     }
+
+    if (timeIsimler[idxISIM] && t >= timeIsimler[idxISIM].time) {
+      document.getElementById("Isimler").textContent = timeIsimler[idxISIM].text;
+      idxISIM++;
+    }
+
+
+
+   
 
     localStorage.setItem("lastIndex", currentIndex);
     localStorage.setItem("lastTime", t);
@@ -632,6 +748,16 @@ audio.addEventListener("seeked", function () {
   if (idxSure > 0) {
     sureBox.textContent = timeSureler[idxSure - 1].text;
   }
+
+ // Direkt den passenden Isim setzen
+    let newIdxISIM = timeIsimler.findIndex(i => t < i.time);
+    idxISIM = newIdxISIM === -1 ? timeIsimler.length : newIdxISIM;
+    if (idxISIM > 0) {
+      document.getElementById("Isimler").textContent = timeIsimler[idxISIM - 1].text;
+    }
+
+
+
 });
 
 
@@ -643,6 +769,9 @@ audio.addEventListener("seeked", function () {
     nameBox.textContent = item.text;
     if (timeAnlamı[index]) anlamBox.textContent = timeAnlamı[index].text;
     if (timeSureler[index]) sureBox.textContent = timeSureler[index].text;
+    if (timeIsimler[index]) timeIsimler.textContent = timeIsimler[index].text;
+
+
   }
 
   // ===============================
