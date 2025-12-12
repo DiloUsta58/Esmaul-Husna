@@ -34,8 +34,9 @@ html,body{
 }
 
 main{
-  width:100%;
-  max-width:1100px;
+  width:fit-content;
+  height:auto;
+  max-width:1300px;
   background:var(--card);
   border-radius:20px;
   padding:20px;
@@ -219,11 +220,13 @@ audio:focus {
 
 #ALLAHIN_ISIMLERI tbody {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* gleiche Breite  grid-template-columns: repeat(3, 1fr); */
   gap: 8px;
   align-content: start;
   background-color: #161b2c;
 }
+
+
 
 #ALLAHIN_ISIMLERI tr{
   display:contents;
@@ -242,6 +245,13 @@ audio:focus {
   cursor:pointer;
   white-space:nowrap;
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  
+  width: 100%;              /* füllt die Spalte */
+  text-align: center;
+  /* NEU: Abstand rechts/links */
+  margin-left: 5px;
+  margin-right: 5px;
+
 }
 #ALLAHIN_ISIMLERI td:hover{
   background: rgba(255,211,105,0.25);
