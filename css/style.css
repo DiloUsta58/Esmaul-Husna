@@ -20,18 +20,27 @@
 
 *{ box-sizing:border-box; }
 
-html,body{
-  height:100%;
-  margin:0;
+html, body {
+  height: auto;             /* nicht fix auf 100% */
+  min-height: 100%;         /* volle Höhe */
+  margin: 0;
+  padding: 18px;
   font-family: Inter, system-ui, Arial;
   background: linear-gradient(180deg,#040612 0%, #071021 90%);
-  color:#fff;
-  padding:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow-y:auto !important;
+  color: #fff;
+  overflow-y: auto;          /* sauberes Scrollen */
+  display: block;            /* Standardfluss für Mobil/Tablet */
 }
+
+/* Nur Desktop zentrieren */
+@media (min-width: 901px) {
+  html, body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 
 main{
   width:100%;
