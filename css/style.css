@@ -228,35 +228,37 @@ audio:focus {
 }
 
 #ALLAHIN_ISIMLERI tbody {
-  display: grid;
+  display:grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 0.1px; /* Abstand zwischen den Elementen */
   align-content: start;
   background-color: #161b2c;
   justify-items: center; /* Zentriert */
 }
 
+#ALLAHIN_ISIMLERI td{
+font-size: 0.95rem;
+  padding: 10px;            /* Innenabstand statt Margin */
+  min-height: 52px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  white-space: normal;      /* erlaubt Umbruch bei langen Namen */
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  box-sizing: border-box;   /* verhindert Überlauf */
+  margin-top: 5px;
+  margin-bottom: 1px;
+}
+
+
 #ALLAHIN_ISIMLERI tr{
   display:contents;
 }
 
-#ALLAHIN_ISIMLERI td{
-  font-size:0.95rem;
-  padding:10px 12px;
-  min-height:52px;
-  background: rgba(255,255,255,0.06);
-  border-radius:12px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  cursor:pointer;
-  white-space:nowrap;
-  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
-  margin-left:5px;
-  margin-right:5px;
-  width: calc(100% - 10px); /* gleiche Breite minus Abstand */
-}
 #ALLAHIN_ISIMLERI td:hover{
   background: rgba(255,211,105,0.25);
   transform: scale(1.05);
