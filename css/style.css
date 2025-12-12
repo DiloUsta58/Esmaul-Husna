@@ -289,85 +289,6 @@ audio:focus {
   transition: width 0.3s;
 }
 
-/* =========================
-   FOOTER
-========================= */
-footer{
-  display:flex;
-  justify-content:space-between;
-  color:var(--muted);
-  font-size:0.85rem;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-/* Smartphones (bis 480px) */
-@media (max-width: 480px) {
-  main {
-    padding: 12px;
-    gap: 12px;
-  }
-  h1 { font-size: 1.2rem; }
-  .subtitle { font-size: 0.8rem; }
-  .btn {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    width: 100%; /* Buttons über volle Breite */
-  }
-  #ALLAHIN_ISIMLERI tbody {
-    grid-template-columns: 1fr; /* nur 1 Spalte */
-  }
-}
-
-/* Tablets (481px bis 900px) */
-@media (min-width: 481px) and (max-width: 900px) {
-  h1 { font-size: 1.4rem; }
-  .btn { font-size: 0.9rem; }
-  #ALLAHIN_ISIMLERI tbody {
-    grid-template-columns: repeat(2, 1fr); /* 2 Spalten */
-  }
-  .grid {
-    grid-template-columns: 1fr; /* Visual und Controls untereinander */
-  }
-}
-
-/* Desktop (ab 901px) */
-@media (min-width: 901px) {
-  h1 { font-size: 1.6rem; }
-  .btn { font-size: 1rem; }
-  #ALLAHIN_ISIMLERI tbody {
-    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
-  }
-  .grid {
-    grid-template-columns: 360px 1fr; /* Visual links, Controls rechts */
-  }
-}
-
-
-@media (max-width:768px){
-  #ALLAHIN_ISIMLERI td{
-    font-size:0.75rem;
-    padding:6px 8px;
-  }
-}
-
-@media (max-width:480px){
-  .grid {
-    gap: 12px;
-  }
-  .btn {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width:900px){
-  .grid{grid-template-columns:1fr}
-}
-
-
 /* Tooltip für Progressbar */
 #progressContainer {
   position: relative; /* wichtig für Tooltip-Position */
@@ -392,4 +313,133 @@ footer{
 
 .progress-tooltip.visible {
   opacity: 1;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:0.85rem;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width:768px){
+  #ALLAHIN_ISIMLERI td{
+    font-size:0.75rem;
+    padding:6px 8px;
+  }
+}
+
+@media (max-width:480px){
+  .grid {
+    gap: 12px;
+  }
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+}
+
+/* =========================
+   RESPONSIVE ERWEITERUNG
+========================= */
+
+/* Smartphones (bis 480px) */
+@media (max-width: 480px) {
+  main {
+    padding: 12px;
+    gap: 12px;
+  }
+  h1 { font-size: 1.2rem; }
+  .subtitle { font-size: 0.8rem; }
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    width: 100%; /* Buttons über volle Breite */
+  }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: 1fr; /* nur 1 Spalte */
+  }
+  .visual img {
+    max-width: 140px; /* kleinere Bilder */
+  }
+}
+
+/* Tablets (481px bis 900px) */
+@media (min-width: 481px) and (max-width: 900px) {
+  h1 { font-size: 1.4rem; }
+  .btn { font-size: 0.9rem; }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten */
+  }
+  .grid {
+    grid-template-columns: 1fr; /* Visual und Controls untereinander */
+  }
+  .visual img {
+    max-width: 160px;
+  }
+}
+
+/* Desktop (ab 901px) */
+@media (min-width: 901px) {
+  h1 { font-size: 1.6rem; }
+  .btn { font-size: 1rem; }
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+  }
+  .grid {
+    grid-template-columns: 360px 1fr; /* Visual links, Controls rechts */
+  }
+  .visual img {
+    max-width: 175px;
+  }
+}
+
+/* Smartphones (bis 480px) */
+@media (max-width: 480px) {
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: 1fr;   /* nur 1 Spalte */
+    justify-items: center;        /* Inhalte zentrieren */
+  }
+  #ALLAHIN_ISIMLERI td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* Tablets (481px bis 900px) */
+@media (min-width: 481px) and (max-width: 900px) {
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten */
+    justify-items: center;                 /* Inhalte zentrieren */
+  }
+  #ALLAHIN_ISIMLERI td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* Desktop (ab 901px) */
+@media (min-width: 901px) {
+  #ALLAHIN_ISIMLERI tbody {
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+    /* Inhalte zentrieren  justify-items: center; */                
+  }
+  #ALLAHIN_ISIMLERI td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
 }
