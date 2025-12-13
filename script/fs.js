@@ -461,6 +461,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hole das letzte Änderungsdatum der Seite
     const lastModified = document.lastModified;
 
+/* =========================
+   6) LAST UPDATE
+    ========================= */
+
     // Optional: formatiere Datum/Zeit für Türkisch
     const formatted = new Date(lastModified).toLocaleString("tr-TR", {
       dateStyle: "short",
@@ -471,6 +475,9 @@ document.addEventListener("DOMContentLoaded", function () {
     el.textContent = "Son güncelleme: " + formatted;
   }
 
+/* =========================
+   7) ToggleList
+    ========================= */
   document.getElementById("toggleList").addEventListener("click", () => {
   listPanel.classList.toggle("open");
   if (listPanel.classList.contains("open")) {
@@ -509,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateFavoriteCounter() {
     if (favCounter) {
-      favCounter.textContent = `Favoriten: ${favorites.length} / ${imageChanges.length}`;
+      favCounter.textContent = `Seçilen: ${favorites.length} / ${imageChanges.length}`;
     }
   }
 
@@ -598,7 +605,7 @@ function setListFocus(realIndex) {
   // Favoriten abspielen
   function startFavoritesPlayback() {
     if (favorites.length === 0) {
-      alert("Keine Favoriten ausgewählt!");
+      alert("Seçilen yok!!");
       return;
     }
     favPlayMode = true;
