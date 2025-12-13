@@ -456,6 +456,21 @@ document.addEventListener("DOMContentLoaded", function () {
   let favPlayPos = 0;
   let showOnlyFavorites = false;
 
+    const el = document.getElementById("lastUpdate");
+  if (el) {
+    // Hole das letzte Änderungsdatum der Seite
+    const lastModified = document.lastModified;
+
+    // Optional: formatiere Datum/Zeit für Türkisch
+    const formatted = new Date(lastModified).toLocaleString("tr-TR", {
+      dateStyle: "short",
+      timeStyle: "short"
+    });
+
+    // Setze den Text in das div
+    el.textContent = "Son güncelleme: " + formatted;
+  }
+
   document.getElementById("toggleList").addEventListener("click", () => {
   listPanel.classList.toggle("open");
   if (listPanel.classList.contains("open")) {
