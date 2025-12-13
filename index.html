@@ -66,7 +66,8 @@
         <div class="isim" id="Isimler"></div>
         <div class="arabic" id="ArabicText"></div>
         <div class="meaning" id="Anlamlari">[ Her ismin vasfını ihtiva eden öz adı... ]</div>
-
+        <!-- Sure Box jetzt ohne Inline-Styles -->
+        <div id="Sure" class="sura" aria-live="polite"></div>
         <div class="video-frame" id="videoFrame" aria-hidden="true">
           <!-- iframe wird von JS sichtbar gemacht -->
         </div>
@@ -80,9 +81,6 @@
             Tarayıcınız audio etiketini desteklemiyor.
           </audio>
         </div>
-
-        <!-- Sure Box jetzt ohne Inline-Styles -->
-        <div id="Sure" class="sura" aria-live="polite"></div>
 
         <div class="search" role="search" aria-label="İsim ara">
           <input id="search" type="search" placeholder="İsim ara..." aria-label="İsim ara">
@@ -106,7 +104,7 @@
           <button id="ClearFav" class="btn">❌ Temizle</button>
         </div>
 
-        <div id="favCounter" style="margin-top:6px; font-size:14px; opacity:0.85; color: #ffd369;">
+        <div id="favCounter">
           Seçilen: 0 / 99 
         </div>
 
