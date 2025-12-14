@@ -262,12 +262,30 @@ audio:focus {
   position: absolute;
   bottom: 3px;
   right: 25px;
-
   /* Puls-Effekt 
   animation: pulse 2s infinite;*/
     /* dezenter Puls */
   animation: pulse 4s ease-in-out infinite;
 }
+
+/* sanftes Fade + pointer-events für clearStorageBtn */
+#clearStorageBtn {
+  transition: opacity 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+  will-change: opacity, transform;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* versteckt: unsichtbar, keine Interaktion, leichtes Shrink */
+#clearStorageBtn.hidden {
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  pointer-events: none;
+  box-shadow: none;
+}
+
+
 
 #clearStorageBtn:hover {
   background: linear-gradient(135deg, #ff8c42, #ff3030);

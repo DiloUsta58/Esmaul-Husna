@@ -436,12 +436,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const progressBar = document.getElementById("progressBar");
   const progressText = document.getElementById("progressText");
   const namesBody = document.getElementById("namesBody");
-  const toggleBtn = document.getElementById("toggleList");
   const listPanel = document.getElementById("listPanel");
   const playFavBtn = document.getElementById("playFavs");
   const favOnlyBtn = document.getElementById("favOnlyBtn") || document.getElementById("showFavOnly");
   const favCounter = document.getElementById("favCounter");
-  const clearFavBtn = document.getElementById("ClearFav");
   const searchInput = document.getElementById("search");
   const progressContainer = document.getElementById("progressContainer");
   const progressTooltip = document.getElementById("progressTooltip");
@@ -502,20 +500,16 @@ function getMeaningByTime(timeValue) {
   const found = timeAnlamı.find(item => Number(item.time) === Number(timeValue));
   return found ? String(found.text || "") : "";
 }
-
 /* ANIMATION ENDE  */
 
-
-
-// LocalStorage & SessionStorage löschen
-/* =========================
-   Storage Reset per Button
-   - löscht nur app-spezifische Keys (sicher)
-   - aktualisiert Laufzeit-Variablen und UI
-========================= */
+// =========================
+// Storage / Favorites / Player Reset (kompletter, bereinigter Block)
+// =========================
 
 const clearStorageBtn = document.getElementById("clearStorageBtn");
 const storageStatus = document.getElementById("storageStatus");
+// mögliche IDs für den Favoriten-Button (falls er anders benannt ist)
+const clearFavBtn = document.getElementById("ClearFav") || document.getElementById("clearFavBtn") || document.getElementById("clearFav");
 
 // Liste der app-spezifischen Keys, die gelöscht werden sollen
 const APP_KEYS_TO_CLEAR = [
@@ -530,16 +524,18 @@ const APP_KEYS_TO_CLEAR = [
 // true = komplettes localStorage/sessionStorage leeren (Vorsicht)
 const CLEAR_EVERYTHING_ON_BTN = false;
 
-// Hilfsfunktionen
+/* -------------------------
+   Hilfsfunktionen für Storage
+   ------------------------- */
 function _clearSpecificKeys(keys = []) {
   try {
     keys.forEach(k => {
       try { localStorage.removeItem(k); } catch (e) { /* ignore */ }
       try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ }
     });
-    return { ok: true, message: "Yerel depolama ve oturum depolaması tamamen boşaltıldı." };
+    return { ok: true, message: "Ausgewählte Keys wurden entfernt." };
   } catch (err) {
-    return { ok: false, message: "Belirli anahtarları silerken hata oluştu: " + (err && err.message) };
+    return { ok: false, message: "Fehler beim Löschen spezifischer Keys: " + (err && err.message) };
   }
 }
 
@@ -547,9 +543,9 @@ function _clearAllStorage() {
   try {
     localStorage.clear();
     sessionStorage.clear();
-    return { ok: true, message: "Yerel depolama ve oturum depolaması tamamen boşaltıldı." };
+    return { ok: true, message: "localStorage und sessionStorage komplett geleert." };
   } catch (err) {
-    return { ok: false, message: "Depolama alanını temizlerken hata oluştu:" + (err && err.message) };
+    return { ok: false, message: "Fehler beim Leeren des Storages: " + (err && err.message) };
   }
 }
 
@@ -563,38 +559,250 @@ function _showStorageStatus(msg, ok = true) {
   setTimeout(() => { if (storageStatus) storageStatus.textContent = ""; }, 4000);
 }
 
-// UI / Laufzeit zurücksetzen (nach dem Löschen)
+/* -------------------------
+   Favoriten-Funktion (gemeinsam)
+   ------------------------- */
+function clearFavorites() {
+  try {
+    // Laufzeit-Array zurücksetzen (falls vorhanden)
+    try { favorites = []; } catch (e) { /* ignore if not in scope */ }
+
+    // localStorage / sessionStorage Eintrag entfernen
+    try { localStorage.removeItem("favorites"); } catch (e) { /* ignore */ }
+    try { sessionStorage.removeItem("favorites"); } catch (e) { /* ignore */ }
+
+    // UI-Aktualisierungen (falls vorhanden)
+    if (typeof updateFavoriteCounter === "function") {
+      try { updateFavoriteCounter(); } catch (e) { /* ignore */ }
+    }
+    if (typeof renderNamesList === "function") {
+      try { renderNamesList(); } catch (e) { /* ignore */ }
+    }
+
+    _showStorageStatus("✅ Favoriten gelöscht", true);
+    console.info("Favoriten wurden gelöscht.");
+    return { ok: true, message: "Favoriten gelöscht" };
+  } catch (err) {
+    console.error("Fehler beim Löschen der Favoriten:", err);
+    _showStorageStatus("❌ Fehler beim Löschen der Favoriten", false);
+    return { ok: false, message: "Fehler beim Löschen der Favoriten: " + (err && err.message) };
+  }
+}
+
+/* -------------------------
+   Player Reset
+   ------------------------- */
+function resetPlayer() {
+  try {
+    const audioEl = document.getElementById("audioPlayer");
+    const playBtn = document.getElementById("playBtn") || document.querySelector(".btn.playing");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressContainer = document.getElementById("progressContainer");
+
+    if (audioEl) {
+      try { audioEl.pause(); } catch (e) { /* ignore */ }
+      try { audioEl.currentTime = 0; } catch (e) { /* ignore */ }
+    }
+
+    if (progressBar) {
+      if (progressBar.tagName && progressBar.tagName.toLowerCase() === "progress") {
+        progressBar.value = 0;
+      } else {
+        progressBar.style.width = "0%";
+      }
+    }
+    if (progressText) progressText.textContent = "00:00";
+    if (progressContainer) {
+      const tooltip = progressContainer.querySelector(".progress-tooltip");
+      if (tooltip) tooltip.classList.remove("visible");
+    }
+
+    if (playBtn) {
+      playBtn.classList.remove("playing");
+    }
+
+    try { isPlaying = false; } catch (e) { /* ignore */ }
+    try { audioCurrentIndex = 0; } catch (e) { /* ignore */ }
+
+    console.info("Audio-Player zurückgesetzt.");
+  } catch (err) {
+    console.warn("Fehler beim Zurücksetzen des Players:", err);
+  }
+}
+
+/* -------------------------
+   Runtime Reset (inkl. Player)
+   ------------------------- */
 function _resetRuntimeState() {
   try {
-    // Lokale Laufzeitvariablen zurücksetzen (falls in globalem Scope genutzt)
-    favorites = []; // falls favorites in scope existiert
-    favPlayPos = 0;
-    favPlayMode = false;
-    showOnlyFavorites = false;
-    currentIndex = 0;
-    idxAnlam = 0;
-    idxSure = 0;
-    idxISIM = 0;
+    try { favorites = []; } catch (e) { /* ignore */ }
+    try { favPlayPos = 0; } catch (e) { /* ignore */ }
+    try { favPlayMode = false; } catch (e) { /* ignore */ }
+    try { showOnlyFavorites = false; } catch (e) { /* ignore */ }
+    try { currentIndex = 0; } catch (e) { /* ignore */ }
+    try { idxAnlam = 0; } catch (e) { /* ignore */ }
+    try { idxSure = 0; } catch (e) { /* ignore */ }
+    try { idxISIM = 0; } catch (e) { /* ignore */ }
 
-    // UI-Elemente zurücksetzen, falls vorhanden
     const nameBox = document.getElementById("NameOfAllah");
     const imageEl = document.getElementById("dynamicImage");
     const anlamBox = document.getElementById("Anlamlari");
     const progressBar = document.getElementById("progressBar");
+
     if (nameBox) nameBox.textContent = "";
     if (imageEl && imageChanges && imageChanges[0]) imageEl.src = imageChanges[0].imageSrc;
-    if (anlamBox) anlamBox.textContent = "";
-    if (progressBar) progressBar.value = 0;
+    if (anlamBox) {
+      if (window.fs && window.fs.typewriter && typeof window.fs.typewriter.stop === "function") {
+        try { window.fs.typewriter.stop(); } catch (e) { /* ignore */ }
+      }
+      anlamBox.textContent = "";
+    }
+    if (progressBar) {
+      if (progressBar.tagName && progressBar.tagName.toLowerCase() === "progress") {
+        progressBar.value = 0;
+      } else {
+        progressBar.style.width = "0%";
+      }
+    }
 
-    // Falls du Funktionen zum Re-Rendern hast, rufe sie auf
+    // Player zurücksetzen
+    resetPlayer();
+
     if (typeof updateFavoriteCounter === "function") updateFavoriteCounter();
     if (typeof renderNamesList === "function") renderNamesList();
   } catch (e) {
-    console.warn("Çalışma zamanı değişkenlerini sıfırlama hatası:", e);
+    console.warn("Fehler beim Zurücksetzen der Laufzeit-Variablen:", e);
   }
 }
 
-// Button-Handler
+/* -------------------------
+   Sichtbarkeit des clearStorageBtn (mit Klasse 'hidden')
+   ------------------------- */
+function storageHasAnyKeys() {
+  try {
+    if (Array.isArray(APP_KEYS_TO_CLEAR) && APP_KEYS_TO_CLEAR.length) {
+      for (const k of APP_KEYS_TO_CLEAR) {
+        if (localStorage.getItem(k) !== null || sessionStorage.getItem(k) !== null) return true;
+      }
+      return false;
+    }
+    return localStorage.length > 0 || sessionStorage.length > 0;
+  } catch (e) {
+    return false;
+  }
+}
+
+function showClearStorageBtn(show) {
+  if (!clearStorageBtn) return;
+  if (show) {
+    clearStorageBtn.classList.remove("hidden");
+  } else {
+    clearStorageBtn.classList.add("hidden");
+  }
+}
+
+// initiale Sichtbarkeit (leicht verzögert, damit CSS-Transition greift)
+try {
+  setTimeout(() => showClearStorageBtn(storageHasAnyKeys()), 50);
+} catch (e) { /* ignore */ }
+
+/* -------------------------
+   Robusterer Watcher + clearStorageBtn-Handler
+   ------------------------- */
+
+// Polling-Watcher (aktiviert nur nach manuellem Ausblenden)
+let _clearStorageWatcher = null;
+
+// robuster Polling-Watcher: benötigt 2 aufeinanderfolgende positive Checks
+function startClearStorageWatcher() {
+  if (_clearStorageWatcher) {
+    clearInterval(_clearStorageWatcher);
+    _clearStorageWatcher = null;
+  }
+
+  let consecutive = 0;
+  _clearStorageWatcher = setInterval(() => {
+    try {
+      if (storageHasAnyKeys()) {
+        consecutive += 1;
+      } else {
+        consecutive = 0;
+      }
+
+      // erst nach 2 aufeinanderfolgenden positiven Checks zeigen
+      if (consecutive >= 2) {
+        showClearStorageBtn(true);
+        clearInterval(_clearStorageWatcher);
+        _clearStorageWatcher = null;
+      }
+    } catch (e) {
+      // im Fehlerfall stoppen
+      clearInterval(_clearStorageWatcher);
+      _clearStorageWatcher = null;
+    }
+  }, 500); // 500ms Intervall: schnell genug, aber entprellt
+}
+
+// storage-Event: sofort prüfen, aber entprellt durch kurze Verzögerung
+let _storageEventTimer = null;
+window.addEventListener("storage", (ev) => {
+  try {
+    if (_storageEventTimer) clearTimeout(_storageEventTimer);
+    _storageEventTimer = setTimeout(() => {
+      try {
+        // nur reagieren, wenn geänderter Key relevant ist oder wir beobachten alle
+        if (!APP_KEYS_TO_CLEAR || APP_KEYS_TO_CLEAR.length === 0) {
+          showClearStorageBtn(storageHasAnyKeys());
+          return;
+        }
+        if (ev && ev.key === null) {
+          showClearStorageBtn(storageHasAnyKeys());
+          return;
+        }
+        if (ev && APP_KEYS_TO_CLEAR.includes(ev.key)) {
+          showClearStorageBtn(storageHasAnyKeys());
+        }
+      } catch (e) { /* ignore */ }
+    }, 150); // kleine Entprellung für mehrere schnellen Änderungen
+  } catch (e) { /* ignore */ }
+});
+
+// Reagiere auf Storage-Events aus anderen Tabs
+window.addEventListener("storage", (ev) => {
+  try {
+    if (!ev) return;
+    if (!APP_KEYS_TO_CLEAR || APP_KEYS_TO_CLEAR.length === 0) {
+      showClearStorageBtn(storageHasAnyKeys());
+      return;
+    }
+    if (ev.key === null) {
+      // clear() aufgerufen — prüfe komplett
+      showClearStorageBtn(storageHasAnyKeys());
+      return;
+    }
+    if (APP_KEYS_TO_CLEAR.includes(ev.key)) {
+      showClearStorageBtn(storageHasAnyKeys());
+    }
+  } catch (e) { /* ignore */ }
+});
+
+/* -------------------------
+   Button-Handler: clearFavBtn -> clearFavorites()
+   ------------------------- */
+if (clearFavBtn) {
+  clearFavBtn.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    clearFavorites();
+  });
+} else {
+  console.info("clearFavBtn nicht gefunden (IDs geprüft: ClearFav, clearFavBtn, clearFav).");
+}
+
+/* -------------------------
+   Button-Handler: clearStorageBtn -> Storage löschen, Favoriten & Player reset, Button ausblenden
+   ------------------------- */
+// Neuer clearStorageBtn-Handler: nur ausblenden, wenn danach wirklich leer ist
 if (clearStorageBtn) {
   clearStorageBtn.addEventListener("click", () => {
     let result;
@@ -605,19 +813,34 @@ if (clearStorageBtn) {
     }
 
     if (result.ok) {
-      // UI/Laufzeit zurücksetzen
+      // Favoriten löschen / UI aktualisieren
+      try { clearFavorites(); } catch (e) { /* ignore */ }
+
+      // Laufzeit/UI/Player zurücksetzen
       _resetRuntimeState();
+
+      // Prüfe sofort, ob wirklich leer ist
+      if (!storageHasAnyKeys()) {
+        // Button sanft ausblenden und Watcher starten
+        showClearStorageBtn(false);
+        startClearStorageWatcher();
+      } else {
+        // Falls noch etwas vorhanden ist: Button sichtbar lassen und Hinweis
+        showClearStorageBtn(true);
+        _showStorageStatus("⚠️ Einige Einträge bleiben vorhanden; Button bleibt sichtbar.", true);
+      }
+
       _showStorageStatus("✅ " + result.message, true);
     } else {
       _showStorageStatus("❌ " + result.message, false);
     }
+
+     // Klick auf toggleList simulieren
+    if (toggleList) toggleList.click();
   });
 } else {
-  console.info("clearStorageBtn bulunamadı — DOM'da sıfırlama düğmesi eksik.");
+  console.info("clearStorageBtn nicht gefunden — DOM-Element fehlt.");
 }
-
-
-
 
   let currentIndex = 0;
   let idxAnlam = 0;
@@ -649,15 +872,60 @@ if (clearStorageBtn) {
   }
 
 /* =========================
-   7) ToggleList
-    ========================= */
-  document.getElementById("toggleList").addEventListener("click", () => {
-  listPanel.classList.toggle("open");
-  if (listPanel.classList.contains("open")) {
-    listPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-});
+  7) ToggleList (immer oben, Fokus ohne Scroll)
+   ========================= */
+const toggleBtn = document.getElementById("toggleList");
+if (toggleBtn && typeof listPanel !== "undefined" && listPanel) {
+  toggleBtn.addEventListener("click", () => {
+    listPanel.classList.toggle("open");
 
+    if (listPanel.classList.contains("open")) {
+      // 1) Sofort zum oberen Rand des Panels scrollen (kein scrollIntoView auf Item)
+      if (typeof listPanel.scrollTo === "function") {
+        listPanel.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        listPanel.scrollTop = 0;
+      }
+
+      // 2) Fokus setzen: zuerst scrollen, dann Fokus ohne Scroll (preventScroll:true)
+      // kleine Verzögerung, damit das smooth scroll sichtbar ist
+      setTimeout(() => {
+        try {
+          // Wähle das erste sichtbare Listenelement (anpassen falls andere Struktur)
+          const firstItem = listPanel.querySelector("#ALLAHIN_ISIMLERI td, #ALLAHIN_ISIMLERI tr, li, .item, [role='listitem'], [tabindex]:not([tabindex='-1'])");
+          if (firstItem) {
+            // Fokus ohne Scroll, damit die Position erhalten bleibt (oben)
+            try { firstItem.focus({ preventScroll: true }); } catch (e) { firstItem.focus(); }
+          } else {
+            // Fallback: Panel selbst fokussieren ohne Scroll
+            listPanel.setAttribute("tabindex", "-1");
+            try { listPanel.focus({ preventScroll: true }); } catch (e) { listPanel.focus(); }
+          }
+        } catch (e) { /* ignore */ }
+      }, 180); // 160-220ms funktioniert gut; anpassen falls nötig
+    }
+  });
+}
+
+
+// Fallback: erzwinge block: 'start' für alle scrollIntoView-Aufrufe
+(function() {
+  const origScrollIntoView = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function(arg) {
+    try {
+      // Wenn ein Options-Objekt übergeben wurde, setze block:'start'
+      if (arg && typeof arg === "object") {
+        const opts = Object.assign({}, arg, { block: "start" });
+        return origScrollIntoView.call(this, opts);
+      }
+      // Wenn ein string oder nichts übergeben wurde, nutze default mit block:start
+      return origScrollIntoView.call(this, { behavior: "smooth", block: "start", inline: "nearest" });
+    } catch (e) {
+      // Fallback auf Original, falls etwas schiefgeht
+      return origScrollIntoView.call(this, arg);
+    }
+  };
+})();
 
   // Buttons Sichtbarkeit
   function updateFavButtonsVisibility() {
