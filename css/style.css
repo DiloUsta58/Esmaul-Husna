@@ -15,15 +15,15 @@
 * { box-sizing: border-box; }
 
 html, body {
-  height: auto;             /* nicht fix auf 100% */
-  min-height: 100%;         /* volle Höhe */
+  height: auto;
+  min-height: 100%;
   margin: 0;
   padding: 18px;
   font-family: Inter, system-ui, Arial;
   background: linear-gradient(180deg,#040612 0%, #071021 90%);
   color: #fff;
-  overflow-y: auto;          /* sauberes Scrollen */
-  display: block;            /* Standardfluss für Mobil/Tablet */
+  overflow-y: auto;
+  display: block;
 }
 
 /* Nur Desktop zentrieren */
@@ -34,6 +34,7 @@ html, body {
     justify-content: center;
   }
 }
+
 
 main {
   width: 100%;
@@ -180,8 +181,8 @@ header .header-icons button:hover { color: #fff; }
   padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-    position: relative;   /* Footer wird zum Bezugspunkt */
+  gap: 8px;
+
 }
 .audio-row { display: flex; gap: 8px; }
 audio { width: 100%; }
@@ -222,24 +223,6 @@ audio:focus {
   justify-content: center;
 }
 
-#clearCacheBtn {
-  width: auto;    /* passt sich dem Text an */
-  min-width: 100px;   /* kleiner geht er nicht */
-  padding: 6px;
-  background: var(--accent);
-  color: #000;
-  border: none;
-  border-radius: 999px;    /* bleibt pillenförmig */
-  font-weight: 600;
-  font-size: 0.8rem;       /* kleinere Schrift */
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-#clearCacheBtn:hover {
-  background: #ffb703;
-  transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(255, 211, 105, 0.4);
-}
 #cacheStatus {
   margin-top: 8px;
   font-size: 0.85rem;
@@ -255,17 +238,17 @@ audio:focus {
   border: none;
   padding: 7px 7px;
   border-radius: 999px;
-  font-weight: 500;
-  font-size: 0.85rem;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  position: absolute;
-  bottom: 3px;
-  right: 25px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  font-size: 12px;
+  font-style: italic;
+  order: 2; /* höherer Wert = weiter hinten */
   /* Puls-Effekt 
   animation: pulse 2s infinite;*/
     /* dezenter Puls */
-  animation: pulse 4s ease-in-out infinite;
+  animation: pulse-red 4s ease-in-out infinite;
 }
 
 /* sanftes Fade + pointer-events für clearStorageBtn */
@@ -277,6 +260,14 @@ audio:focus {
   pointer-events: auto;
 }
 
+#toggleList {
+  font-size: 12px;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.2px;
+}
+
+
 /* versteckt: unsichtbar, keine Interaktion, leichtes Shrink */
 #clearStorageBtn.hidden {
   opacity: 0;
@@ -284,8 +275,6 @@ audio:focus {
   pointer-events: none;
   box-shadow: none;
 }
-
-
 
 #clearStorageBtn:hover {
   background: linear-gradient(135deg, #ff8c42, #ff3030);
@@ -304,8 +293,8 @@ audio:focus {
   color: var(--muted, #ccc);
 }
 
-/* Keyframes für Puls */
-@keyframes pulse {
+/* Puls für clearStorageBtn (rot / warnend) */
+@keyframes pulse-red {
   0% {
     transform: scale(1);
     box-shadow: 0 0 0 rgba(255, 80, 80, 0.4);
@@ -323,7 +312,9 @@ audio:focus {
 /* =========================
    SEARCH
 ========================= */
-.search { display: flex; gap: 8px; }
+.search { 
+  display: flex; gap: 8px; 
+}
 .search input {
   flex: 1;
   padding: 10px 12px;
@@ -332,6 +323,7 @@ audio:focus {
   background: rgba(255,255,255,0.08);
   color: inherit;
   transition: background 0.3s, box-shadow 0.3s;
+
 }
 .search input:focus {
   background: rgba(255,255,255,0.15);
@@ -351,6 +343,7 @@ audio:focus {
   border-radius: 14px;
   background: rgba(255,255,255,0.05);
   box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+
 }
 #listPanel.open {
   display: block;
@@ -416,10 +409,11 @@ audio:focus {
   color: #000;
   font-weight: bold;
   box-shadow: 0 0 12px rgba(255,211,105,.8);
-  animation: pulse 1.5s infinite;
+  animation: pulse-gold 1.5s infinite;
 }
 
-@keyframes pulse {
+/* Puls für #ALLAHIN_ISIMLERI (gold / accent) */
+@keyframes pulse-gold {
   0% { box-shadow: 0 0 10px rgba(255,211,105,.8); }
   50% { box-shadow: 0 0 20px rgba(255,211,105,1); }
   100% { box-shadow: 0 0 10px rgba(255,211,105,.8); }
@@ -546,6 +540,8 @@ color: var(--BenimRenk);
   margin-left: auto;
 }
 
+
+
 /* =========================
    FOOTER
 ========================= */
@@ -568,6 +564,13 @@ footer {
     padding: 12px;
     gap: 12px;
   }
+  #toggleList {
+    font-size: 0.85rem;
+  }
+  #clearStorageBtn {
+    font-size: 0.75rem;
+  }
+
   h1 { font-size: 1.2rem; }
   .subtitle { font-size: 0.7rem; }
   .btn {

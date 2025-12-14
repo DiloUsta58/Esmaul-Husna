@@ -533,9 +533,9 @@ function _clearSpecificKeys(keys = []) {
       try { localStorage.removeItem(k); } catch (e) { /* ignore */ }
       try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ }
     });
-    return { ok: true, message: "Ausgewählte Keys wurden entfernt." };
+    return { ok: true, message: "Seçilen kaldırıldı." };
   } catch (err) {
-    return { ok: false, message: "Fehler beim Löschen spezifischer Keys: " + (err && err.message) };
+    return { ok: false, message: "Belirli anahtarları silerken hata oluştu.: " + (err && err.message) };
   }
 }
 
@@ -543,9 +543,9 @@ function _clearAllStorage() {
   try {
     localStorage.clear();
     sessionStorage.clear();
-    return { ok: true, message: "localStorage und sessionStorage komplett geleert." };
+    return { ok: true, message: "Yerel depolama ve oturum depolaması tamamen boşaltıldı.." };
   } catch (err) {
-    return { ok: false, message: "Fehler beim Leeren des Storages: " + (err && err.message) };
+    return { ok: false, message: "Depolama alanı temizlenirken hata oluştu: " + (err && err.message) };
   }
 }
 
@@ -579,13 +579,13 @@ function clearFavorites() {
       try { renderNamesList(); } catch (e) { /* ignore */ }
     }
 
-    _showStorageStatus("✅ Favoriten gelöscht", true);
-    console.info("Favoriten wurden gelöscht.");
-    return { ok: true, message: "Favoriten gelöscht" };
+    _showStorageStatus("✅ Favoriler silindi", true);
+    console.info("Favoriler silindi.");
+    return { ok: true, message: "Favoriler silindi" };
   } catch (err) {
-    console.error("Fehler beim Löschen der Favoriten:", err);
-    _showStorageStatus("❌ Fehler beim Löschen der Favoriten", false);
-    return { ok: false, message: "Fehler beim Löschen der Favoriten: " + (err && err.message) };
+    console.error("Favorileri silerken hata oluştu.:", err);
+    _showStorageStatus("❌ Favorileri silerken hata oluştu.", false);
+    return { ok: false, message: "Favorileri silerken hata oluştu.: " + (err && err.message) };
   }
 }
 
@@ -625,9 +625,9 @@ function resetPlayer() {
     try { isPlaying = false; } catch (e) { /* ignore */ }
     try { audioCurrentIndex = 0; } catch (e) { /* ignore */ }
 
-    console.info("Audio-Player zurückgesetzt.");
+    console.info("Ses oynatıcısını sıfırlama.");
   } catch (err) {
-    console.warn("Fehler beim Zurücksetzen des Players:", err);
+    console.warn("Oynatıcıyı sıfırlama hatası:", err);
   }
 }
 
@@ -672,7 +672,7 @@ function _resetRuntimeState() {
     if (typeof updateFavoriteCounter === "function") updateFavoriteCounter();
     if (typeof renderNamesList === "function") renderNamesList();
   } catch (e) {
-    console.warn("Fehler beim Zurücksetzen der Laufzeit-Variablen:", e);
+    console.warn("Çalışma zamanı değişkenlerini sıfırlama hatası:", e);
   }
 }
 
@@ -796,7 +796,7 @@ if (clearFavBtn) {
     clearFavorites();
   });
 } else {
-  console.info("clearFavBtn nicht gefunden (IDs geprüft: ClearFav, clearFavBtn, clearFav).");
+  console.info("clearFavBtn bulunamadı (Kontrol edilen kimlikler: ClearFav, clearFavBtn, clearFav)).");
 }
 
 /* -------------------------
@@ -827,7 +827,7 @@ if (clearStorageBtn) {
       } else {
         // Falls noch etwas vorhanden ist: Button sichtbar lassen und Hinweis
         showClearStorageBtn(true);
-        _showStorageStatus("⚠️ Einige Einträge bleiben vorhanden; Button bleibt sichtbar.", true);
+        _showStorageStatus("⚠️ Bazı girişler kaldı; düğme görünür durumda..", true);
       }
 
       _showStorageStatus("✅ " + result.message, true);
@@ -839,7 +839,7 @@ if (clearStorageBtn) {
     if (toggleList) toggleList.click();
   });
 } else {
-  console.info("clearStorageBtn nicht gefunden — DOM-Element fehlt.");
+  console.info("clearStorageBtn bulunamadı — DOM öğesi eksik.");
 }
 
   let currentIndex = 0;
@@ -868,7 +868,7 @@ if (clearStorageBtn) {
     });
 
     // Setze den Text in das div
-    el.textContent = "Son güncelleme: " + formatted;
+    el.textContent = "Güncelleme: " + formatted;
   }
 
 /* =========================
@@ -1063,18 +1063,18 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
 
   // Liste toggle
   listPanel.style.display = "none";
-  toggleBtn.textContent = "İsimleri göster!";
+  toggleBtn.textContent = "İsimler";
   toggleBtn.addEventListener("click", function () {
     const acikMi = listPanel.style.display === "block";
     listPanel.style.display = acikMi ? "none" : "block";
-    toggleBtn.textContent = acikMi ? "İsimleri göster!" : "İsimleri gizle";
+    toggleBtn.textContent = acikMi ? "İsimler" : "İsimleri gizle";
     updateFavButtonsVisibility();
   });
 
   // Favoriten abspielen
   function startFavoritesPlayback() {
     if (favorites.length === 0) {
-      alert("Seçilen yok!!");
+      alert("Seçilen yok!");
       return;
     }
     favPlayMode = true;
