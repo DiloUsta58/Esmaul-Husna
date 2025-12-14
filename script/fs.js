@@ -446,6 +446,70 @@ document.addEventListener("DOMContentLoaded", function () {
   const progressContainer = document.getElementById("progressContainer");
   const progressTooltip = document.getElementById("progressTooltip");
 
+/* ANIMATION ANFANG */
+/* =========================
+   TYPEWRITER (für #Anlamlari)
+   - schreibt Buchstabe für Buchstabe
+   - API: fs.typewriter.startOnce(text, speed)
+========================= */
+let _twTimers = [];
+let _twCurrentText = "";
+let _twIsTyping = false;
+
+function _twClearTimers() {
+  while (_twTimers.length) {
+    clearTimeout(_twTimers.pop());
+  }
+}
+
+function _twTypeText(text, speed = 45, onComplete) {
+  if (!anlamBox) return;
+  _twClearTimers();
+  _twCurrentText = String(text || "");
+  _twIsTyping = true;
+  anlamBox.textContent = "";
+  let i = 0;
+  function step() {
+    if (i < _twCurrentText.length) {
+      anlamBox.textContent += _twCurrentText.charAt(i);
+      i++;
+      _twTimers.push(setTimeout(step, speed));
+    } else {
+      _twIsTyping = false;
+      if (typeof onComplete === "function") onComplete();
+    }
+  }
+  _twTimers.push(setTimeout(step, 20));
+}
+
+function _twSkipCurrent() {
+  _twClearTimers();
+  if (anlamBox && _twCurrentText) {
+    anlamBox.textContent = _twCurrentText;
+  }
+  _twIsTyping = false;
+}
+
+window.fs = window.fs || {};
+window.fs.typewriter = {
+  startOnce: function (text, speed) { _twTypeText(String(text || ""), typeof speed === "number" ? speed : 45); },
+  skip: _twSkipCurrent,
+  isTyping: function () { return _twIsTyping; }
+};
+
+function getMeaningByTime(timeValue) {
+  if (!Array.isArray(timeAnlamı)) return "";
+  const found = timeAnlamı.find(item => Number(item.time) === Number(timeValue));
+  return found ? String(found.text || "") : "";
+}
+
+
+
+
+/* ANIMATION ENDE  */
+
+
+
   let currentIndex = 0;
   let idxAnlam = 0;
   let idxSure = 0;
@@ -552,6 +616,61 @@ function setListFocus(realIndex) {
       });
     }
   });
+}
+
+// LocalStorage & SessionStorage löschen
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("clearCacheBtn");
+  const status = document.getElementById("cacheStatus");
+
+  btn.addEventListener("click", async () => {
+    try {
+      // Service Worker Cache löschen
+      if ('caches' in window) {
+        const names = await caches.keys();
+        for (let name of names) {
+          await caches.delete(name);
+        }
+      }
+
+      // LocalStorage & SessionStorage löschen
+      localStorage.clear();
+      sessionStorage.clear();
+
+      status.textContent = "✅ Cache erfolgreich gelöscht!";
+    } catch (err) {
+      status.textContent = "❌ Fehler beim Löschen des Caches.";
+      console.error(err);
+    }
+  });
+});
+
+
+// Typewriter: schreibt einen Text buchstabe für buchstabe in #anlamText
+function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, callback) {
+  const textEl = document.getElementById(elementIdText);
+  const cursorEl = document.getElementById(elementIdCursor);
+  if (!textEl) return console.warn("Element not found:", elementIdText);
+
+  textEl.textContent = "";
+  textEl.classList.remove("visible");
+  let i = 0;
+
+  function step() {
+    if (i < text.length) {
+      textEl.textContent += text.charAt(i);
+      i++;
+      // optional: Cursor bleibt sichtbar; kein extra Handling nötig
+      setTimeout(step, speed);
+    } else {
+      // Schreibvorgang beendet
+      textEl.classList.add("visible");
+      if (typeof callback === "function") callback();
+    }
+  }
+
+  // Kleiner Start-Delay, damit CSS-Transition sichtbar wird
+  setTimeout(step, 50);
 }
 
 
@@ -722,7 +841,10 @@ function setListFocus(realIndex) {
     }
 
     if (timeAnlamı[idxAnlam] && t >= timeAnlamı[idxAnlam].time) {
-      anlamBox.textContent = timeAnlamı[idxAnlam].text;
+      //anlamBox.textContent = timeAnlamı[idxAnlam].text;
+        const timeValue = imageChanges[currentIndex] && imageChanges[currentIndex].time;
+        const meaningText = getMeaningByTime(timeValue) || "Anlam bulunamadı.";
+      fs.typewriter.startOnce(meaningText, 25); // 45 ms pro Zeichen, anpassbar
       idxAnlam++;
     }
     if (timeSureler[idxSure] && t >= timeSureler[idxSure].time) {
@@ -761,7 +883,11 @@ audio.addEventListener("seeked", function () {
   let newIdxAnlam = timeAnlamı.findIndex(a => t < a.time);
   idxAnlam = newIdxAnlam === -1 ? timeAnlamı.length : newIdxAnlam;
   if (idxAnlam > 0) {
-    anlamBox.textContent = timeAnlamı[idxAnlam - 1].text;
+    //anlamBox.textContent = timeAnlamı[idxAnlam - 1].text;
+      const timeValue = imageChanges[currentIndex] && imageChanges[currentIndex].time;
+      const meaningText = getMeaningByTime(timeValue) || "Anlam bulunamadı.";
+    fs.typewriter.startOnce(meaningText, 25); // 45 ms pro Zeichen, anpassbar
+
   }
 
   // Direkt den passenden Sure setzen
@@ -789,7 +915,15 @@ audio.addEventListener("seeked", function () {
     if (!item) return;
     imageEl.src = item.imageSrc;
     nameBox.textContent = item.text;
-    if (timeAnlamı[index]) anlamBox.textContent = timeAnlamı[index].text;
+
+      const timeValue = imageChanges[currentIndex] && imageChanges[currentIndex].time;
+      const meaningText = getMeaningByTime(timeValue) || "Anlam bulunamadı.";
+
+    if (timeAnlamı[index]) fs.typewriter.startOnce(meaningText, 25); // 45 ms pro Zeichen, anpassbar //anlamBox.textContent = timeAnlamı[index].text;
+    
+
+
+
     if (timeSureler[index]) sureBox.textContent = timeSureler[index].text;
     if (timeIsimler[index]) timeIsimler.textContent = timeIsimler[index].text;
 

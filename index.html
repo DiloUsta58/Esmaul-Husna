@@ -63,9 +63,10 @@
       <section class="visual" aria-label="Görüntü ve anlam">
         <img id="dynamicImage" src="img_w/01_Allah.gif" alt="Allah görseli" loading="lazy">
         <div class="name" id="NameOfAllah">Allah الله</div>
-        <div class="isim" id="Isimler"></div>
+        <div class="isim" id="Isimler">1-Allah</div>
         <div class="arabic" id="ArabicText"></div>
-        <div class="meaning" id="Anlamlari">[ Her ismin vasfını ihtiva eden öz adı... ]</div>
+        <div class="meaning" id="Anlamlari"><span id="anlamText"></span><span id="anlamCursor" aria-hidden="true">[ Her ismin vasfını ihtiva eden öz adı... ]|</span></div>
+
         <!-- Sure Box jetzt ohne Inline-Styles -->
         <div id="Sure" class="sura" aria-live="polite"></div>
         <div class="video-frame" id="videoFrame" aria-hidden="true">
@@ -121,9 +122,12 @@
 
     <footer>
       <div>© Dilaver Bölükbaşı 01/12/2024</div>
+        <button id="clearCacheBtn" class="btn">Önbelleği temizle</button>
+        <div id="cacheStatus"></div>    
       <div id="lastUpdate">
         Son güncelleme: <!-- wird von fs.js automatisch gesetzt -->
       </div> 
+ 
     </footer>
   </main>
 

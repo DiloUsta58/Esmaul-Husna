@@ -222,6 +222,55 @@ audio:focus {
   justify-content: center;
 }
 
+#clearCacheBtn {
+  width: auto;    /* passt sich dem Text an */
+  min-width: 100px;   /* kleiner geht er nicht */
+  padding: 6px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 999px;    /* bleibt pillenförmig */
+  font-weight: 600;
+  font-size: 0.8rem;       /* kleinere Schrift */
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+#clearCacheBtn:hover {
+  background: #ffb703;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(255, 211, 105, 0.4);
+}
+#cacheStatus {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* =========================
+   BTN Clear
+========================= */
+#clearCacheBtn {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+#clearCacheBtn:hover {
+  background: #ffb703;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
+}
+#cacheStatus {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+
 /* =========================
    SEARCH
 ========================= */
@@ -369,6 +418,10 @@ color: var(--BenimRenk);
   white-space: normal;
   word-break: break-word;
 }
+
+/* Optional: sanfte Einblendung beim Start */
+#anlamText { opacity: 0; transition: opacity 0.25s ease; }
+#anlamText.visible { opacity: 1; }
 
 #favCounter {
 color: var(--BenimRenk);
