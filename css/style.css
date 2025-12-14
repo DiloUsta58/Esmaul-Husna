@@ -259,12 +259,12 @@ audio:focus {
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
 }
-#clearCacheBtn:hover {
+#clearStorageBtn:hover {
   background: #ffb703;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
 }
-#cacheStatus {
+#storageStatus {
   margin-top: 8px;
   font-size: 0.85rem;
   color: var(--muted);

@@ -503,10 +503,119 @@ function getMeaningByTime(timeValue) {
   return found ? String(found.text || "") : "";
 }
 
-
-
-
 /* ANIMATION ENDE  */
+
+
+
+// LocalStorage & SessionStorage löschen
+/* =========================
+   Storage Reset per Button
+   - löscht nur app-spezifische Keys (sicher)
+   - aktualisiert Laufzeit-Variablen und UI
+========================= */
+
+const clearStorageBtn = document.getElementById("clearStorageBtn");
+const storageStatus = document.getElementById("storageStatus");
+
+// Liste der app-spezifischen Keys, die gelöscht werden sollen
+const APP_KEYS_TO_CLEAR = [
+  "favorites",
+  "userSettings",
+  "lastPlayedIndex",
+  "lastIndex",
+  "playPos",
+  "fs_state"
+];
+
+// true = komplettes localStorage/sessionStorage leeren (Vorsicht)
+const CLEAR_EVERYTHING_ON_BTN = false;
+
+// Hilfsfunktionen
+function _clearSpecificKeys(keys = []) {
+  try {
+    keys.forEach(k => {
+      try { localStorage.removeItem(k); } catch (e) { /* ignore */ }
+      try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ }
+    });
+    return { ok: true, message: "Seçilen tuşlar silindi: " + keys.join(", ") };
+  } catch (err) {
+    return { ok: false, message: "Belirli anahtarları silerken hata oluştu: " + (err && err.message) };
+  }
+}
+
+function _clearAllStorage() {
+  try {
+    localStorage.clear();
+    sessionStorage.clear();
+    return { ok: true, message: "Yerel depolama ve oturum depolaması tamamen boşaltıldı." };
+  } catch (err) {
+    return { ok: false, message: "Depolama alanını temizlerken hata oluştu:" + (err && err.message) };
+  }
+}
+
+function _showStorageStatus(msg, ok = true) {
+  if (!storageStatus) {
+    console[ok ? "log" : "error"](msg);
+    return;
+  }
+  storageStatus.textContent = msg;
+  storageStatus.style.color = ok ? "#0a0" : "#c00";
+  setTimeout(() => { if (storageStatus) storageStatus.textContent = ""; }, 4000);
+}
+
+// UI / Laufzeit zurücksetzen (nach dem Löschen)
+function _resetRuntimeState() {
+  try {
+    // Lokale Laufzeitvariablen zurücksetzen (falls in globalem Scope genutzt)
+    favorites = []; // falls favorites in scope existiert
+    favPlayPos = 0;
+    favPlayMode = false;
+    showOnlyFavorites = false;
+    currentIndex = 0;
+    idxAnlam = 0;
+    idxSure = 0;
+    idxISIM = 0;
+
+    // UI-Elemente zurücksetzen, falls vorhanden
+    const nameBox = document.getElementById("NameOfAllah");
+    const imageEl = document.getElementById("dynamicImage");
+    const anlamBox = document.getElementById("Anlamlari");
+    const progressBar = document.getElementById("progressBar");
+    if (nameBox) nameBox.textContent = "";
+    if (imageEl && imageChanges && imageChanges[0]) imageEl.src = imageChanges[0].imageSrc;
+    if (anlamBox) anlamBox.textContent = "";
+    if (progressBar) progressBar.value = 0;
+
+    // Falls du Funktionen zum Re-Rendern hast, rufe sie auf
+    if (typeof updateFavoriteCounter === "function") updateFavoriteCounter();
+    if (typeof renderNamesList === "function") renderNamesList();
+  } catch (e) {
+    console.warn("Çalışma zamanı değişkenlerini sıfırlama hatası:", e);
+  }
+}
+
+// Button-Handler
+if (clearStorageBtn) {
+  clearStorageBtn.addEventListener("click", () => {
+    let result;
+    if (CLEAR_EVERYTHING_ON_BTN) {
+      result = _clearAllStorage();
+    } else {
+      result = _clearSpecificKeys(APP_KEYS_TO_CLEAR);
+    }
+
+    if (result.ok) {
+      // UI/Laufzeit zurücksetzen
+      _resetRuntimeState();
+      _showStorageStatus("✅ " + result.message, true);
+    } else {
+      _showStorageStatus("❌ " + result.message, false);
+    }
+  });
+} else {
+  console.info("clearStorageBtn bulunamadı — DOM'da sıfırlama düğmesi eksik.");
+}
+
 
 
 
@@ -617,33 +726,6 @@ function setListFocus(realIndex) {
     }
   });
 }
-
-// LocalStorage & SessionStorage löschen
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("clearCacheBtn");
-  const status = document.getElementById("cacheStatus");
-
-  btn.addEventListener("click", async () => {
-    try {
-      // Service Worker Cache löschen
-      if ('caches' in window) {
-        const names = await caches.keys();
-        for (let name of names) {
-          await caches.delete(name);
-        }
-      }
-
-      // LocalStorage & SessionStorage löschen
-      localStorage.clear();
-      sessionStorage.clear();
-
-      status.textContent = "✅ Cache erfolgreich gelöscht!";
-    } catch (err) {
-      status.textContent = "❌ Fehler beim Löschen des Caches.";
-      console.error(err);
-    }
-  });
-});
 
 
 // Typewriter: schreibt einen Text buchstabe für buchstabe in #anlamText
@@ -856,10 +938,7 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
       document.getElementById("Isimler").textContent = timeIsimler[idxISIM].text;
       idxISIM++;
     }
-
-
-
-   
+ 
 
     localStorage.setItem("lastIndex", currentIndex);
     localStorage.setItem("lastTime", t);
@@ -903,11 +982,7 @@ audio.addEventListener("seeked", function () {
     if (idxISIM > 0) {
       document.getElementById("Isimler").textContent = timeIsimler[idxISIM - 1].text;
     }
-
-
-
 });
-
 
   // Inhalt aktualisieren
   function updateContent(index) {
