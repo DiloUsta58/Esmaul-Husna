@@ -537,7 +537,7 @@ function _clearSpecificKeys(keys = []) {
       try { localStorage.removeItem(k); } catch (e) { /* ignore */ }
       try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ }
     });
-    return { ok: true, message: "Seçilen tuşlar silindi: " + keys.join(", ") };
+    return { ok: true, message: "Yerel depolama ve oturum depolaması tamamen boşaltıldı." };
   } catch (err) {
     return { ok: false, message: "Belirli anahtarları silerken hata oluştu: " + (err && err.message) };
   }

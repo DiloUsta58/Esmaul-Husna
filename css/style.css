@@ -177,11 +177,11 @@ header .header-icons button:hover { color: #fff; }
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.08);
   animation: fadeIn 0.4s ease-in-out;
-
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+    position: relative;   /* Footer wird zum Bezugspunkt */
 }
 .audio-row { display: flex; gap: 8px; }
 audio { width: 100%; }
@@ -247,29 +247,58 @@ audio:focus {
 }
 
 /* =========================
-   BTN Clear
+   clearStorageBtn
 ========================= */
-#clearCacheBtn {
-  background: var(--accent);
-  color: #000;
+#clearStorageBtn {
+  background: linear-gradient(135deg, #ff6a00, #ff0303);
+  color: #fff;
   border: none;
-  padding: 10px 16px;
+  padding: 8px 14px;
   border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-#clearStorageBtn:hover {
-  background: #ffb703;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
-}
-#storageStatus {
-  margin-top: 8px;
+  font-weight: 500;
   font-size: 0.85rem;
-  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  position: absolute;
+  bottom: 3px;
+  right: 25px;
+
+  /* Puls-Effekt */
+  animation: pulse 2s infinite;
 }
 
+#clearStorageBtn:hover {
+  background: linear-gradient(135deg, #ff8c42, #ff3030);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(255, 80, 80, 0.4);
+}
+
+#clearStorageBtn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(255, 80, 80, 0.35);
+}
+
+#storageStatus {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted, #ccc);
+}
+
+/* Keyframes für Puls */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 80, 80, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 80, 80, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 80, 80, 0.4);
+  }
+}
 
 /* =========================
    SEARCH
@@ -506,6 +535,7 @@ footer {
   color: var(--muted);
   font-size: 0.85rem;
   margin-top: 20px;
+
 }
 
 /* =========================
