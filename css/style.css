@@ -253,7 +253,7 @@ audio:focus {
   background: linear-gradient(135deg, #ff6a00, #ff0303);
   color: #fff;
   border: none;
-  padding: 8px 14px;
+  padding: 7px 7px;
   border-radius: 999px;
   font-weight: 500;
   font-size: 0.85rem;
@@ -263,8 +263,10 @@ audio:focus {
   bottom: 3px;
   right: 25px;
 
-  /* Puls-Effekt */
-  animation: pulse 2s infinite;
+  /* Puls-Effekt 
+  animation: pulse 2s infinite;*/
+    /* dezenter Puls */
+  animation: pulse 4s ease-in-out infinite;
 }
 
 #clearStorageBtn:hover {
