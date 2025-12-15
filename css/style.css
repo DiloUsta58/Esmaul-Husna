@@ -8,6 +8,7 @@
   --accent: #ffd369;
   --glass: rgba(255,255,255,0.03);
   --BenimRenk:#eead21;
+  --bluRenkDB:rgb(28, 47, 88);
   --radius: 14px;
 }
 
@@ -36,10 +37,9 @@ main {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 18px;
   background: linear-gradient(90deg, #161b2c, #1f2640);
-  background: var(--card);
   border-radius: 20px;
+  padding: 18px;
   color: #fff;
   box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
   display: flex;
@@ -125,9 +125,9 @@ header .header-icons button:hover { color: #fff; }
   .grid { grid-template-columns: 1fr; }
 }
 
-/* =========================
-   VISUAL
-========================= */
+/* =====================================
+   VISUAL  / ISIMLER / AYET / ANLAMLAR
+====================================S */
 .visual {
   background: var(--glass);
   border-radius: var(--radius);
@@ -151,6 +151,7 @@ header .header-icons button:hover { color: #fff; }
   object-fit: contain;
 }
 .name {
+
   font-size: 1.95rem;
   color: var(--accent);
   font-weight: 700;
@@ -267,13 +268,13 @@ audio:focus {
    Button: Isimler / ClearStorage
 ================================ */
 #toggleList {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-style: italic;
   letter-spacing: 0.2px;
 }
 
 #clearStorageBtn {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-style: italic;
   background: linear-gradient(135deg,#ff6a00,#ff0303);
   color: #fff;
@@ -314,10 +315,14 @@ audio:focus {
 }
 
 .button-group {
+
   display: flex;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
-  flex-wrap: wrap;
+
+}
+#showFavOnly, #playFavs, #ClearFav {
+  font-size: 0.75rem;
 }
 
 /* =========================
@@ -562,10 +567,15 @@ footer {
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE ERWEITERUNG
 ========================= */
 @media (max-width: 480px) {
   .btn { font-size: 0.85rem; }
+
+  #showFavOnly, #playFavs, #ClearFav {
+  font-size: 0.5rem;
+}
+
   #toggleList { font-size: 0.85rem; }
   #clearStorageBtn { font-size: 0.75rem; }
   
@@ -641,6 +651,7 @@ footer {
   #ALLAHIN_ISIMLERI td {
     width: 100%;
     margin: 0;
+    background: color rgb(28, 47, 88);
   }
   .visual img { max-width: 175px; }
 
