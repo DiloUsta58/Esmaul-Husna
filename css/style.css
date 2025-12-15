@@ -15,6 +15,7 @@
 * { box-sizing: border-box; }
 
 html, body {
+ width: 100%;
   height: auto;
   min-height: 100%;
   margin: 0;
@@ -657,3 +658,4 @@ footer {
     right: 20px;
   }
 }
+
