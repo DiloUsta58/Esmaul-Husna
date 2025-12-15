@@ -573,7 +573,7 @@ footer {
   .btn { font-size: 0.85rem; }
 
   #showFavOnly, #playFavs, #ClearFav {
-  font-size: 0.75rem;
+  font-size: 0.82rem;
 }
 
   #toggleList { font-size: 0.85rem; }
@@ -663,3 +663,4 @@ footer {
   }
 
 }
+
