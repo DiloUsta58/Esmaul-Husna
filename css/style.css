@@ -404,8 +404,34 @@ audio:focus {
   color: #000;
   font-weight: bold;
   box-shadow: 0 0 12px rgba(255,211,105,.8);
-  animation: pulse-gold 1.5s infinite;
+  animation: pulse-gold 2s infinite;
 }
+
+  /* =========================
+   ZEIT-FARBSTATUS (LISTE)
+   - past = rot
+   - current = grün
+🟥 Rot → alles, was bereits abgespielt wurde
+🟩 Grün → exakt die aktuell laufende Stelle
+⚪ Normal → noch nicht erreicht
+========================= */
+
+#ALLAHIN_ISIMLERI td.current {
+  color: #038f2f;
+  font-weight: 700;
+}
+
+
+
+#ALLAHIN_ISIMLERI td.current:not(.active) {
+  color: #121814;
+}
+
+#ALLAHIN_ISIMLERI td.past:not(.active) {
+  color: #ff4d4d;
+}
+
+
 
 /* Favoriten-Stern – Original-Abstand */
 .favStar {

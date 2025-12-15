@@ -1034,6 +1034,7 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
       const tr = document.createElement("tr");
       const td = document.createElement("td");
       td.dataset.realIndex = row.realIndex;
+
       td.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center;">
           <span>${row.realIndex + 1}. ${row.item.text}</span>
@@ -1163,17 +1164,46 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
     const t = audio.currentTime;
     
       // wenn gerade gesprungen wird → nichts durchlaufen
-  if (audio.seeking) return;
-  
+  /* =========================
+     1) PROGRESS / TOOLTIP
+     (nur wenn nicht seeking)
+  ========================= */
+  if (!audio.seeking) {
     const percent = audio.duration ? (t / audio.duration) * 100 : 0;
     progressBar.style.width = percent + "%";
+
     const d = audio.duration || 0;
     const current = formatTime(t);
     const remaining = formatTime(Math.max(0, d - t));
     const total = formatTime(d);
 
-    progressText.textContent = `${current} / - ${remaining}`;
-    GesamtZeit.textContent = ` ${total}`;
+    progressText.textContent = `${current} / ${remaining}`;
+    GesamtZeit.textContent = total;
+  }
+  
+   /* =========================
+     2) ZEITSTATUS – IMMER
+     (unabhängig von seeking)
+  ========================= */
+  const cells = namesBody.querySelectorAll("td");
+
+  cells.forEach(td => {
+    const idx = Number(td.dataset.realIndex);
+    if (Number.isNaN(idx)) return;
+
+    const start = imageChanges[idx]?.time ?? Infinity;
+    const next = imageChanges[idx + 1]?.time ?? Infinity;
+
+    td.classList.remove("past", "current");
+
+    if (t >= start) {
+      td.classList.add("past");
+    }
+
+    if (t >= start && t < next) {
+      td.classList.remove("past");
+      td.classList.add("current");
+    }
 
     if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
@@ -1211,6 +1241,8 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
     localStorage.setItem("lastIndex", currentIndex);
     localStorage.setItem("lastTime", t);
   });
+  });
+
 
   // Wenn der Benutzer im Player springt → sofort Inhalte setzen
 audio.addEventListener("seeked", function () {
