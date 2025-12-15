@@ -121,17 +121,19 @@ header .header-icons button:hover { color: #fff; }
 ========================= */
 .grid {
   display: grid;
-  grid-template-columns: 1fr;   /* Mobil: nur eine Spalte */
+  grid-template-columns: 1fr; /* Mobil: eine Spalte */
   gap: 16px;
+  padding: 16px;
 }
 
-/* Ab Tablet/PC zwei Spalten */
+/* Ab Tablet zwei Spalten nebeneinander */
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: 1fr 1fr; /* nebeneinander */
+    grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 }
+
 
 /* =========================
    VISUAL
@@ -663,5 +665,6 @@ footer {
     right: 20px;
   }
 }
+
 
 
