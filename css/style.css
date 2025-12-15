@@ -121,11 +121,16 @@ header .header-icons button:hover { color: #fff; }
 ========================= */
 .grid {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 18px;
+  grid-template-columns: 1fr;   /* Mobil: nur eine Spalte */
+  gap: 16px;
 }
-@media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; }
+
+/* Ab Tablet/PC zwei Spalten */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr; /* nebeneinander */
+    align-items: start;
+  }
 }
 
 /* =========================
@@ -658,4 +663,5 @@ footer {
     right: 20px;
   }
 }
+
 
