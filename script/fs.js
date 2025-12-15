@@ -1119,14 +1119,14 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
   favOnlyBtn.addEventListener("click", function () {
     if (favorites.length === 0) {
       showOnlyFavorites = false;
-      favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
+      favOnlyBtn.textContent = "Sade ⭐ göster";
       buildNameList();
       return;
     }
     showOnlyFavorites = !showOnlyFavorites;
     favOnlyBtn.textContent = showOnlyFavorites
-      ? "⭐ Hepini Göster"
-      : "⭐ Sadece Favorilerim";
+      ? "Tümünü Göster"
+      : "Sade ⭐ göster";
     buildNameList();
   });
 
@@ -1136,7 +1136,7 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
       localStorage.removeItem("favorites");
       updateFavoriteCounter();
       showOnlyFavorites = false;
-      favOnlyBtn.textContent = "⭐ Sadece Favorilerim";
+      favOnlyBtn.textContent = "Sade ⭐ göster";
       favPlayMode = false;
       buildNameList();
       setListFocus(currentIndex);
