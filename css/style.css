@@ -561,6 +561,8 @@ footer {
 /* Smartphones (bis 480px) */
 @media (max-width: 480px) {
   main {
+    width: 100%;
+    max-width: 100%;   /* verhindert Überlauf */
     padding: 12px;
     gap: 12px;
   }
@@ -568,7 +570,10 @@ footer {
     font-size: 0.85rem;
   }
   #clearStorageBtn {
-    font-size: 0.75rem;
+    padding: 6px 12px; /* besser klickbar */
+    font-size: 0.85rem;
+    bottom: 1px;
+    right: 5px;
   }
 
   h1 { font-size: 1.2rem; }
@@ -578,69 +583,75 @@ footer {
     font-size: 0.85rem;
     width: 100%;
   }
+  .grid {
+    grid-template-columns: 1fr; /* nur eine Spalte */
+  }
   #ALLAHIN_ISIMLERI tbody {
     grid-template-columns: 1fr;
     justify-items: center;
   }
   #ALLAHIN_ISIMLERI td {
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: 100%; /* volle Breite */
+    margin: 0;
   }
   .visual img { max-width: 140px; }
-
-    #clearStorageBtn {
-    padding: 1px 5px;
-    font-size: 0.75rem;
-    bottom: 1px;
-    right: 5px;
-  }
-
 }
-
-
 
 /* Tablets (481px bis 900px) */
 @media (min-width: 481px) and (max-width: 900px) {
+  main {
+    width: 100%;
+    max-width: 95%;    /* etwas Rand lassen */
+  }
   h1 { font-size: 1.4rem; }
   .subtitle { font-size: 0.8rem; }
   .btn { font-size: 0.9rem; }
+  .grid {
+    grid-template-columns: 1fr; /* eine Spalte für bessere Lesbarkeit */
+  }
   #ALLAHIN_ISIMLERI tbody {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* zwei Spalten */
     justify-items: center;
   }
   #ALLAHIN_ISIMLERI td {
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: 100%;
+    margin: 0;
   }
-  .grid { grid-template-columns: 1fr; }
   .visual img { max-width: 160px; }
 
   #clearStorageBtn {
-    padding: 7px 7px;
-    font-size: 0.85rem;
+    padding: 7px 12px;
+    font-size: 0.9rem;
     bottom: 6px;
     right: 10px;
   }
-
 }
 
 /* Desktop (ab 901px) */
 @media (min-width: 901px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* verhindert vertikales Clipping */
+  }
   h1 { font-size: 1.6rem; }
   .subtitle { font-size: 0.9rem; }
   .btn { font-size: 1rem; }
+  .grid {
+    grid-template-columns: minmax(280px, 360px) 1fr; /* flexibler */
+  }
   #ALLAHIN_ISIMLERI tbody {
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
   }
   #ALLAHIN_ISIMLERI td {
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: 100%;
+    margin: 0;
   }
-  .grid { grid-template-columns: 360px 1fr; }
   .visual img { max-width: 175px; }
-    #clearStorageBtn {
-    padding: 7px 7px;
+
+  #clearStorageBtn {
+    padding: 7px 12px;
     font-size: 0.9rem;
     bottom: 3px;
     right: 20px;
