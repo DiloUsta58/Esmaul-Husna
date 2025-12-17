@@ -423,7 +423,217 @@ const timeIsimler = [
 ];
 
 /* =========================
-   5) ANA SİSTEM
+   5) timestamps
+========================= */
+const timestamps_NAME = {
+  "00:01": { track: "Allah الله" },
+  "00:09": { track: "Ar Rahman الرَّحْمَنُ" },
+  "00:20": { track: "Ar Rahim الرَّحِيمُ" },
+  "00:32": { track: "Al Malik الْمَلِكُ" },
+  "00:44": { track: "Al Quddus الْقُدُّوسُ" },
+  "00:55": { track: "As Salam السَّلاَمُ" },
+  "01:07": { track: "Al Mumin الْمُؤْمِنُ" },
+  "01:18": { track: "Al Muhaymin الْمُهَيْمِنُ" },
+  "01:30": { track: "Al Aziz الْعَزِيزُ" },
+  "01:42": { track: "Al Jabbar الْجَبَّارُ" },
+  "01:53": { track: "Al Mutakabbir الْمُتَكَبِّرُ" },
+  "02:05": { track: "Al Khaliq الْخَالِقُ" },
+  "02:16": { track: "Al Bari الْبَارِئُ" },
+  "02:28": { track: "Al Musawwir الْمُصَوِّرُ" },
+  "02:40": { track: "Al Gaffar الْغَفَّارُ" },
+  "02:51": { track: "Al Qahhar الْقَهَّارُ" },
+  "03:03": { track: "Al Wahhab الْوَهَّابُ" },
+  "03:15": { track: "Ar Razzaq الرَّزَّاقُ" },
+  "03:27": { track: "Al Fattah الْفَتَّاحُ" },
+  "03:38": { track: "Al Alim الْعَلِيمُ" },
+  "03:50": { track: "Al Qabid الْقَابِضُ" },
+  "04:01": { track: "Al Basit الْبَاسِطُ" },
+  "04:13": { track: "Al Khafid الْخَافِضُ" },
+  "04:25": { track: "Ar Rafi الرَّافِعُ" },
+  "04:36": { track: "Al Muizz المُعِزُّ" },
+  "04:49": { track: "Al Mudhill المُذِلُّ" },
+  "05:00": { track: "As Sami السَّمِيعُ" },
+  "05:11": { track: "Al Basir الْبَصِيرُ" },
+  "05:23": { track: "Al Hakam الْحَكَمُ" },
+  "05:35": { track: "Al Adl الْعَدْلُ" },
+  "05:46": { track: "Al Latif اللَّطِيفُ" },
+  "05:58": { track: "Al Habir الْخَبِيرُ" },
+  "06:09": { track: "Al Halim الْحَلِيمُ" },
+  "06:21": { track: "Al Azim الْعَظِيمُ" },
+  "06:32": { track: "Al Gafur الْغَفُورُ" },
+  "06:44": { track: "Ash Shakur الشَّكُورُ" },
+  "06:55": { track: "Al Aliyy الْعَلِيُّ" },
+  "07:06": { track: "Al Kabir الْكَبِيرُ" },
+  "07:18": { track: "Al Hafiz الْحَفِيظُ" },
+  "07:30": { track: "Al Muqit المُقِيتُ" },
+  "07:41": { track: "Al Hasib الْحَسِيبُ" },
+  "07:53": { track: "Al Jalil الْجَلِيلُ" },
+  "08:05": { track: "Al Karim الْكَرِيمُ" },
+  "08:17": { track: "Ar Raqib الرَّقِيبُ" },
+  "08:28": { track: "Al Mujib الْمُجِيبُ" },
+  "08:40": { track: "Al Wasi الْوَاسِعُ" },
+  "08:52": { track: "Al Hakim الْحَكِيمُ" },
+  "09:03": { track: "Al Wadud الْوَدُودُ" },
+  "09:15": { track: "Al Majid الْمَجِيدُ" },
+  "09:26": { track: "Al Baith الْبَاعِثُ" },
+  "09:41": { track: "Ash Shahid الشَّهِيدُ" },
+  "09:52": { track: "Al Haqq الْحَقُّ" },
+  "10:04": { track: "Al Wakil الْوَكِيلُ" },
+  "10:16": { track: "Al Qawiyy الْقَوِىُّ" },
+  "10:27": { track: "Al Matin الْمَتِينُ" },
+  "10:39": { track: "Al Waliyy الْوَلِىُّ" },
+  "10:51": { track: "Al Hamid الْحَمِيدُ" },
+  "11:02": { track: "Al Muhsi الْمُحْصِى" },
+  "11:14": { track: "Al Mubdi الْمُبْدِئُ" },
+  "11:25": { track: "Al Mu’id الْمُعِيدُ" },
+  "11:37": { track: "Al Muhyi الْمُحْيِى" },
+  "11:49": { track: "Al Mumit المُمِيتُ" },
+  "12:00": { track: "Al Hayy الْحَىُّ" },
+  "12:12": { track: "Al Qayyum الْقَيُّومُ" },
+  "12:23": { track: "Al Wajid الْوَاجِدُ" },
+  "12:35": { track: "Al Majid الْمَاجِدُ" },
+  "12:47": { track: "Al Wahid الْوَاحِدُ" },
+  "12:58": { track: "As Samad الصَّمَدُ" },
+  "13:10": { track: "Al Qadir الْقَادِرُ" },
+  "13:21": { track: "Al Muqtadir الْمُقْتَدِرُ" },
+  "13:33": { track: "Al Muqaddim الْمُقَدِّمُ" },
+  "13:45": { track: "Al Mu’akhkhir الْمُؤَخِّرُ" },
+  "13:56": { track: "Al Awwal الأوَّلُ" },
+  "14:08": { track: "Al Akhir الآخِرُ" },
+  "14:18": { track: "Az Zaher الظَّاهِرُ" },
+  "14:30": { track: "Al Batin الْبَاطِنُ" },
+  "14:41": { track: "Al Wali الْوَالِى" },
+  "14:53": { track: "Al Muta’ali الْمُتَعَالِى" },
+  "15:05": { track: "Al Barr الْبَرُّ" },
+  "15:16": { track: "At Tawwab التَّوَابُ" },
+  "15:27": { track: "Al Munteqim الْمُنْتَقِمُ" },
+  "15:39": { track: "Al Afuw العفوُّ" },
+  "15:51": { track: "Ar Rauf الرَّؤُوفُ" },
+  "16:02": { track: "Malikul Mulk مَالِكُ الْمُلْكِ" },
+  "16:14": { track: "Zuljalal ve-l İkram ذُوالْجَلاَلِ وَ الإكْرَام" },
+  "16:25": { track: "Al Muqsit الْمُقْسِطُ" },
+  "16:37": { track: "Al Jami الْجَامِعُ" },
+  "16:49": { track: "Al Ganiyy الْغَنِىُّ" },
+  "17:00": { track: "Al Mughni الْمُغْنِى" },
+  "17:12": { track: "Al Mani الْمَانِعُ" },
+  "17:23": { track: "Ad Darr الضَّارَّ" },
+  "17:35": { track: "An Nafi النَّافِعُ" },
+  "17:47": { track: "An Nur النُّورُ" },
+  "17:58": { track: "Al Hadi الْهَادِى" },
+  "18:10": { track: "Al Badi الْبَدِيعُ" },
+  "18:22": { track: "Al Baqi الْبَاقِى" },
+  "18:33": { track: "Al Varis الْوَارِثُ" },
+  "18:45": { track: "Ar Rashid الرَّشِيدُ" },
+  "18:57": { track: "As Sabur الصَّبُورُ" },
+  "19:12": { track: "Allah الله" }
+};
+
+const timestamps = {
+  "00:01": { index: 1 },
+  "00:09": { index: 2 },
+  "00:20": { index: 3 },
+  "00:32": { index: 4 },
+  "00:44": { index: 5 },
+  "00:55": { index: 6 },
+  "01:07": { index: 7 },
+  "01:18": { index: 8 },
+  "01:30": { index: 9 },
+  "01:42": { index: 10 },
+  "01:53": { index: 11 },
+  "02:05": { index: 12 },
+  "02:16": { index: 13 },
+  "02:28": { index: 14 },
+  "02:40": { index: 15 },
+  "02:51": { index: 16 },
+  "03:03": { index: 17 },
+  "03:15": { index: 18 },
+  "03:27": { index: 19 },
+  "03:38": { index: 20 },
+  "03:50": { index: 21 },
+  "04:01": { index: 22 },
+  "04:13": { index: 23 },
+  "04:25": { index: 24 },
+  "04:36": { index: 25 },
+  "04:49": { index: 26 },
+  "05:00": { index: 27 },
+  "05:11": { index: 28 },
+  "05:23": { index: 29 },
+  "05:35": { index: 30 },
+  "05:46": { index: 31 },
+  "05:58": { index: 32 },
+  "06:09": { index: 33 },
+  "06:21": { index: 34 },
+  "06:32": { index: 35 },
+  "06:44": { index: 36 },
+  "06:55": { index: 37 },
+  "07:06": { index: 38 },
+  "07:18": { index: 39 },
+  "07:30": { index: 40 },
+  "07:41": { index: 41 },
+  "07:53": { index: 42 },
+  "08:05": { index: 43 },
+  "08:17": { index: 44 },
+  "08:28": { index: 45 },
+  "08:40": { index: 46 },
+  "08:52": { index: 47 },
+  "09:03": { index: 48 },
+  "09:15": { index: 49 },
+  "09:26": { index: 50 },
+  "09:41": { index: 51 },
+  "09:52": { index: 52 },
+  "10:04": { index: 53 },
+  "10:16": { index: 54 },
+  "10:27": { index: 55 },
+  "10:39": { index: 56 },
+  "10:51": { index: 57 },
+  "11:02": { index: 58 },
+  "11:14": { index: 59 },
+  "11:25": { index: 60 },
+  "11:37": { index: 61 },
+  "11:49": { index: 62 },
+  "12:00": { index: 63 },
+  "12:12": { index: 64 },
+  "12:23": { index: 65 },
+  "12:35": { index: 66 },
+  "12:47": { index: 67 },
+  "12:58": { index: 68 },
+  "13:10": { index: 69 },
+  "13:21": { index: 70 },
+  "13:33": { index: 71 },
+  "13:45": { index: 72 },
+  "13:56": { index: 73 },
+  "14:08": { index: 74 },
+  "14:18": { index: 75 },
+  "14:30": { index: 76 },
+  "14:41": { index: 77 },
+  "14:53": { index: 78 },
+  "15:05": { index: 79 },
+  "15:16": { index: 80 },
+  "15:27": { index: 81 },
+  "15:39": { index: 82 },
+  "15:51": { index: 83 },
+  "16:02": { index: 84 },
+  "16:14": { index: 85 },
+  "16:25": { index: 86 },
+  "16:37": { index: 87 },
+  "16:49": { index: 88 },
+  "17:00": { index: 89 },
+  "17:12": { index: 90 },
+  "17:23": { index: 91 },
+  "17:35": { index: 92 },
+  "17:47": { index: 93 },
+  "17:58": { index: 94 },
+  "18:10": { index: 95 },
+  "18:22": { index: 96 },
+  "18:33": { index: 97 },
+  "18:45": { index: 98 },
+  "18:57": { index: 99 },
+  "19:12": { index: 100 }
+};
+
+
+/* =========================
+   6) ANA SİSTEM
 ========================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -443,6 +653,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("search");
   const progressContainer = document.getElementById("progressContainer");
   const progressTooltip = document.getElementById("progressTooltip");
+  const currentTimeDisplay = document.getElementById("currentTime");
 
 /* ANIMATION ANFANG */
 /* =========================
@@ -811,7 +1022,7 @@ if (clearStorageBtn) {
     } else {
       result = _clearSpecificKeys(APP_KEYS_TO_CLEAR);
     }
-
+    resetPlayed();
     if (result.ok) {
       // Favoriten löschen / UI aktualisieren
       try { clearFavorites(); } catch (e) { /* ignore */ }
@@ -1025,53 +1236,75 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
 
 
   function buildNameList() {
-    namesBody.innerHTML = "";
-    const list = showOnlyFavorites
-      ? favorites.map(i => ({ item: imageChanges[i], realIndex: i }))
-      : imageChanges.map((x, i) => ({ item: x, realIndex: i }));
+  namesBody.innerHTML = "";
+  const list = showOnlyFavorites
+    ? favorites.map(i => ({ item: imageChanges[i], realIndex: i }))
+    : imageChanges.map((x, i) => ({ item: x, realIndex: i }));
 
-    list.forEach(row => {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-      td.dataset.realIndex = row.realIndex;
+  list.forEach(row => {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
 
-      td.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center;">
-          <span>${row.realIndex + 1}. ${row.item.text}</span>
-          <span class="favStar" style="cursor:pointer; margin-top:4px;">
-            ${isFavorite(row.realIndex) ? "⭐" : "☆"}
-          </span>
-        </div>`;
-      td.addEventListener("click", function () {
-        favPlayMode = false;
-        currentIndex = row.realIndex;
-        seekToTime(row.item.time);
-        updateContent(row.realIndex);
-        audio.play();
-        setListFocus(row.realIndex);
-      });
-      td.querySelector(".favStar").addEventListener("click", function (e) {
-        e.stopPropagation();
-        toggleFavorite(row.realIndex);
-      });
-      tr.appendChild(td);
-      namesBody.appendChild(tr);
+    // 🔑 notwendig für Zeit- & Farbsteuerung
+    td.dataset.realIndex = row.realIndex;
+
+    // 🔑 notwendig für timestamps → document.getElementById(...)
+    td.id = `name-${row.realIndex + 1}`;
+
+      const playedIndices = JSON.parse(
+        localStorage.getItem("playedIndices") || "[]"
+      );
+
+      if (playedIndices.includes(row.realIndex + 1)) {
+        td.classList.add("played");
+      }
+
+
+    td.innerHTML = `
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <span>${row.realIndex + 1}. ${row.item.text}</span>
+        <span class="favStar" style="cursor:pointer; margin-top:4px;">
+          ${isFavorite(row.realIndex) ? "⭐" : "☆"}
+        </span>
+      </div>`;
+
+    td.addEventListener("click", function () {
+      favPlayMode = false;
+      currentIndex = row.realIndex;
+      seekToTime(row.item.time);
+      updateContent(row.realIndex);
+      audio.play();
+      setListFocus(row.realIndex);
     });
 
-    setListFocus(currentIndex);
-    applySearchFilter();
-  }
+    td.querySelector(".favStar").addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleFavorite(row.realIndex);
+    });
 
-  // Liste toggle
-  listPanel.style.display = "none";
-  toggleBtn.textContent = "İsimler";
-  toggleBtn.addEventListener("click", function () {
-    const acikMi = listPanel.style.display === "block";
-    listPanel.style.display = acikMi ? "none" : "block";
-    toggleBtn.textContent = acikMi ? "İsimler" : "İsimleri gizle";
-    updateFavButtonsVisibility();
+    tr.appendChild(td);
+    namesBody.appendChild(tr);
   });
 
+  setListFocus(currentIndex);
+  applySearchFilter();
+}
+
+// Liste toggle
+listPanel.style.display = "none";
+toggleBtn.textContent = "İsimler";
+toggleBtn.addEventListener("click", function () {
+  const acikMi = listPanel.style.display === "block";
+  listPanel.style.display = acikMi ? "none" : "block";
+  toggleBtn.textContent = acikMi ? "İsimler" : "İsimleri gizle";
+  updateFavButtonsVisibility();
+});
+
+//RESET-FUNKTION
+function resetPlayed() {
+  localStorage.removeItem("playedIndices");
+  buildNameList();
+}
   // Favoriten abspielen
   function startFavoritesPlayback() {
     if (favorites.length === 0) {
@@ -1162,7 +1395,9 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
   // Audio Events mit Progressbar + Tooltip
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
-    
+    const currentTime = audioPlayer.currentTime;
+
+
       // wenn gerade gesprungen wird → nichts durchlaufen
   /* =========================
      1) PROGRESS / TOOLTIP
@@ -1170,6 +1405,10 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
   ========================= */
   if (!audio.seeking) {
     const percent = audio.duration ? (t / audio.duration) * 100 : 0;
+   
+
+
+
     progressBar.style.width = percent + "%";
 
     const d = audio.duration || 0;
@@ -1179,6 +1418,28 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
 
     progressText.textContent = `${current} / ${remaining}`;
     GesamtZeit.textContent = total;
+
+    const formattedTime = formatTime(t);
+    Isimler.textContent = formattedTime;
+    /* =========================
+      TIMESTAMP-MAPPING (SICHER)
+    ========================= */
+        const entry = timestamps[formattedTime];
+        if (entry) {
+          const trackElement = document.getElementById(`name-${entry.index}`);
+          if (trackElement) {
+            // 🔴 aktuellen rot färben
+            trackElement.style.color = "red";
+            NameOfAllah.textContent = trackElement.textContent;
+          const playedSet = new Set(
+              JSON.parse(localStorage.getItem("playedIndices") || "[]")
+          );
+
+              playedSet.add(entry.index);
+
+        localStorage.setItem("playedIndices",JSON.stringify([...playedSet]));
+        }
+        }
   }
   
    /* =========================
@@ -1236,12 +1497,10 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
       document.getElementById("Isimler").textContent = timeIsimler[idxISIM].text;
       idxISIM++;
     }
- 
-
     localStorage.setItem("lastIndex", currentIndex);
     localStorage.setItem("lastTime", t);
   });
-  });
+});
 
 
   // Wenn der Benutzer im Player springt → sofort Inhalte setzen
@@ -1295,10 +1554,6 @@ audio.addEventListener("seeked", function () {
       const meaningText = getMeaningByTime(timeValue) || "Anlam bulunamadı.";
 
     if (timeAnlamı[index]) fs.typewriter.startOnce(meaningText, 25); // 45 ms pro Zeichen, anpassbar //anlamBox.textContent = timeAnlamı[index].text;
-    
-
-
-
     if (timeSureler[index]) sureBox.textContent = timeSureler[index].text;
     if (timeIsimler[index]) timeIsimler.textContent = timeIsimler[index].text;
 
