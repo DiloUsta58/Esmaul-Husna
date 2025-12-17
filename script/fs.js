@@ -1406,9 +1406,6 @@ function resetPlayed() {
   if (!audio.seeking) {
     const percent = audio.duration ? (t / audio.duration) * 100 : 0;
    
-
-
-
     progressBar.style.width = percent + "%";
 
     const d = audio.duration || 0;
@@ -1430,7 +1427,7 @@ function resetPlayed() {
           if (trackElement) {
             // 🔴 aktuellen rot färben
             trackElement.style.color = "red";
-            NameOfAllah.textContent = trackElement.textContent;
+            //NameOfAllah.textContent = trackElement.textContent;
           const playedSet = new Set(
               JSON.parse(localStorage.getItem("playedIndices") || "[]")
           );
