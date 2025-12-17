@@ -1420,7 +1420,7 @@ function resetPlayed() {
     GesamtZeit.textContent = total;
 
     const formattedTime = formatTime(t);
-    Isimler.textContent = formattedTime;
+
     /* =========================
       TIMESTAMP-MAPPING (SICHER)
     ========================= */
