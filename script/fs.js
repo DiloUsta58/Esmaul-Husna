@@ -1118,6 +1118,10 @@ if (toggleBtn && typeof listPanel !== "undefined" && listPanel) {
   });
 }
 
+function setListFocus() {
+  // bewusst leer – Fokus wird über .current gesteuert
+}
+
 
 // Fallback: erzwinge block: 'start' für alle scrollIntoView-Aufrufe
 (function() {
@@ -1268,14 +1272,22 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
         </span>
       </div>`;
 
-    td.addEventListener("click", function () {
-      favPlayMode = false;
-      currentIndex = row.realIndex;
-      seekToTime(row.item.time);
-      updateContent(row.realIndex);
-      audio.play();
-      setListFocus(row.realIndex);
-    });
+      td.addEventListener("click", function () {
+        favPlayMode = false;
+        currentIndex = row.realIndex;
+
+        document
+          .querySelectorAll('#ALLAHIN_ISIMLERI td.current')
+          .forEach(td => td.classList.remove('current'));
+
+        td.classList.add('current');
+
+        seekToTime(row.item.time);
+        updateContent(row.realIndex);
+        audio.play();
+        setListFocus(row.realIndex);
+      });
+
 
     td.querySelector(".favStar").addEventListener("click", function (e) {
       e.stopPropagation();
@@ -1421,28 +1433,39 @@ function resetPlayed() {
     /* =========================
       TIMESTAMP-MAPPING (SICHER)
     ========================= */
-        const entry = timestamps[formattedTime];
-        if (entry) {
-          const trackElement = document.getElementById(`name-${entry.index}`);
-          if (trackElement) {
-            // 🔴 aktuellen rot färben
-            trackElement.style.color = "red";
-            //NameOfAllah.textContent = trackElement.textContent;
-          const playedSet = new Set(
+      const entry = timestamps[formattedTime];
+      if (entry) {
+        const trackElement = document.getElementById(`name-${entry.index}`);
+        if (trackElement) {
+
+          // 1️⃣ alte current-Markierung entfernen
+          document
+            .querySelectorAll('#ALLAHIN_ISIMLERI td.current')
+            .forEach(td => td.classList.remove('current'));
+
+          // 2️⃣ neue Stelle: erst played setzen (historisch)
+          trackElement.classList.add('played');
+
+          // 3️⃣ dann current setzen (überschreibt visuell)
+          trackElement.classList.add('current');
+            const playedSet = new Set(
               JSON.parse(localStorage.getItem("playedIndices") || "[]")
           );
 
               playedSet.add(entry.index);
 
-        localStorage.setItem("playedIndices",JSON.stringify([...playedSet]));
+          localStorage.setItem("playedIndices",JSON.stringify([...playedSet]));
+          //NameOfAllah.textContent = trackElement.textContent;
         }
-        }
+      }
   }
   
+
    /* =========================
      2) ZEITSTATUS – IMMER
      (unabhängig von seeking)
   ========================= */
+
   const cells = namesBody.querySelectorAll("td");
 
   cells.forEach(td => {
@@ -1462,6 +1485,18 @@ function resetPlayed() {
       td.classList.remove("past");
       td.classList.add("current");
     }
+
+    // 📊 Mini-Progress pro Eintrag
+      if (t >= start && t < next) {
+        const progress = ((t - start) / (next - start)) * 100;
+        td.style.setProperty("--p", `${progress}%`);
+      } else if (t >= next) {
+        td.style.setProperty("--p", "100%");
+      } else {
+        td.style.setProperty("--p", "0%");
+      }
+
+
 
     if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
@@ -1543,9 +1578,13 @@ audio.addEventListener("seeked", function () {
   // Inhalt aktualisieren
   function updateContent(index) {
     const item = imageChanges[index];
+    //const itemName = timeIsimler[index];
+    
     if (!item) return;
     imageEl.src = item.imageSrc;
     nameBox.textContent = item.text;
+
+
 
       const timeValue = imageChanges[currentIndex] && imageChanges[currentIndex].time;
       const meaningText = getMeaningByTime(timeValue) || "Anlam bulunamadı.";

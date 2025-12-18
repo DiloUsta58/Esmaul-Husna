@@ -3,12 +3,13 @@
 ========================= */
 :root {
   --bg: #071021;
+  --Schriftfarbe: #ffffff;
   --card: rgba(255,255,255,0.04);
-  --muted: rgba(255,255,255,0.7);
-  --accent: #ffd369;
+  --Grau: rgba(255,255,255,0.7);
+  --Header: #ffd369;
   --glass: rgba(255,255,255,0.03);
-  --BenimRenk:#eead21;
-  --bluRenkDB:rgb(28, 47, 88);
+  --BenimRenk:#ce9f39;
+  --bluRenkDB:rgba(2, 150, 248, 0.856);
   --radius: 14px;
 }
 
@@ -58,7 +59,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--accent);
+  border-bottom: 2px solid var(--Header);
   box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
   position: sticky;
   top: 0;
@@ -70,12 +71,12 @@ header h1 {
   margin: 0;
   font-size: clamp(1.2rem, 2vw, 1.8rem);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--Header);
   letter-spacing: 0.5px;
 }
 
 .subtitle {
-  color: var(--muted);
+  color: var(--Grau);
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
   font-weight: 400;
   line-height: 1.2;
@@ -92,7 +93,7 @@ header.top {
 header.top .meta {
   font-size: 0.7rem;
   font-weight: 300;
-  color: var(--muted);
+  color: var(--Grau);
   line-height: 1.2;
   opacity: 0.75;
   letter-spacing: 0.3px;
@@ -105,7 +106,7 @@ header .header-icons {
 header .header-icons button {
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--Header);
   font-size: 1.2rem;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -153,13 +154,13 @@ header .header-icons button:hover { color: #fff; }
 .name {
 
   font-size: 1.95rem;
-  color: var(--accent);
+  color: var(--Header);
   font-weight: 700;
 }
 .arabic { font-size: 3.25rem; }
 .meaning {
   font-size: 0.95rem;
-  color: var(--muted);
+  color: var(--Grau);
   min-height: 56px;
   padding: 8px;
   border-radius: 10px;
@@ -204,7 +205,7 @@ audio::-webkit-media-controls-time-remaining-display {
 
 audio:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: 0 0 0 2px var(--Header);
   border-radius: 8px;
 }
 
@@ -236,14 +237,14 @@ audio:focus {
 .search input:focus {
   background: rgba(255,255,255,0.15);
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: 0 0 0 2px var(--Header);
 }
 
 /* =========================
    BUTTONS
 ========================= */
 .btn {
-  background: var(--accent);
+  background: var(--Header);
   color: #000;
   border: none;
   padding: 10px 16px;
@@ -259,7 +260,7 @@ audio:focus {
 }
 .btn:active { transform: translateY(0); box-shadow: none; }
 .btn.playing {
-  background: linear-gradient(135deg, var(--accent), #ffb703);
+  background: linear-gradient(135deg, var(--Header), #ffb703);
   color: #000;
   box-shadow: 0 0 12px rgba(255,211,105,0.8);
 }
@@ -311,7 +312,7 @@ audio:focus {
 #storageStatus {
   margin-top: 6px;
   font-size: 0.8rem;
-  color: var(--muted, #ccc);
+  color: var(--Grau, #ccc);
 }
 
 .button-group {
@@ -350,16 +351,16 @@ audio:focus {
 }
 #listPanel::-webkit-scrollbar { width: 8px; }
 #listPanel::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: var(--Header);
   border-radius: 6px;
 }
 #listPanel::-webkit-scrollbar-track {
   background: rgba(255,255,255,0.05);
 }
 
-/* =========================
+/* ====================================================
    TABLE GRID – ALLAHIN ISIMLERI (ORIGINAL-ABSTÄNDE)
-========================= */
+==================================================== */
 #ALLAHIN_ISIMLERI {
   margin: 0 auto;            /* horizontale Zentrierung */
   display: block;            /* wichtig für auto-Margin */
@@ -389,6 +390,7 @@ audio:focus {
   white-space: normal;      /* erlaubt Umbruch bei langen Namen */
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
   box-sizing: border-box;   /* verhindert Überlauf */
+ /* color: #edff4da2;*/
 
 }
 
@@ -399,50 +401,49 @@ audio:focus {
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
 }
 
-#ALLAHIN_ISIMLERI td.active {
-  background: linear-gradient(135deg,#ffd369,#ffb703);
-
-  font-weight: bold;
-  box-shadow: 0 0 12px rgba(255,211,105,.8);
-  animation: pulse-gold 2s infinite;
-}
-
-#ALLAHIN_ISIMLERI td.played {
-  color: #ff4d4d;
-}
-
-
-  /* =========================
+/* =========================
    ZEIT-FARBSTATUS (LISTE)
-   - past = rot
-   - current = grün
-🟥 Rot → alles, was bereits abgespielt wurde
-🟩 Grün → exakt die aktuell laufende Stelle
-⚪ Normal → noch nicht erreicht
-
-
-#ALLAHIN_ISIMLERI td.current {
-  color: #038f2f;
-  font-weight: 700;
-}
-
-
-
-#ALLAHIN_ISIMLERI td.current:not(.active) {
-  color: #121814;
-}
-
-#ALLAHIN_ISIMLERI td.past:not(.active) {
-  color: #ff4d4d;
-}
+   🟩 current  = aktuell (Glow)
+   🔴 played   = bereits abgespielt (ruhig)
+   ⚪ normal   = neutral
 ========================= */
 
+/* 🟩 aktuell – dezenter Glow */
+#ALLAHIN_ISIMLERI td.current {
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(255, 210, 105, 0.568);
+  background: linear-gradient(135deg,#0b690b,#119711);
+  /* Animation*/
+  animation: pulse-Green 2s infinite;
+}
+
+/* 🔴 played   = bereits abgespielt (ruhig) */
+#ALLAHIN_ISIMLERI td.played,
+#ALLAHIN_ISIMLERI td.played span {
+  color: #ff4d4d;
+}
+
+#ALLAHIN_ISIMLERI td.current span {
+  color: #ffffff;
+}
+
+/* ⚪ NORMAL (explizit ruhig halten) */
+#ALLAHIN_ISIMLERI td:not(.current):not(.played),
+#ALLAHIN_ISIMLERI td:not(.current):not(.played) span {
+  color: var(--Header);
+}
+
+#Kimlik,
+#lastUpdate {
+  color: var(--Header);
+}
 
 /* Favoriten-Stern – Original-Abstand */
 .favStar {
   font-size: 1.2rem;
   margin-top: 6px;        /* ❗ exakt wie Original */
-  color: var(--accent);
+  color: var(--Header);
   transition: transform 0.2s;
 }
 
@@ -529,7 +530,7 @@ color: var(--BenimRenk);
 }
 #progressBar {
   height: 8px;
-  background: linear-gradient(90deg, var(--accent), #ffb703);
+  background: linear-gradient(90deg, var(--Header), #ffb703);
   width: 0%;
   transition: width 0.3s;
   box-shadow: 0 0 6px rgba(255, 211, 105, 0.6);
@@ -566,7 +567,7 @@ color: var(--BenimRenk);
 
 .progress-total {
   font-size: 0.9rem;
-color: var(--BenimRenk);
+  color: var(--BenimRenk);
   margin-left: auto;
 }
 
@@ -577,10 +578,49 @@ color: var(--BenimRenk);
 footer {
   display: flex;
   justify-content: space-between;
-  color: var(--muted);
+  color: var(--Grau);
   font-size: 0.85rem;
   margin-top: 20px;
 }
+
+/* =========================
+   MINI-PROGRESS IM TD
+========================= */
+
+#ALLAHIN_ISIMLERI td {
+  position: relative;
+  --p: 0%;
+}
+
+/* Grundbalken */
+#ALLAHIN_ISIMLERI td::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 6px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    currentColor var(--p),
+    rgba(255,255,255,0.12) var(--p)
+  );
+  opacity: 0;
+  transition: width 0.25s linear, opacity 0.25s;
+}
+
+/* sichtbar nur bei played / current */
+#ALLAHIN_ISIMLERI td.current::after,
+#ALLAHIN_ISIMLERI td.played::after {
+  opacity: 0.85;
+}
+
+/* played = immer voll */
+#ALLAHIN_ISIMLERI td.played {
+  --p: 100%;
+}
+
 
 /* =========================
    ANIMATIONS
@@ -596,6 +636,13 @@ footer {
   50% { transform: scale(1.06); box-shadow: 0 0 16px rgba(255,80,80,.7); }
   100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,80,80,.4); }
 }
+
+@keyframes pulse-Green {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 217, 107, 0.25); }
+  50% { transform: scale(1.06); box-shadow: 0 0 16px rgba(56, 217, 107, 0.452); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 217, 107, 0.911); }
+}
+
 
 /* =========================
    RESPONSIVE ERWEITERUNG
