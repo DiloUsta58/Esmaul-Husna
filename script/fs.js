@@ -655,6 +655,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const progressTooltip = document.getElementById("progressTooltip");
   const currentTimeDisplay = document.getElementById("currentTime");
 
+  /* Design Wechsel */
+    const themeBtn = document.getElementById("themeToggle");
+    const themeLink = document.getElementById("theme-style");
+
+    function applyTheme(theme) {
+      themeLink.href = theme === "dark"
+        ? "css/style_dark.css"
+        : "css/style_blue.css";
+
+      themeBtn.textContent = theme === "dark" ? "🌙 Siyah" : "☀️ Mavi";
+      localStorage.setItem("theme", theme);
+    }
+
+    // Klick
+    themeBtn.addEventListener("click", () => {
+      const current = localStorage.getItem("theme") || "dark";
+      applyTheme(current === "dark" ? "normal" : "dark");
+    });
+
+    // Beim Start laden
+    applyTheme(localStorage.getItem("theme") || "dark");
+
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(localStorage.getItem("theme") || (systemDark ? "dark" : "normal"));
+
+
 /* ANIMATION ANFANG */
 /* =========================
    TYPEWRITER (für #Anlamlari)
@@ -1488,13 +1514,16 @@ function resetPlayed() {
 
     // 📊 Mini-Progress pro Eintrag
       if (t >= start && t < next) {
-        const progress = ((t - start) / (next - start)) * 100;
-        td.style.setProperty("--p", `${progress}%`);
-      } else if (t >= next) {
+        const p = ((t - start) / (next - start)) * 100;
+        td.style.setProperty("--p", `${p}%`);
+      }
+      else if (t >= next) {
         td.style.setProperty("--p", "100%");
-      } else {
+      }
+      else {
         td.style.setProperty("--p", "0%");
       }
+
 
 
 
