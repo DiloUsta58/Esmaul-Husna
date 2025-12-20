@@ -661,10 +661,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyTheme(theme) {
       themeLink.href = theme === "dark"
-        ? "css/style_dark.css"
+        ? "css/style_dark_blue.css"
         : "css/style_blue.css";
 
-      themeBtn.textContent = theme === "dark" ? "🌙 Siyah" : "☀️ Mavi";
+      themeBtn.textContent = theme === "dark" ? "🌙 Siyah-Mavi" : "☀️ Mavi-Sarı";
       localStorage.setItem("theme", theme);
     }
 

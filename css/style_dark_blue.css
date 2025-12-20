@@ -2,12 +2,14 @@
    RESET & BASE (BEREINIGT – KOMPLETT)
 ========================= */
 :root {
-  --bg: #071021;
-  --Schriftfarbe: #ffffff;
-  --card: rgba(255,255,255,0.04);
-  --Grau: rgba(255,255,255,0.7);
+  --bgHintergrund:#141414;
+  --bgMain: linear-gradient(190deg, #1f1e1fd8, #1f1e1f4d);
+  --bg2f: linear-gradient(90deg, var(--Header), #03a3ffb7);
+  --bgtd_Allahin_isimleri: rgba(255, 255, 255, 0.027); 
+  --Text: #00c2fde5;
+  --BoxBG: rgba(255,255,255,0.7);
   --Header: #ffd369;
-  --glass: rgba(255,255,255,0.03);
+  --Box_Isimler_Box_Rechts: rgba(255,255,255,0.03);
   --BenimRenk:#ce9f39;
   --bluRenkDB:rgba(2, 150, 248, 0.856);
   --radius: 14px;
@@ -20,8 +22,7 @@ html, body {
   padding: 0;
   min-height: 100%;
   font-family: Inter, system-ui, Arial;
-  background: linear-gradient(180deg,#040612 0%, #071021 90%);
-  color: #fff;
+  background: var(--bgHintergrund);
   overflow-x: hidden;
 }
 
@@ -38,10 +39,9 @@ main {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  background: linear-gradient(90deg, #161b2c, #1f2640);
+  background: var(--bgMain);
   border-radius: 20px;
   padding: 18px;
-  color: #fff;
   box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
   display: flex;
   flex-direction: column;
@@ -54,13 +54,12 @@ main {
 header {
   width: 100%;
   padding: 16px 24px;
-  background: linear-gradient(90deg, #161b2c, #1f2640);
-  color: #fff;
+  background: var(--bgMain);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--Header);
-  box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
+  border-bottom: 2px solid var(--Text);
+  box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -71,12 +70,12 @@ header h1 {
   margin: 0;
   font-size: clamp(1.2rem, 2vw, 1.8rem);
   font-weight: 700;
-  color: var(--Header);
+  color: var(--Text);
   letter-spacing: 0.5px;
 }
 
 .subtitle {
-  color: var(--Grau);
+  color: var(--BoxBG);
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
   font-weight: 400;
   line-height: 1.2;
@@ -93,7 +92,7 @@ header.top {
 header.top .meta {
   font-size: 0.7rem;
   font-weight: 300;
-  color: var(--Grau);
+  color: var(--BoxBG);
   line-height: 1.2;
   opacity: 0.75;
   letter-spacing: 0.3px;
@@ -106,7 +105,7 @@ header .header-icons {
 header .header-icons button {
   background: none;
   border: none;
-  color: var(--Header);
+  color: var(--Text);
   font-size: 1.2rem;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -130,9 +129,9 @@ header .header-icons button:hover { color: #fff; }
    VISUAL  / ISIMLER / AYET / ANLAMLAR
 ====================================S */
 .visual {
-  background: var(--glass);
+  background: var(--Box_Isimler_Box_Rechts);
   border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
+  box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -151,15 +150,14 @@ header .header-icons button:hover { color: #fff; }
   object-fit: contain;
 }
 .name {
-
   font-size: 1.95rem;
-  color: var(--Header);
+  color: var(--Text);
   font-weight: 700;
 }
 .arabic { font-size: 3.25rem; }
 .meaning {
   font-size: 0.95rem;
-  color: var(--Grau);
+  color: var(--BoxBG);
   min-height: 56px;
   padding: 8px;
   border-radius: 10px;
@@ -170,23 +168,23 @@ header .header-icons button:hover { color: #fff; }
 #Sure, #Isimler, #Anlamlari {
   margin-top: 12px;
   padding: 14px 18px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.05);
   text-align: center;
 }
 
 #Sure, #Isimler, #Anlamlari, #favCounter, .progress-text, .progress-total {
-  color: var(--BenimRenk);
+  color: var(--Text);
 }
 
 /* =========================
    CONTROLS
 ========================= */
 .controls {
-  background: var(--glass);
+  background: var(--Box_Isimler_Box_Rechts);
   border-radius: var(--radius);
   margin-top: 16px;
-  box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
+  box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
   border: 1px solid rgba(255,255,255,0.08);
   animation: fadeIn 0.4s ease-in-out;
   padding: 12px;
@@ -204,7 +202,7 @@ audio::-webkit-media-controls-time-remaining-display {
 
 audio:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--Header);
+  box-shadow: 0 0 0 2px var(--Text);
   border-radius: 8px;
 }
 
@@ -224,7 +222,6 @@ audio:focus {
 #themeToggle:hover {
   opacity: 1;
 }
-
 
 /* =========================
    SEARCH
@@ -247,15 +244,15 @@ audio:focus {
 .search input:focus {
   background: rgba(255,255,255,0.15);
   outline: none;
-  box-shadow: 0 0 0 2px var(--Header);
+  box-shadow: 0 0 0 2px var(--Text);
 }
 
 /* =========================
    BUTTONS
 ========================= */
 .btn {
-  background: var(--Header);
-  color: #000;
+  background: var(--Text);
+  color: #ffffff;
   border: none;
   padding: 10px 16px;
   border-radius: 999px;
@@ -264,13 +261,13 @@ audio:focus {
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 .btn:hover {
-  background: #ffb703;
+  background: #00c2fde5;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
+  box-shadow: 0 4px 12px rgba(2, 150, 248, 0.856);
 }
 .btn:active { transform: translateY(0); box-shadow: none; }
 .btn.playing {
-  background: linear-gradient(135deg, var(--Header), #ffb703);
+  background: linear-gradient(135deg, var(--Text), #00c2fde5);
   color: #000;
   box-shadow: 0 0 12px rgba(255,211,105,0.8);
 }
@@ -322,7 +319,7 @@ audio:focus {
 #storageStatus {
   margin-top: 6px;
   font-size: 0.8rem;
-  color: var(--Grau, #ccc);
+  color: var(--BoxBG, #ccc);
 }
 
 .button-group {
@@ -346,7 +343,7 @@ audio:focus {
   padding: 12px;
   margin-top: 12px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.05);
+  background: var(--bgMain);
   box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
 }
 
@@ -381,7 +378,7 @@ audio:focus {
   grid-template-columns: repeat(3, 1fr);
   gap: 3px;
   align-content: start;
-  background-color: #161b2c;
+  background-color: var(--bgHintergrund);
   justify-items: center;
   width: 100%;
 }
@@ -390,7 +387,7 @@ audio:focus {
   font-size: 0.95rem;
   padding: 10px;            /* Innenabstand statt Margin */
   min-height: 52px;
-  background: rgba(255,255,255,0.06);
+  background: var(--bgtd_Allahin_isimleri);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -405,10 +402,11 @@ audio:focus {
 }
 
 #ALLAHIN_ISIMLERI td:hover {
-  background: rgba(255,211,105,0.25);   /* sanfte Akzentfarbe im Hintergrund */
-  transform: translateY(-3px);          /* leichtes Anheben statt hartem Scale */
-  box-shadow: 0 4px 10px rgba(255,211,105,0.3); /* dezenter Glow */
+  background: rgba(49, 48, 48, 0.651);   /* sanfte Akzentfarbe im Hintergrund */
+  transform: translateY(-3px);            /* leichtes Anheben statt hartem Scale */
+  box-shadow: 0 4px 10px rgba(2, 150, 248, 0.459); /* dezenter Glow */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
+  
 }
 
 /* =========================
@@ -422,10 +420,10 @@ audio:focus {
 #ALLAHIN_ISIMLERI td.current {
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 0 12px rgba(255, 210, 105, 0.61);
-  background: linear-gradient(135deg,rgba(255,211,105,.8),rgba(255, 210, 105, 0.534));
+  box-shadow: 0 0 12px var(--BenimRenk);
+  background: linear-gradient(135deg,rgb(0, 122, 204),rgba(2, 150, 248, 0.856));
   /* Animation*/
-  animation: pulse-gold 2s infinite;
+  animation: pulse-Green 2s infinite;
 }
 
 /* 🔴 played   = bereits abgespielt (ruhig) */
@@ -441,12 +439,12 @@ audio:focus {
 /* ⚪ NORMAL (explizit ruhig halten) */
 #ALLAHIN_ISIMLERI td:not(.current):not(.played),
 #ALLAHIN_ISIMLERI td:not(.current):not(.played) span {
-  color: var(--Header);
+  color: var(--Text);
 }
 
 #Kimlik,
 #lastUpdate {
-  color: var(--Header);
+  color: var(--Text);
 }
 
 /* Favoriten-Stern – Original-Abstand */
@@ -474,21 +472,21 @@ audio:focus {
 }
 
 #Sure {
-color: var(--BenimRenk);
+color: var(--Text);
   font-size: 0.75rem;
   text-align: center;
   animation: fadeInGlow 0.4s ease-in-out;
 }
 
 #Isimler {
-color: var(--BenimRenk);
+color: var(--Text);
   font-size: 0.75rem;
   font-weight: 500;
   text-align: center;
 }
 
 #Anlamlari {
-color: var(--BenimRenk);
+color: var(--Text);
   font-size: 0.85rem;
   line-height: 1.4;
   text-align: center;
@@ -508,7 +506,7 @@ color: var(--BenimRenk);
    favCounter
 ============= */
 #favCounter {
-color: var(--BenimRenk);
+color: var(--Text);
   font-size:14px;
   line-height: 1.4;
   margin-top:6px;
@@ -540,7 +538,7 @@ color: var(--BenimRenk);
 }
 #progressBar {
   height: 8px;
-  background: linear-gradient(90deg, var(--Header), #ffb703);
+  background:  #03a3ffb7;
   width: 0%;
   transition: width 0.3s;
   box-shadow: 0 0 6px rgba(255, 211, 105, 0.6);
@@ -551,13 +549,12 @@ color: var(--BenimRenk);
   bottom: 120%;
   left: 0;
   transform: translateX(-50%);
-  background: var(--card);
-  color: #fff;
+  background: var(--Text);
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.8rem;
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
@@ -572,12 +569,12 @@ color: var(--BenimRenk);
 }
 .progress-text {
   font-size: 0.9rem;
-  color: var(--BenimRenk);
+  color: var(--Text);
 }
 
 .progress-total {
   font-size: 0.9rem;
-  color: var(--BenimRenk);
+  color: var(--Text);
   margin-left: auto;
 }
 
@@ -588,13 +585,13 @@ color: var(--BenimRenk);
 footer {
   display: flex;
   justify-content: space-between;
-  color: var(--Grau);
+  color: var(--BoxBG);
   font-size: 0.85rem;
   margin-top: 20px;
 }
 
 /* =========================
-   MINI-PROGRESS IM TD
+   MINI-PROGRESS (ELEGANT)
 ========================= */
 
 #ALLAHIN_ISIMLERI td {
@@ -602,34 +599,36 @@ footer {
   --p: 0%;
 }
 
-/* Grundbalken */
+/* Balken */
 #ALLAHIN_ISIMLERI td::after {
   content: "";
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 10px;
+  right: 10px;
   bottom: 6px;
-  height: 4px;
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    currentColor var(--p),
-    rgba(255,255,255,0.12) var(--p)
-  );
+  height: 3px;
+  border-radius: 3px;
+  background:
+    linear-gradient(
+      90deg,
+      currentColor var(--p),
+      rgba(255,255,255,0.12) var(--p)
+    );
   opacity: 0;
-  transition: width 0.25s linear, opacity 0.25s;
+  transition: opacity 0.25s ease;
 }
 
-/* sichtbar nur bei played / current */
+/* sichtbar nur bei Status */
 #ALLAHIN_ISIMLERI td.current::after,
 #ALLAHIN_ISIMLERI td.played::after {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
-/* played = immer voll */
+/* gespielt = voll */
 #ALLAHIN_ISIMLERI td.played {
   --p: 100%;
 }
+
 
 
 /* =========================
