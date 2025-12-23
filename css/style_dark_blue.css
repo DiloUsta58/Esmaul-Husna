@@ -2,17 +2,29 @@
    RESET & BASE (BEREINIGT – KOMPLETT)
 ========================= */
 :root {
-  --bgHintergrund:#141414;
-  --bgMain: linear-gradient(190deg, #1f1e1fd8, #1f1e1f4d);
-  --bg2f: linear-gradient(90deg, var(--Header), #03a3ffb7);
-  --bgtd_Allahin_isimleri: rgba(255, 255, 255, 0.027); 
-  --Text: #00c2fde5;
-  --BoxBG: rgba(255,255,255,0.7);
-  --Header: #ffd369;
+  --TextColorNormal: #ffffff;
+  --TextColorPlayed:#a50303f8;
+  --TextColorCurrend: #ffffff;
+  --TextColor_td: #00c2fde5;
+  --Isim_Anlam_Ayet:#00c2fde5;
+  --BgHeader: linear-gradient(190deg, #1f1e1fd8, #1f1e1f4d);
+  --BgBody: linear-gradient(180deg,#000000 0%, #000000 90%);
+  --BgBody_td: #141414;
+  --BgMain:rgba(255,255,255,0.03);
   --Box_Isimler_Box_Rechts: rgba(255,255,255,0.03);
-  --BenimRenk:#ce9f39;
-  --bluRenkDB:rgba(2, 150, 248, 0.856);
+  --card: rgba(255,255,255,0.04);
+  --Info: rgba(255,255,255,0.7);
+  --AkAuswahltd: linear-gradient(135deg,#00c2fde5,#026a8ae5);
+  --FavStar: #ffd369;
+  --BoxLinks_Rechts: rgba(255,255,255,0.03);
   --radius: 14px;
+
+  --mini-progress-height: 4px;
+  --mini-progress-bg: rgba(91, 221, 58, 0.767);
+  --mini-progress-current: #000000; /* grün */
+  --mini-progress-played: #5cff4d;  /* rot */
+
+  /*#141414*/
 }
 
 * { box-sizing: border-box; }
@@ -22,7 +34,8 @@ html, body {
   padding: 0;
   min-height: 100%;
   font-family: Inter, system-ui, Arial;
-  background: var(--bgHintergrund);
+  background: var(--BgBody_td);
+  color: #fff;
   overflow-x: hidden;
 }
 
@@ -39,9 +52,10 @@ main {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  background: var(--bgMain);
+  background: var(--BgMain);
   border-radius: 20px;
   padding: 18px;
+  color: #fff;
   box-shadow: 0 2px 12px rgba(255, 211, 105, 0.25);
   display: flex;
   flex-direction: column;
@@ -54,12 +68,15 @@ main {
 header {
   width: 100%;
   padding: 16px 24px;
-  background: var(--bgMain);
+  background: var(--BgHeader);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--Text);
+  border-bottom: 2px solid var(--Isim_Anlam_Ayet);
   box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
+
+
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -70,12 +87,12 @@ header h1 {
   margin: 0;
   font-size: clamp(1.2rem, 2vw, 1.8rem);
   font-weight: 700;
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
   letter-spacing: 0.5px;
 }
 
 .subtitle {
-  color: var(--BoxBG);
+  color: var(--Info);
   font-size: clamp(0.7rem, 1.5vw, 0.9rem);
   font-weight: 400;
   line-height: 1.2;
@@ -92,7 +109,7 @@ header.top {
 header.top .meta {
   font-size: 0.7rem;
   font-weight: 300;
-  color: var(--BoxBG);
+  color: var(--Info);
   line-height: 1.2;
   opacity: 0.75;
   letter-spacing: 0.3px;
@@ -105,7 +122,7 @@ header .header-icons {
 header .header-icons button {
   background: none;
   border: none;
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
   font-size: 1.2rem;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -129,9 +146,10 @@ header .header-icons button:hover { color: #fff; }
    VISUAL  / ISIMLER / AYET / ANLAMLAR
 ====================================S */
 .visual {
-  background: var(--Box_Isimler_Box_Rechts);
+  background: var(--BoxLinks_Rechts);
   border-radius: var(--radius);
   box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
+  border: 1px solid rgba(255,255,255,0.08);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -139,9 +157,7 @@ header .header-icons button:hover { color: #fff; }
   align-items: center;
   text-align: center;
   margin-top: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
   animation: fadeIn 0.4s ease-in-out;
-
 }
 .visual img {
   width: 100%;
@@ -150,14 +166,15 @@ header .header-icons button:hover { color: #fff; }
   object-fit: contain;
 }
 .name {
+
   font-size: 1.95rem;
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
   font-weight: 700;
 }
 .arabic { font-size: 3.25rem; }
 .meaning {
   font-size: 0.95rem;
-  color: var(--BoxBG);
+  color: var(--Info);
   min-height: 56px;
   padding: 8px;
   border-radius: 10px;
@@ -168,20 +185,20 @@ header .header-icons button:hover { color: #fff; }
 #Sure, #Isimler, #Anlamlari {
   margin-top: 12px;
   padding: 14px 18px;
-  border-radius: var(--radius);
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   text-align: center;
 }
 
 #Sure, #Isimler, #Anlamlari, #favCounter, .progress-text, .progress-total {
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
 }
 
 /* =========================
    CONTROLS
 ========================= */
 .controls {
-  background: var(--Box_Isimler_Box_Rechts);
+  background: var(--BoxLinks_Rechts);
   border-radius: var(--radius);
   margin-top: 16px;
   box-shadow: 0 2px 12px rgba(4, 146, 241, 0.37);
@@ -191,6 +208,7 @@ header .header-icons button:hover { color: #fff; }
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-align: center;
 }
 
 .audio-row { display: flex; gap: 8px; }
@@ -202,7 +220,7 @@ audio::-webkit-media-controls-time-remaining-display {
 
 audio:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--Text);
+  box-shadow: 0 0 0 2px var(--Isim_Anlam_Ayet);
   border-radius: 8px;
 }
 
@@ -222,6 +240,7 @@ audio:focus {
 #themeToggle:hover {
   opacity: 1;
 }
+
 
 /* =========================
    SEARCH
@@ -244,14 +263,14 @@ audio:focus {
 .search input:focus {
   background: rgba(255,255,255,0.15);
   outline: none;
-  box-shadow: 0 0 0 2px var(--Text);
+  box-shadow: 0 0 0 2px var(--Isim_Anlam_Ayet);
 }
 
 /* =========================
    BUTTONS
 ========================= */
 .btn {
-  background: var(--Text);
+  background: var(--Isim_Anlam_Ayet);
   color: #ffffff;
   border: none;
   padding: 10px 16px;
@@ -267,9 +286,9 @@ audio:focus {
 }
 .btn:active { transform: translateY(0); box-shadow: none; }
 .btn.playing {
-  background: linear-gradient(135deg, var(--Text), #00c2fde5);
+  background: linear-gradient(135deg, var(--Isim_Anlam_Ayet), #152846);
   color: #000;
-  box-shadow: 0 0 12px rgba(255,211,105,0.8);
+  box-shadow: 0 0 12px #00c2fde5;
 }
 
 /* =================================
@@ -319,7 +338,7 @@ audio:focus {
 #storageStatus {
   margin-top: 6px;
   font-size: 0.8rem;
-  color: var(--BoxBG, #ccc);
+  color: var(--Info, #ccc);
 }
 
 .button-group {
@@ -343,7 +362,7 @@ audio:focus {
   padding: 12px;
   margin-top: 12px;
   border-radius: 14px;
-  background: var(--bgMain);
+  background: rgba(255,255,255,0.05);
   box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
 }
 
@@ -358,7 +377,7 @@ audio:focus {
 }
 #listPanel::-webkit-scrollbar { width: 8px; }
 #listPanel::-webkit-scrollbar-thumb {
-  background: var(--Header);
+  background: var(--Isim_Anlam_Ayet);
   border-radius: 6px;
 }
 #listPanel::-webkit-scrollbar-track {
@@ -378,16 +397,18 @@ audio:focus {
   grid-template-columns: repeat(3, 1fr);
   gap: 3px;
   align-content: start;
-  background-color: var(--bgHintergrund);
+  background-color: var(--BgBody_td);
   justify-items: center;
   width: 100%;
 }
 #ALLAHIN_ISIMLERI tr { display: contents; }
 #ALLAHIN_ISIMLERI td {
+  position: relative;
   font-size: 0.95rem;
   padding: 10px;            /* Innenabstand statt Margin */
+  padding-bottom: 20px;     /* Platz für Progress */
   min-height: 52px;
-  background: var(--bgtd_Allahin_isimleri);
+  background: rgba(255,255,255,0.06);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -397,61 +418,120 @@ audio:focus {
   white-space: normal;      /* erlaubt Umbruch bei langen Namen */
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
   box-sizing: border-box;   /* verhindert Überlauf */
- /* color: #edff4da2;*/
+ --progress-hit-height: 18px; /* klickbarer Bereich */
 
 }
 
 #ALLAHIN_ISIMLERI td:hover {
-  background: rgba(49, 48, 48, 0.651);   /* sanfte Akzentfarbe im Hintergrund */
-  transform: translateY(-3px);            /* leichtes Anheben statt hartem Scale */
-  box-shadow: 0 4px 10px rgba(2, 150, 248, 0.459); /* dezenter Glow */
+  background: #00c2fd60;   /* sanfte Akzentfarbe im Hintergrund */
+  transform: translateY(-3px);          /* leichtes Anheben statt hartem Scale */
+  box-shadow: 0 4px 10px rgba(105, 245, 255, 0.3); /* dezenter Glow */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
-  
+
 }
 
-/* =========================
-   ZEIT-FARBSTATUS (LISTE)
-   🟩 current  = aktuell (Glow)
-   🔴 played   = bereits abgespielt (ruhig)
-   ⚪ normal   = neutral
-========================= */
+/* Basis für Balken */
+#ALLAHIN_ISIMLERI td::before,
+#ALLAHIN_ISIMLERI td::after {
+  content:"";
+  position:absolute;
+  left:5px;
+  right: 30px;
+  bottom:6px;
+  height:4px;
+  border-radius:999px;
+  pointer-events:none;
+}
 
-/* 🟩 aktuell – dezenter Glow */
+/* Hintergrund */
+#ALLAHIN_ISIMLERI td::after {
+  background:rgba(255,255,255,.25);
+}
+
+/* Fortschritt */
+#ALLAHIN_ISIMLERI td::before {
+  max-width: calc(100% - 50px); /* exakt zwischen left/right */
+  transition: width 0.25s linear, opacity 0.2s ease;
+}
+
+/* current: Fortschritt + Hintergrund */
+#ALLAHIN_ISIMLERI td.current::before {
+  max-width:calc(100% - 50px);
+  background:var(--mini-progress-current);
+  transition:
+    width 0.25s linear,
+    opacity 0.2s ease;
+  pointer-events: none;
+  opacity:1;
+}
+
+#ALLAHIN_ISIMLERI td.current::after {
+  right:10px;
+  background:var(--mini-progress-bg);
+  opacity:.6;
+}
+
+#ALLAHIN_ISIMLERI td.current:hover::after {
+  box-shadow:0 0 8px rgba(56,217,107,.6);
+}
+
+/* played → kein Balken */
+#ALLAHIN_ISIMLERI td.played::before,
+#ALLAHIN_ISIMLERI td.played::after {
+  opacity:0;
+  width:var(--p,100%);
+}
+
+/* Statusfarben */
 #ALLAHIN_ISIMLERI td.current {
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 0 12px var(--BenimRenk);
-  background: linear-gradient(135deg,rgb(0, 122, 204),rgba(2, 150, 248, 0.856));
-  /* Animation*/
-  animation: pulse-Green 2s infinite;
+  font-weight:700;
+  box-shadow:0 0 12px rgba(255,210,105,.61);
+  background: var(--AkAuswahltd);
+  animation: pulse-Blue 2s infinite;
+  cursor:pointer;
 }
 
-/* 🔴 played   = bereits abgespielt (ruhig) */
+
 #ALLAHIN_ISIMLERI td.played,
 #ALLAHIN_ISIMLERI td.played span {
-  color: #ff4d4d;
+  color:var(--TextColorPlayed);
 }
 
-#ALLAHIN_ISIMLERI td.current span {
-  color: #ffffff;
+#ALLAHIN_ISIMLERI td.current {
+  color:var(--TextColorCurrend);
 }
 
-/* ⚪ NORMAL (explizit ruhig halten) */
+
 #ALLAHIN_ISIMLERI td:not(.current):not(.played),
 #ALLAHIN_ISIMLERI td:not(.current):not(.played) span {
-  color: var(--Text);
+  color:var(--TextColor_td);
 }
+
+/* Name */
+#ALLAHIN_ISIMLERI td span:first-child {
+  color:inherit;
+}
+
+/* Favoritenstern */
+#ALLAHIN_ISIMLERI td .favStar,
+#ALLAHIN_ISIMLERI td.current .favStar,
+#ALLAHIN_ISIMLERI td.played .favStar {
+  color:var(--FavStar)!important;
+  font-weight:normal;
+}
+
+
 
 #Kimlik,
 #lastUpdate {
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
 }
 
 /* Favoriten-Stern – Original-Abstand */
 .favStar {
   font-size: 1.2rem;
   margin-top: 6px;        /* ❗ exakt wie Original */
-  color: var(--Header);
+  color: var(--Isim_Anlam_Ayet);
   transition: transform 0.2s;
 }
 
@@ -472,21 +552,21 @@ audio:focus {
 }
 
 #Sure {
-color: var(--Text);
+color: var(--Isim_Anlam_Ayet);
   font-size: 0.75rem;
   text-align: center;
   animation: fadeInGlow 0.4s ease-in-out;
 }
 
 #Isimler {
-color: var(--Text);
+color: var(--Isim_Anlam_Ayet);
   font-size: 0.75rem;
   font-weight: 500;
   text-align: center;
 }
 
 #Anlamlari {
-color: var(--Text);
+color: var(--Isim_Anlam_Ayet);
   font-size: 0.85rem;
   line-height: 1.4;
   text-align: center;
@@ -506,7 +586,7 @@ color: var(--Text);
    favCounter
 ============= */
 #favCounter {
-color: var(--Text);
+color: var(--Isim_Anlam_Ayet);
   font-size:14px;
   line-height: 1.4;
   margin-top:6px;
@@ -538,7 +618,7 @@ color: var(--Text);
 }
 #progressBar {
   height: 8px;
-  background:  #03a3ffb7;
+  background: linear-gradient(90deg, var(--Isim_Anlam_Ayet), #ffb703);
   width: 0%;
   transition: width 0.3s;
   box-shadow: 0 0 6px rgba(255, 211, 105, 0.6);
@@ -549,12 +629,13 @@ color: var(--Text);
   bottom: 120%;
   left: 0;
   transform: translateX(-50%);
-  background: var(--Text);
+  background: var(--card);
+  color: #fff;
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.8rem;
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
@@ -569,12 +650,12 @@ color: var(--Text);
 }
 .progress-text {
   font-size: 0.9rem;
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
 }
 
 .progress-total {
   font-size: 0.9rem;
-  color: var(--Text);
+  color: var(--Isim_Anlam_Ayet);
   margin-left: auto;
 }
 
@@ -585,13 +666,13 @@ color: var(--Text);
 footer {
   display: flex;
   justify-content: space-between;
-  color: var(--BoxBG);
+  color: var(--Info);
   font-size: 0.85rem;
   margin-top: 20px;
 }
 
 /* =========================
-   MINI-PROGRESS (ELEGANT)
+   MINI-PROGRESS IM TD
 ========================= */
 
 #ALLAHIN_ISIMLERI td {
@@ -599,36 +680,34 @@ footer {
   --p: 0%;
 }
 
-/* Balken */
+/* Grundbalken */
 #ALLAHIN_ISIMLERI td::after {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 8px;
+  right: 8px;
   bottom: 6px;
-  height: 3px;
-  border-radius: 3px;
-  background:
-    linear-gradient(
-      90deg,
-      currentColor var(--p),
-      rgba(255,255,255,0.12) var(--p)
-    );
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    currentColor var(--p),
+    rgba(255,255,255,0.12) var(--p)
+  );
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: width 0.25s linear, opacity 0.25s;
 }
 
-/* sichtbar nur bei Status */
+/* sichtbar nur bei played / current */
 #ALLAHIN_ISIMLERI td.current::after,
 #ALLAHIN_ISIMLERI td.played::after {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
-/* gespielt = voll */
+/* played = immer voll */
 #ALLAHIN_ISIMLERI td.played {
   --p: 100%;
 }
-
 
 
 /* =========================
@@ -650,6 +729,12 @@ footer {
   0% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 217, 107, 0.25); }
   50% { transform: scale(1.06); box-shadow: 0 0 16px rgba(56, 217, 107, 0.452); }
   100% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 217, 107, 0.911); }
+}
+
+@keyframes pulse-Blue {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 212, 217, 0.25); }
+  50% { transform: scale(1.06); box-shadow: 0 0 16px rgba(56, 193, 217, 0.452); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(56, 206, 217, 0.911); }
 }
 
 

@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ? "css/style_dark_blue.css"
         : "css/style_blue.css";
 
-      themeBtn.textContent = theme === "dark" ? "🌙 Siyah-Mavi" : "☀️ Mavi-Sarı";
+      themeBtn.textContent = theme === "dark" ? "🌙 Dark-Mod" : "☀️ Standart-Mod";
       localStorage.setItem("theme", theme);
     }
 
@@ -1298,21 +1298,105 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
         </span>
       </div>`;
 
-      td.addEventListener("click", function () {
-        favPlayMode = false;
-        currentIndex = row.realIndex;
 
-        document
-          .querySelectorAll('#ALLAHIN_ISIMLERI td.current')
-          .forEach(td => td.classList.remove('current'));
+let isScrubbing = false;
 
-        td.classList.add('current');
+td.addEventListener("pointerdown", (e) => {
+  if (!td.classList.contains("current")) return;
 
-        seekToTime(row.item.time);
-        updateContent(row.realIndex);
-        audio.play();
-        setListFocus(row.realIndex);
-      });
+  const rect = td.getBoundingClientRect();
+  if (e.clientY < rect.bottom - 16) return;
+
+  isScrubbing = true;
+  td.setPointerCapture(e.pointerId);
+});
+
+        td.addEventListener("pointermove", (e) => {
+          if (!isScrubbing || !td.classList.contains("current")) return;
+
+          const rect = td.getBoundingClientRect();
+          const start = imageChanges[row.realIndex]?.time ?? 0;
+          const next = imageChanges[row.realIndex + 1]?.time ?? audio.duration;
+          const duration = Math.max(0.01, next - start);
+
+          const x = Math.min(Math.max(e.clientX - rect.left - 10, 0), rect.width - 20);
+          const ratio = x / (rect.width - 20);
+
+          audio.currentTime = start + ratio * duration;
+        });
+
+        td.addEventListener("pointerup", () => {
+          isScrubbing = false;
+        });
+
+        td.addEventListener("pointercancel", () => {
+          isScrubbing = false;
+        });
+
+        /* 👉 NORMALER KLICK (nur wenn nicht scrubben) */
+        td.addEventListener("click", () => {
+          if (isScrubbing) return;
+
+          favPlayMode = false;
+          currentIndex = row.realIndex;
+          seekToTime(row.item.time);
+          updateContent(row.realIndex);
+          audio.play();
+          setListFocus(row.realIndex);
+        });
+
+
+      //TOUCH-SCRUB ZUSÄTZLICH EINBAUEN
+      td.addEventListener("pointerdown", function (e) {
+          if (!td.classList.contains("current")) return;
+
+          const rect = td.getBoundingClientRect();
+          const y = e.clientY - rect.top;
+
+          // nur unterer Bereich = Mini-Progress
+          if (y < rect.height - 18) return;
+
+          e.stopPropagation(); // ⛔ verhindert click
+          e.preventDefault();
+
+          audio.pause();
+
+          const start = imageChanges[row.realIndex]?.time ?? 0;
+          const next =
+            imageChanges[row.realIndex + 1]?.time ?? audio.duration;
+          const duration = Math.max(0.01, next - start);
+
+          const usableWidth = rect.width - 20;
+
+          function seekAt(clientX) {
+            const x = Math.min(
+              Math.max(clientX - rect.left - 10, 0),
+              usableWidth
+            );
+            const ratio = x / usableWidth;
+            audio.currentTime = start + ratio * duration;
+          }
+
+          seekAt(e.clientX);
+
+          td.setPointerCapture(e.pointerId);
+
+          function onMove(ev) {
+            seekAt(ev.clientX);
+          }
+
+          function onEnd(ev) {
+            audio.play();
+            td.releasePointerCapture(ev.pointerId);
+            td.removeEventListener("pointermove", onMove);
+            td.removeEventListener("pointerup", onEnd);
+            td.removeEventListener("pointercancel", onEnd);
+          }
+
+          td.addEventListener("pointermove", onMove);
+          td.addEventListener("pointerup", onEnd);
+          td.addEventListener("pointercancel", onEnd);
+        });
 
 
     td.querySelector(".favStar").addEventListener("click", function (e) {
@@ -1430,6 +1514,13 @@ function resetPlayed() {
     searchInput.addEventListener("input", applySearchFilter);
   }
 
+    /* ====================================================
+   AUDIO TIMEUPDATE – KOMPLETT KORRIGIERT (FINAL)
+   – kein mehrfaches Rot
+   – current überschreibt played
+   – Mini-Progress NUR bei .current
+==================================================== */
+
   // Audio Events mit Progressbar + Tooltip
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
@@ -1486,10 +1577,11 @@ function resetPlayed() {
       }
   }
   
-
-   /* =========================
-     2) ZEITSTATUS – IMMER
-     (unabhängig von seeking)
+  /* =========================
+     2) ZEITSTATUS – LISTE
+     Regel:
+     - current: genau EIN Eintrag
+     - played: alle deren Zeit vorbei ist
   ========================= */
 
   const cells = namesBody.querySelectorAll("td");
@@ -1501,33 +1593,33 @@ function resetPlayed() {
     const start = imageChanges[idx]?.time ?? Infinity;
     const next = imageChanges[idx + 1]?.time ?? Infinity;
 
-    td.classList.remove("past", "current");
-
-    if (t >= start) {
-      td.classList.add("past");
-    }
-
-    if (t >= start && t < next) {
+      //Status setzen
       td.classList.remove("past");
-      td.classList.add("current");
+
+      if (t >= start) {
+        td.classList.add("past");
+      } else if (t >= next) {
+        td.classList.add("played");
     }
-
-    // 📊 Mini-Progress pro Eintrag
       if (t >= start && t < next) {
-        const p = ((t - start) / (next - start)) * 100;
+        td.classList.remove("past");
+        td.classList.add("current");
+      }
+
+      // 📊 Mini-Progress NUR für aktuellen Eintrag
+      if (td.classList.contains("current")) {
+        const duration = Math.max(0.01, next - start);
+        const p = Math.min(100, Math.max(0, ((t - start) / duration) * 100));
         td.style.setProperty("--p", `${p}%`);
-      }
-      else if (t >= next) {
-        td.style.setProperty("--p", "100%");
-      }
-      else {
+      } else {
         td.style.setProperty("--p", "0%");
+        
       }
 
-
-
-
-    if (!favPlayMode) {
+/* ================================
+     3) CONTENT / AUTO-FORTSCHRITT
+  ============================== */
+      if (!favPlayMode) {
       for (let i = imageChanges.length - 1; i >= 0; i--) {
         if (t >= imageChanges[i].time) {
           if (currentIndex !== i) {
@@ -1541,7 +1633,9 @@ function resetPlayed() {
     } else {
       maybeAdvanceFavoriteByTime(t);
     }
-
+  /* ==================================
+     4) TEXTE (ANLAM / SURE / ISIMLER)
+  ================================= */
     if (timeAnlamı[idxAnlam] && t >= timeAnlamı[idxAnlam].time) {
       //anlamBox.textContent = timeAnlamı[idxAnlam].text;
         const timeValue = imageChanges[currentIndex] && imageChanges[currentIndex].time;
@@ -1562,6 +1656,7 @@ function resetPlayed() {
     localStorage.setItem("lastTime", t);
   });
 });
+
 
 
   // Wenn der Benutzer im Player springt → sofort Inhalte setzen
