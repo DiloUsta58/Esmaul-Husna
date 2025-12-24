@@ -1109,40 +1109,60 @@ if (clearStorageBtn) {
   }
 
 /* =========================
-  7) ToggleList (immer oben, Fokus ohne Scroll)
-   ========================= */
+   7) ToggleList – Fokus + Auto-Scroll zum aktuellen Eintrag
+========================= */
 const toggleBtn = document.getElementById("toggleList");
-if (toggleBtn && typeof listPanel !== "undefined" && listPanel) {
+
+if (toggleBtn && listPanel) {
   toggleBtn.addEventListener("click", () => {
-    listPanel.classList.toggle("open");
+    const isOpen = listPanel.classList.toggle("open");
 
-    if (listPanel.classList.contains("open")) {
-      // 1) Sofort zum oberen Rand des Panels scrollen (kein scrollIntoView auf Item)
-      if (typeof listPanel.scrollTo === "function") {
-        listPanel.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        listPanel.scrollTop = 0;
-      }
+    if (isOpen) {
+      // aria korrekt setzen
+      listPanel.removeAttribute("aria-hidden");
+      listPanel.style.display = "block";
 
-      // 2) Fokus setzen: zuerst scrollen, dann Fokus ohne Scroll (preventScroll:true)
-      // kleine Verzögerung, damit das smooth scroll sichtbar ist
-      setTimeout(() => {
-        try {
-          // Wähle das erste sichtbare Listenelement (anpassen falls andere Struktur)
-          const firstItem = listPanel.querySelector("#ALLAHIN_ISIMLERI td, #ALLAHIN_ISIMLERI tr, li, .item, [role='listitem'], [tabindex]:not([tabindex='-1'])");
-          if (firstItem) {
-            // Fokus ohne Scroll, damit die Position erhalten bleibt (oben)
-            try { firstItem.focus({ preventScroll: true }); } catch (e) { firstItem.focus(); }
-          } else {
-            // Fallback: Panel selbst fokussieren ohne Scroll
-            listPanel.setAttribute("tabindex", "-1");
-            try { listPanel.focus({ preventScroll: true }); } catch (e) { listPanel.focus(); }
+      // Panel fokussierbar machen
+      listPanel.setAttribute("tabindex", "-1");
+
+      // kleines Delay, damit Layout steht
+      requestAnimationFrame(() => {
+        // 👉 aktuelles Element suchen
+        const currentItem = listPanel.querySelector(
+          "#ALLAHIN_ISIMLERI td.current"
+        );
+
+        if (currentItem) {
+          // zum aktuellen Eintrag scrollen
+          currentItem.scrollIntoView({
+            block: "center",
+            behavior: "smooth"
+          });
+
+          // Fokus setzen ohne erneutes Scrollen
+          try {
+            currentItem.focus({ preventScroll: true });
+          } catch {
+            currentItem.focus();
           }
-        } catch (e) { /* ignore */ }
-      }, 180); // 160-220ms funktioniert gut; anpassen falls nötig
+        } else {
+          // Fallback: Panel selbst
+          try {
+            listPanel.focus({ preventScroll: true });
+          } catch {
+            listPanel.focus();
+          }
+        }
+      });
+    } else {
+      // schließen
+      listPanel.setAttribute("aria-hidden", "true");
+      listPanel.style.display = "none";
     }
   });
 }
+
+
 
 function setListFocus() {
   // bewusst leer – Fokus wird über .current gesteuert
@@ -1412,15 +1432,6 @@ td.addEventListener("pointerdown", (e) => {
   applySearchFilter();
 }
 
-// Liste toggle
-listPanel.style.display = "none";
-toggleBtn.textContent = "İsimler";
-toggleBtn.addEventListener("click", function () {
-  const acikMi = listPanel.style.display === "block";
-  listPanel.style.display = acikMi ? "none" : "block";
-  toggleBtn.textContent = acikMi ? "İsimler" : "İsimleri gizle";
-  updateFavButtonsVisibility();
-});
 
 //RESET-FUNKTION
 function resetPlayed() {
