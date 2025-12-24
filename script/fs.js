@@ -1159,10 +1159,9 @@ if (toggleBtn && listPanel) {
       listPanel.setAttribute("aria-hidden", "true");
       listPanel.style.display = "none";
     }
+    updateFavButtonsVisibility();
   });
 }
-
-
 
 function setListFocus() {
   // bewusst leer – Fokus wird über .current gesteuert
@@ -1631,8 +1630,11 @@ function resetPlayed() {
      3) CONTENT / AUTO-FORTSCHRITT
   ============================== */
       if (!favPlayMode) {
+        let found = false;
       for (let i = imageChanges.length - 1; i >= 0; i--) {
         if (t >= imageChanges[i].time) {
+          found = true;
+
           if (currentIndex !== i) {
             currentIndex = i;
             updateContent(i);
@@ -1641,9 +1643,35 @@ function resetPlayed() {
           break;
         }
       }
-    } else {
-      maybeAdvanceFavoriteByTime(t);
-    }
+          // 🔁 Wenn letzter Eintrag komplett abgespielt → zurück zu Position 1
+          // 🔁 Ende erreicht → zurück zu Position 0
+          const lastIndex = imageChanges.length - 1;
+          if (
+            found &&
+            currentIndex === lastIndex &&
+            audio.duration &&
+            t >= audio.duration - 0.05
+          ) {
+            audio.pause();
+            audio.currentTime = 0;
+
+            currentIndex = 0;
+            updateContent(0);
+            setListFocus(0);
+
+            document
+              .querySelectorAll("#ALLAHIN_ISIMLERI td")
+              .forEach(td => td.classList.remove("current", "played"));
+
+            const first = document.getElementById("name-0");
+            if (first) first.classList.add("current");
+             audio.play(); // ▶️ automatisch neu starten
+          }
+
+        } else {
+          maybeAdvanceFavoriteByTime(t);
+        }
+
   /* ==================================
      4) TEXTE (ANLAM / SURE / ISIMLER)
   ================================= */

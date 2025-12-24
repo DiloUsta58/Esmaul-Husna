@@ -432,12 +432,16 @@ audio:focus {
 
 }
 
+#ALLAHIN_ISIMLERI td:active {
+  background: #00c2fd60;
+}
+
+
 #ALLAHIN_ISIMLERI td:hover {
   background: #00c2fd60;   /* sanfte Akzentfarbe im Hintergrund */
   transform: translateY(-3px);          /* leichtes Anheben statt hartem Scale */
   box-shadow: 0 4px 10px rgba(105, 245, 255, 0.3); /* dezenter Glow */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
-
 }
 
 /* Basis für Balken */
