@@ -36,6 +36,16 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Hover NUR für Geräte mit Maus */
+@media (hover: hover) and (pointer: fine) {
+  #ALLAHIN_ISIMLERI td:hover {
+  background: #ffb703;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
+  }
+}
+
+
 /* Nur Desktop zentrieren */
 @media (min-width: 901px) {
   html, body {
@@ -277,7 +287,7 @@ audio:focus {
 }
 .btn:hover {
   background: #ffb703;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(255, 211, 105, 0.4);
 }
 .btn:active { transform: translateY(0); box-shadow: none; }
