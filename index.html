@@ -42,23 +42,7 @@
         <div>Seslendiren: Uğur Kayabaşı<br><br><button id="themeToggle" class="btn">🌙 Değiştir</button></div>
       </div>
     </header>
-<!--     
-<section class="info-box" aria-label="Ek bilgi">
-  <h2 class="info-title">Beste / Okuyan:</h2>
-  <p class="info-text">
-        <div>Mustafa Özcan Güneşdoğdu</div>
-        <div>Seslendiren: Uğur Kayabaşı</div>
-  </p>
-</section>
 
-
-<section class="warning-box" aria-label="Uyarı">
-  <h2 class="warning-title">Önemli Uyarı</h2>
-  <p class="warning-text">
-    Bu bölümde kritik bilgiler, hata mesajları veya dikkat edilmesi gereken noktalar yer alır.
-  </p>
-</section>
--->
     <div class="grid" aria-live="polite">
       <!-- LEFT: visual -->
       <section class="visual" aria-label="Görüntü ve anlam">
@@ -123,8 +107,24 @@
     </section>
     </div>
 
-    <footer>
+    <!--     
+<section class="info-box" aria-label="Ek bilgi">
+  <h2 class="info-title">Beste / Okuyan:</h2>
+  <p class="info-text">
+        <div>Mustafa Özcan Güneşdoğdu</div>
+        <div>Seslendiren: Uğur Kayabaşı</div>
+  </p>
+</section>-->
 
+
+<section id="warningBox" class="warning-box" aria-label="Uyarı" hidden>
+  <h2 class="warning-title">Önemli Uyarı</h2>
+  <p class="warning-text"></p>
+  <div class="warning-progress"></div>
+</section>
+
+
+    <footer>
       <div id="Kimlik" >© Dilaver Bölükbaşı</div>
       <div id="lastUpdate">: <!-- wird von fs.js automatisch gesetzt -->
      </div> 

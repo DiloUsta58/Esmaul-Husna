@@ -786,6 +786,48 @@ function _clearAllStorage() {
   }
 }
 
+//Auto‑Close + Progress‑Animation
+function showWarning(result) {
+  const box = document.getElementById("warningBox");
+  const title = box.querySelector(".warning-title");
+  const text = box.querySelector(".warning-text");
+  const progress = box.querySelector(".warning-progress");
+
+  // Status setzen
+  box.classList.toggle("error", !result.ok);
+  box.classList.toggle("success", result.ok);
+
+  title.textContent = result.ok ? "Başarılı" : "Hata";
+  text.textContent = result.message;
+
+  // Reset Progressbar
+  progress.style.transition = "none";
+  progress.style.width = "0%";
+
+  // Box anzeigen
+  box.hidden = false;
+  box.classList.remove("hidden");
+
+  // Progressbar starten (kleiner Delay für CSS-Transition)
+  setTimeout(() => {
+    progress.style.transition = "width 3s linear";
+    progress.style.width = "100%";
+  }, 50);
+
+  // Nach 5 Sekunden ausblenden
+  setTimeout(() => {
+    box.classList.add("hidden");
+
+    // Nach Fade-Out komplett verstecken
+    setTimeout(() => {
+      box.hidden = true;
+      progress.style.width = "0%"; // Reset für nächsten Aufruf
+    }, 600);
+  }, 3000);
+}
+
+
+
 function _showStorageStatus(msg, ok = true) {
   if (!storageStatus) {
     console[ok ? "log" : "error"](msg);
@@ -1031,6 +1073,8 @@ if (clearFavBtn) {
   clearFavBtn.addEventListener("click", (ev) => {
     ev.preventDefault();
     clearFavorites();
+      const results = clearFavorites(); 
+      showWarning(results);
   });
 } else {
   console.info("clearFavBtn bulunamadı (Kontrol edilen kimlikler: ClearFav, clearFavBtn, clearFav)).");
@@ -1074,6 +1118,10 @@ if (clearStorageBtn) {
 
      // Klick auf toggleList simulieren
     if (toggleList) toggleList.click();
+
+      const results = _clearAllStorage(); 
+      showWarning(results);
+
   });
 } else {
   console.info("clearStorageBtn bulunamadı — DOM öğesi eksik.");
@@ -1508,7 +1556,7 @@ function resetPlayed() {
       setListFocus(currentIndex);
       updateContent(currentIndex);
       updateFavButtonsVisibility();
-      alert("Tüm favoriler temizlendi!");
+      /* alert("Tüm favoriler temizlendi!"); */
     });
   }
 
