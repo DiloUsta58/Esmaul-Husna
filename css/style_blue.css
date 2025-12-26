@@ -965,3 +965,19 @@ footer {
   outline: 2px solid #38d96b;
   outline-offset: 2px;
 }
+
+/* =========================
+   ACCESSIBILITY – REDUCED MOTION
+   respektiert Systemeinstellungen
+========================= */
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  #ALLAHIN_ISIMLERI td {
+    transform: none !important;
+  }
+}
