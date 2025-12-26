@@ -760,41 +760,81 @@ footer {
 }
 
 /* =========================
-   MINI-PROGRESS – FINAL FIX
+   MINI-PROGRESS – FINAL FIX (KOMPLETT)
    ✔ nur CURRENT zeigt Balken
-   ✔ KEINE Balken bei anderen
-   ✔ Fortschritt korrekt (0–100%)
-   ✔ kein Doppelbalken
+   ✔ played / andere = KEIN Balken
+   ✔ korrekt zentriert
+   ✔ volle TD-Breite
+========================= */
+/* =========================
+   MINI PROGRESS – STABIL
 ========================= */
 
-#ALLAHIN_ISIMLERI td {
-  position: relative;
-  padding-bottom: 14px; /* Platz für Progress */
+#ALLAHIN_ISIMLERI .mini-progress {
+  width: calc(100% - 8px);
+  height: 4px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.25);
+  overflow: hidden;
+  opacity: 0;
 }
 
-/* 🔴 WICHTIG: KEINE Default-Balken */
+#ALLAHIN_ISIMLERI .mini-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #32d26a;
+  border-radius: 999px;
+  transition: width 0.25s linear;
+}
+
+/* nur beim aktuellen Eintrag sichtbar */
+#ALLAHIN_ISIMLERI td.current .mini-progress {
+  opacity: 1;
+}
+
+
+/* TD Basis */
+#ALLAHIN_ISIMLERI td {
+  position: relative;
+  padding-bottom: 10px; /* ❗ PLATZ für Progressbar */
+}
+
+/* ❌ ALLE alten / Default-Pseudo-Balken deaktivieren */
 #ALLAHIN_ISIMLERI td::before,
 #ALLAHIN_ISIMLERI td::after {
   content: none;
 }
 
-/* 🟩 EINZIGER Mini-Progress */
+/* =========================
+   MINI-PROGRESS – NUR CURRENT
+========================= */
+
 #ALLAHIN_ISIMLERI td.current::after {
   content: "";
   position: absolute;
-  left: 10px;
+
+  /* volle Breite mit sauberem Innenabstand */
+  left: 8px;
+  right: 8px;
   bottom: 6px;
-  height: 4px;
 
-  /* Fortschritt kommt DIREKT aus JS */
+  height: 5px;
+
+  /* Fortschritt kommt aus JS */
   width: var(--p, 0%);
-  max-width: calc(100% - 20px);
+  max-width: calc(100% - 16px);
 
-  background: linear-gradient(90deg, #143d50, #1b4575);
+  background: linear-gradient(
+    90deg,
+    #143d50,
+    #1b4575
+  );
+
   border-radius: 999px;
+  pointer-events: none;
 
   opacity: 1;
-  pointer-events: none;
   transition: width 0.25s linear;
 }
 
@@ -807,6 +847,7 @@ footer {
 #ALLAHIN_ISIMLERI td:not(.current)::after {
   content: none;
 }
+
 
 
 

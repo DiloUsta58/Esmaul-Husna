@@ -1390,6 +1390,9 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
         <span class="favStar" style="cursor:pointer; margin-top:4px;">
           ${isFavorite(row.realIndex) ? "⭐" : "☆"}
         </span>
+          <div class="mini-progress">
+            <div class="mini-progress-fill"></div>
+          </div>
       </div>`;
 
 
@@ -1678,26 +1681,48 @@ cells.forEach(td => {
   const start = imageChanges[idx]?.time ?? Infinity;
   const next  = imageChanges[idx + 1]?.time ?? Infinity;
 
-  /* STATUS RESET */
-  td.classList.remove("current", "played", "past");
+        /* =========================
+          STATUS-LOGIK (KLICK / AUTO)
+          Ziel:
+          - current → aktuell spielend (grün + Progress)
+          - played  → bewusst abgespielt (rot, KEIN Progress)
+          - sonst   → neutral (weiß)
+        ========================= */
 
-  /* STATUS SETZEN */
-  if (t >= next) {
-    td.classList.add("played");
-  } else if (t >= start && t < next) {
-    td.classList.add("current");
-  } else if (t >= start) {
-    td.classList.add("past");
-  }
+        /* NUR transienten Status zurücksetzen */
+        td.classList.remove("current");
 
-  /* 📊 MINI-PROGRESS – NUR CURRENT */
-  if (td.classList.contains("current")) {
-    const duration = Math.max(0.01, next - start);
-    const p = Math.min(100, Math.max(0, ((t - start) / duration) * 100));
-    td.style.setProperty("--p", `${p}%`);
-  } else {
-    td.style.setProperty("--p", "0%");
-  }
+        /* -------------------------
+          STATUS SETZEN
+        ------------------------- */
+        if (t >= start && t < next) {
+          // 🎧 aktuell spielend
+          td.classList.add("current");
+        } else if (td.classList.contains("played")) {
+          // 🔴 bewusst abgespielt (bleibt rot)
+          // nichts ändern
+        } else {
+          // ⚪ neutral
+          td.classList.remove("current");
+        }
+
+        /* =========================
+          📊 MINI-PROGRESS
+          - nur bei .current sichtbar
+          - played & neutral = 0%
+        ========================= */
+          const bar = td.querySelector(".mini-progress-fill");
+
+          if (td.classList.contains("current")) {
+            const duration = Math.max(0.01, next - start);
+            const p = Math.min(100, Math.max(0, ((t - start) / duration) * 100));
+            bar.style.width = `${p}%`;
+          } else {
+            bar.style.width = "0%";
+          }
+
+
+
 
 /* ================================
      3) CONTENT / AUTO-FORTSCHRITT
