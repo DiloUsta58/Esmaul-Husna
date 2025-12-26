@@ -111,15 +111,6 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Hover NUR für Geräte mit Maus */
-@media (hover: hover) and (pointer: fine) {
-  #ALLAHIN_ISIMLERI td:hover {
-  background: #00c2fde5;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(2, 150, 248, 0.856);
-  }
-}
-
 
 /* Nur Desktop zentrieren */
 @media (min-width: 901px) {
@@ -514,13 +505,6 @@ audio:focus {
   background: #00c2fd60;
 }
 
-#ALLAHIN_ISIMLERI td:hover {
-  background: #00c2fd60;   /* sanfte Akzentfarbe im Hintergrund */
-  transform: translateY(-3px);          /* leichtes Anheben statt hartem Scale */
-  box-shadow: 0 4px 10px rgba(105, 245, 255, 0.3); /* dezenter Glow */
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
-}
-
 /* Hover-Effekte NUR bei Maus */
 @media (hover: hover) and (pointer: fine) {
   #ALLAHIN_ISIMLERI td:hover {
@@ -530,6 +514,11 @@ audio:focus {
   }
 }
 
+@media (hover: none) {
+  #ALLAHIN_ISIMLERI td:active {
+    background: rgba(255,211,105,0.18);
+  }
+}
 
 /* Basis für Balken */
 #ALLAHIN_ISIMLERI td::before,

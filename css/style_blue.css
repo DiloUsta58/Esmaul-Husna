@@ -500,13 +500,6 @@ audio:focus {
 }
 
 
-#ALLAHIN_ISIMLERI td:hover {
-  background: rgba(255,211,105,0.25);   /* sanfte Akzentfarbe im Hintergrund */
-  transform: translateY(-3px);          /* leichtes Anheben statt hartem Scale */
-  box-shadow: 0 4px 10px rgba(255,211,105,0.3); /* dezenter Glow */
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
-}
-
 /* Hover-Effekte NUR bei Maus */
 @media (hover: hover) and (pointer: fine) {
   #ALLAHIN_ISIMLERI td:hover {
@@ -515,6 +508,13 @@ audio:focus {
     box-shadow: 0 4px 10px rgba(255,211,105,0.3);
   }
 }
+
+@media (hover: none) {
+  #ALLAHIN_ISIMLERI td:active {
+    background: rgba(255,211,105,0.18);
+  }
+}
+
 
 /* Basis für Balken */
 #ALLAHIN_ISIMLERI td::before,
