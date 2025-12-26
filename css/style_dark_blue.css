@@ -782,10 +782,6 @@ footer {
    ✔ volle TD-Breite
 ========================= */
 
-/* =========================
-   MINI PROGRESS – STABIL
-========================= */
-
 #ALLAHIN_ISIMLERI .mini-progress {
   width: calc(100% - 8px);
   height: 4px;
@@ -810,13 +806,17 @@ footer {
 }
 
 
+/* =========================
+   MINI-PROGRESS – FINAL FIX (TD VOLLE BREITE)
+========================= */
+
 /* TD Basis */
 #ALLAHIN_ISIMLERI td {
   position: relative;
-  padding-bottom: 10px; /* ❗ PLATZ für Progressbar */
+  padding-bottom: 12px; /* Platz für Balken */
 }
 
-/* ❌ ALLE alten / Default-Pseudo-Balken deaktivieren */
+/* ❌ alle alten Pseudo-Balken aus */
 #ALLAHIN_ISIMLERI td::before,
 #ALLAHIN_ISIMLERI td::after {
   content: none;
@@ -830,36 +830,31 @@ footer {
   content: "";
   position: absolute;
 
-  /* volle Breite mit sauberem Innenabstand */
-  left: 8px;
-  right: 8px;
-  bottom: 6px;
+  /* 👉 fast volle TD-Breite */
+  left: 4px;
+  right: 4px;
+  bottom: 5px;
 
   height: 5px;
 
-  /* Fortschritt kommt aus JS */
-  width: var(--p, 0%);
-  max-width: calc(100% - 16px);
+  /* Fortschritt aus JS */
+  width: calc(var(--p, 0%) * 1%);
+  max-width: calc(100% - 8px);
 
-  background: linear-gradient(
-    90deg,
-    #143d50,
-    #1b4575
-  );
-
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
   border-radius: 999px;
-  pointer-events: none;
 
+  pointer-events: none;
   opacity: 1;
   transition: width 0.25s linear;
 }
 
-/* ❌ gespielt → KEIN Balken */
+/* ❌ gespielt → kein Balken */
 #ALLAHIN_ISIMLERI td.played::after {
   content: none;
 }
 
-/* ❌ alle anderen → KEIN Balken */
+/* ❌ alle anderen → kein Balken */
 #ALLAHIN_ISIMLERI td:not(.current)::after {
   content: none;
 }

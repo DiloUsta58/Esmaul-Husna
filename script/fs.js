@@ -1384,16 +1384,20 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
       }
 
 
-    td.innerHTML = `
-      <div style="display:flex; flex-direction:column; align-items:center;">
-        <span>${row.realIndex + 1}. ${row.item.text}</span>
-        <span class="favStar" style="cursor:pointer; margin-top:4px;">
-          ${isFavorite(row.realIndex) ? "⭐" : "☆"}
-        </span>
-          <div class="mini-progress">
-            <div class="mini-progress-fill"></div>
-          </div>
-      </div>`;
+          td.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center;">
+              <span>${row.realIndex + 1}. ${row.item.text}</span>
+              <span class="favStar" style="cursor:pointer; margin-top:4px;">
+                ${isFavorite(row.realIndex) ? "⭐" : "☆"}
+              </span>
+            </div>
+
+            <!-- MINI-PROGRESS -->
+            <div class="mini-progress">
+              <div class="mini-progress-fill"></div>
+            </div>
+          `;
+
 
 
 let isScrubbing = false;
@@ -1720,8 +1724,6 @@ cells.forEach(td => {
           } else {
             bar.style.width = "0%";
           }
-
-
 
 
 /* ================================
