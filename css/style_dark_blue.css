@@ -18,11 +18,12 @@
   --FavStar: #ffd369;
   --BoxLinks_Rechts: rgba(255,255,255,0.03);
   --radius: 14px;
-
+  
+  --globalPlayBtn: linear-gradient(135deg, #00c2fde5, #4fbee0d2);
   --mini-progress-height: 4px;
-  --mini-progress-bg: rgba(91, 221, 58, 0.767);
+  --progressbar-bg: linear-gradient(90deg, #00c2fde5, #4fbee0d2);
+  --miniprogressbar-bg: linear-gradient(90deg, rgba(94, 255, 62, 0.808), rgba(37, 114, 27, 0.623));
   --mini-progress-current: #000000; /* grün */
-  --mini-progress-played: #5cff4d;  /* rot */
 }
 
 /* Elegantes Warning‑Box CSS Anfang */
@@ -302,7 +303,7 @@ header .header-icons button:hover { color: #fff; }
   border-radius: 50%;
   border: none;
 
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  background: var(--globalPlayBtn);
   color: #fff;
   font-size: 16px;
 
@@ -326,7 +327,7 @@ header .header-icons button:hover { color: #fff; }
 }
 #progressBar {
   height: 100%;
-  background: linear-gradient(90deg, #1abc9c, #2ecc71);
+  background: var(--progressbar-bg);
   width: 0%;
   transition: width 0.2s linear;
   box-shadow: 0 0 6px rgba(255, 211, 105, 0.6);
@@ -614,7 +615,7 @@ audio:focus {
 /* Statusfarben */
 #ALLAHIN_ISIMLERI td.current {
   font-weight:700;
-  box-shadow:0 0 12px rgba(255,210,105,.61);
+  box-shadow:0 0 12px rgba(105, 170, 255, 0.61);
   background: var(--AkAuswahltd);
   animation: pulse-Blue 2s infinite;
   cursor:pointer;
@@ -878,8 +879,9 @@ footer {
 /* nur beim aktuellen Eintrag sichtbar */
 #ALLAHIN_ISIMLERI td.current .play-pause-btn {
   display: flex;
-  box-shadow: 0 0 10px rgba(50,210,106,0.35);
+  box-shadow: 0 0 10px rgba(50, 151, 210, 0.35);
 }
+
 #ALLAHIN_ISIMLERI td.current.playing .play-pause-btn .icon {
   content: "⏸";
 }
@@ -902,7 +904,8 @@ footer {
 #ALLAHIN_ISIMLERI .mini-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  /* MiniProgressbar Farbe */ 
+  background: var(--miniprogressbar-bg);
   border-radius: 999px;
   transition: width 0.25s linear;
 }
