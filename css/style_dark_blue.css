@@ -524,9 +524,9 @@ audio:focus {
 /* Hover-Effekte NUR bei Maus */
 @media (hover: hover) and (pointer: fine) {
   #ALLAHIN_ISIMLERI td:hover {
-    background: rgba(41, 161, 79, 0.18);
+    background: #00c2fd60;
     transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(56, 217, 107, 0.3);
+    box-shadow: 0 4px 10px rgba(105, 245, 255, 0.3);
   }
 }
 
