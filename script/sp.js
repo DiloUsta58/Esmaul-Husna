@@ -8,3 +8,13 @@
             e.preventDefault();
         }
     });
+
+    //Automatische Synchronisation
+    function syncPlayPauseButtons() {
+        document.querySelectorAll(".play-pause-btn .icon").forEach(icon => {
+            icon.textContent = audio.paused ? "▶" : "⏸";
+        });
+        }
+
+        audio.addEventListener("play", syncPlayPauseButtons);
+        audio.addEventListener("pause", syncPlayPauseButtons);

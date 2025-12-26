@@ -1383,35 +1383,56 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
         td.classList.add("played");
       }
 
+        //Nur im .current-td erscheint ein ⏸ / ▶️ Button
+        td.innerHTML = `
+          <div class="name-content" style="display:flex; flex-direction:column; align-items:center;">
+            <span>${row.realIndex + 1}. ${row.item.text}</span>
+            <span class="favStar">
+              ${isFavorite(row.realIndex) ? "⭐" : "☆"}
+            </span>
+          </div>
 
-          td.innerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center;">
-              <span>${row.realIndex + 1}. ${row.item.text}</span>
-              <span class="favStar" style="cursor:pointer; margin-top:4px;">
-                ${isFavorite(row.realIndex) ? "⭐" : "☆"}
-              </span>
-            </div>
-
-            <!-- MINI-PROGRESS -->
-            <div class="mini-progress">
-              <div class="mini-progress-fill"></div>
-            </div>
-          `;
-
+          <!-- ▶️ / ⏸ BUTTON (nur current sichtbar via CSS) -->
+          <button class="play-pause-btn" aria-label="Play / Pause">
+            <span class="icon">▶</span>
+          </button>
 
 
-let isScrubbing = false;
+          <!-- MINI-PROGRESS -->
+          <div class="mini-progress">
+            <div class="mini-progress-fill"></div>
+          </div>
+        `;
 
-td.addEventListener("pointerdown", (e) => {
-  if (!td.classList.contains("current")) return;
+        let isScrubbing = false;
 
-  const rect = td.getBoundingClientRect();
-  if (e.clientY < rect.bottom - 16) return;
+          td.addEventListener("pointerdown", (e) => {
+            if (!td.classList.contains("current")) return;
 
-  isScrubbing = true;
-  td.setPointerCapture(e.pointerId);
-});
+            const rect = td.getBoundingClientRect();
+            if (e.clientY < rect.bottom - 16) return;
 
+            isScrubbing = true;
+            td.setPointerCapture(e.pointerId);
+    });
+      /* Play / Pause Logik */
+      const playPauseBtn = td.querySelector(".play-pause-btn");
+      const icon = playPauseBtn.querySelector(".icon");
+
+      playPauseBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        if (audio.paused) {
+          audio.play();
+          icon.textContent = "⏸";
+        } else {
+          audio.pause();
+          icon.textContent = "▶";
+        }
+      });
+
+
+        /* TD pointerMove */
         td.addEventListener("pointermove", (e) => {
           if (!isScrubbing || !td.classList.contains("current")) return;
 
@@ -1617,7 +1638,10 @@ function resetPlayed() {
   audio.addEventListener("timeupdate", function () {
     const t = audio.currentTime;
     const currentTime = audioPlayer.currentTime;
-
+  
+    document.querySelectorAll(".play-pause-btn").forEach(btn => {
+        btn.textContent = audio.paused ? "▶️" : "⏸";
+    });
 
       // wenn gerade gesprungen wird → nichts durchlaufen
   /* =========================

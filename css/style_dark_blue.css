@@ -779,6 +779,8 @@ footer {
   background: rgba(255,255,255,0.25);
   overflow: hidden;
   opacity: 0;
+  touch-action: pan-x;          /* horizontales Ziehen erlauben */
+  user-select: none;
 }
 
 #ALLAHIN_ISIMLERI .mini-progress-fill {
@@ -794,6 +796,10 @@ footer {
   opacity: 1;
 }
 
+/* Touch-fähig, kein Hover-Stress */ 
+#ALLAHIN_ISIMLERI td:not(.current) .mini-progress {
+  pointer-events: none;         /* nur current reagiert */
+}
 
 /* =========================
    MINI-PROGRESS – FINAL FIX (TD VOLLE BREITE)
@@ -848,6 +854,60 @@ footer {
   content: none;
 }
 
+
+/* =========================
+   PLAY / PAUSE – ELEGANT
+========================= */
+
+.play-pause-btn {
+  margin-top: 6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* nur beim aktuellen Eintrag sichtbar */
+#ALLAHIN_ISIMLERI td.current .play-pause-btn {
+  display: flex;
+  box-shadow: 0 0 10px rgba(50,210,106,0.35);
+}
+
+/* Hover (Desktop) */
+@media (hover: hover) {
+  .play-pause-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+  }
+}
+
+/* Active (Touch) */
+.play-pause-btn:active {
+  transform: scale(0.92);
+}
+
+/* Icon zentriert & ruhig */
+.play-pause-btn .icon {
+  line-height: 1;
+  pointer-events: none;
+}
 
 
 
