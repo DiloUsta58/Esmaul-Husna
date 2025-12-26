@@ -47,12 +47,13 @@
       <!-- LEFT: visual -->
       <section class="visual" aria-label="Görüntü ve anlam">
         <img id="dynamicImage" src="img_w/01_Allah.gif" alt="Allah görseli" loading="lazy">
-        <div class="name" id="NameOfAllah">Allah الله</div>
-        <div class="isim" id="Isimler">1-Allah</div>
-        <div class="arabic" id="ArabicText"></div>
-        <div class="meaning" id="Anlamlari"><span id="anlamText"></span><span id="anlamCursor" aria-hidden="true">[ Her ismin vasfını ihtiva eden öz adı... ]|</span></div>
+        <!-- [Arabça]: --><div class="name" id="NameOfAllah">Allah الله</div>
+        <!-- [Türkçe]: --><div class="isim" id="Isimler">1-Allah</div>
+        <!-- [Anlamları]: --><div class="meaning" id="Anlamlari"><span id="anlamText">[---]</span>
+        <span id="anlamCursor" aria-hidden="true">[---]</span>
+    </div>
 
-        <!-- Sure Box jetzt ohne Inline-Styles -->
+        <!-- Sure Box jetzt ohne Inline-Styles [Ayet:Sure]:-->
         <div id="Sure" class="sura" aria-live="polite"></div>
         <div class="video-frame" id="videoFrame" aria-hidden="true">
           <!-- iframe wird von JS sichtbar gemacht -->
