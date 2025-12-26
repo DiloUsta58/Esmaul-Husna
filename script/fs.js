@@ -651,7 +651,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const favOnlyBtn = document.getElementById("favOnlyBtn") || document.getElementById("showFavOnly");
   const favCounter = document.getElementById("favCounter");
   const searchInput = document.getElementById("search");
-  const progressContainer = document.getElementById("progressContainer");
+  const progressBarContainer = document.getElementById("progressBarContainer");
   const progressTooltip = document.getElementById("progressTooltip");
   const currentTimeDisplay = document.getElementById("currentTime");
 
@@ -876,7 +876,7 @@ function resetPlayer() {
     const playBtn = document.getElementById("playBtn") || document.querySelector(".btn.playing");
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
-    const progressContainer = document.getElementById("progressContainer");
+    const progressBarContainer = document.getElementById("progressBarContainer");
 
     if (audioEl) {
       try { audioEl.pause(); } catch (e) { /* ignore */ }
@@ -891,8 +891,8 @@ function resetPlayer() {
       }
     }
     if (progressText) progressText.textContent = "00:00";
-    if (progressContainer) {
-      const tooltip = progressContainer.querySelector(".progress-tooltip");
+    if (progressBarContainer) {
+      const tooltip = progressBarContainer.querySelector(".progress-tooltip");
       if (tooltip) tooltip.classList.remove("visible");
     }
 
@@ -1319,7 +1319,7 @@ function setListFocus(realIndex) {
     const idx = Number(td.dataset.realIndex);
     const isActive = idx === realIndex;
     td.classList.toggle("active", isActive);
-
+    td.classList.toggle("playing", !audio.paused);
     if (isActive) {
       // automatisch ins Sichtfeld scrollen
       td.scrollIntoView({
@@ -1329,6 +1329,7 @@ function setListFocus(realIndex) {
     }
   });
 }
+
 
 
 // Typewriter: schreibt einen Text buchstabe für buchstabe in #anlamText
@@ -1392,15 +1393,12 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
             </span>
           </div>
 
-          <!-- ▶️ / ⏸ BUTTON (nur current sichtbar via CSS) -->
-          <button class="play-pause-btn" aria-label="Play / Pause">
-            <span class="icon">▶</span>
-          </button>
+          <div class="progress-row">
+            <button class="play-pause-btn" aria-label="Play / Pause"><span class="icon">▶</span></button>
 
-
-          <!-- MINI-PROGRESS -->
-          <div class="mini-progress">
-            <div class="mini-progress-fill"></div>
+            <div class="mini-progress">
+              <div class="mini-progress-fill"></div>
+            </div>
           </div>
         `;
 
@@ -1424,10 +1422,8 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
 
         if (audio.paused) {
           audio.play();
-          icon.textContent = "⏸";
         } else {
           audio.pause();
-          icon.textContent = "▶";
         }
       });
 
@@ -1534,6 +1530,14 @@ function typeWriterSingle(elementIdText, elementIdCursor, text, speed = 40, call
   applySearchFilter();
 }
 
+    function syncPlayPauseButtons() {
+        document.querySelectorAll(".play-pause-btn .icon").forEach(icon => {
+            icon.textContent = audio.paused ? "▶" : "⏸";
+        });
+        }
+
+        audio.addEventListener("play", syncPlayPauseButtons);
+        audio.addEventListener("pause", syncPlayPauseButtons);
 
 //RESET-FUNKTION
 function resetPlayed() {
@@ -1886,8 +1890,8 @@ audio.addEventListener("seeked", function () {
   // ===============================
   // Progressbar Tooltip + Jump
   // ===============================
-  progressContainer.addEventListener("mousemove", (e) => {
-    const rect = progressContainer.getBoundingClientRect();
+  progressBarContainer.addEventListener("mousemove", (e) => {
+    const rect = progressBarContainer.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percent = x / rect.width;
     const hoverTime = percent * audio.duration;
@@ -1899,12 +1903,12 @@ audio.addEventListener("seeked", function () {
     }
   });
 
-  progressContainer.addEventListener("mouseleave", () => {
+  progressBarContainer.addEventListener("mouseleave", () => {
     progressTooltip.classList.remove("visible");
   });
 
-  progressContainer.addEventListener("click", (e) => {
-    const rect = progressContainer.getBoundingClientRect();
+  progressBarContainer.addEventListener("click", (e) => {
+    const rect = progressBarContainer.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percent = x / rect.width;
     const newTime = percent * audio.duration;

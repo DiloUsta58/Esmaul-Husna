@@ -9,12 +9,21 @@
         }
     });
 
-    //Automatische Synchronisation
-    function syncPlayPauseButtons() {
-        document.querySelectorAll(".play-pause-btn .icon").forEach(icon => {
-            icon.textContent = audio.paused ? "▶" : "⏸";
-        });
-        }
+const audio = document.getElementById("audioPlayer");
+const globalPlayBtn = document.getElementById("globalPlayBtn");
 
-        audio.addEventListener("play", syncPlayPauseButtons);
-        audio.addEventListener("pause", syncPlayPauseButtons);
+globalPlayBtn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+});
+
+audio.addEventListener("play", () => {
+  globalPlayBtn.textContent = "⏸";
+});
+
+audio.addEventListener("pause", () => {
+  globalPlayBtn.textContent = "▶";
+});
