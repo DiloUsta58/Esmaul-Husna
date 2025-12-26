@@ -827,7 +827,6 @@ function showWarning(result) {
 }
 
 
-
 function _showStorageStatus(msg, ok = true) {
   if (!storageStatus) {
     console[ok ? "log" : "error"](msg);
@@ -1116,9 +1115,15 @@ if (clearStorageBtn) {
       _showStorageStatus("❌ " + result.message, false);
     }
 
-     // Klick auf toggleList simulieren
-    if (toggleList) toggleList.click();
-
+          if (listPanel.classList.contains("open")) {
+            // Liste ist geöffnet
+            // Liste Schließen
+            toggleList.click();
+          }else {
+            //console.info("Liste Kapali");
+             // Liste Öffnen
+            //toggleList.click();
+          }
       const results = _clearAllStorage(); 
       showWarning(results);
 
@@ -1136,6 +1141,7 @@ if (clearStorageBtn) {
   let favPlayMode = false;
   let favPlayPos = 0;
   let showOnlyFavorites = false;
+  let LstOpen = false;
 
     const el = document.getElementById("lastUpdate");
   if (el) {
@@ -1166,6 +1172,7 @@ if (toggleBtn && listPanel) {
     const isOpen = listPanel.classList.toggle("open");
 
     if (isOpen) {
+      LstOpen = true;
       // aria korrekt setzen
       listPanel.removeAttribute("aria-hidden");
       listPanel.style.display = "block";
@@ -1206,6 +1213,7 @@ if (toggleBtn && listPanel) {
       // schließen
       listPanel.setAttribute("aria-hidden", "true");
       listPanel.style.display = "none";
+      LstOpen = false;
     }
     updateFavButtonsVisibility();
   });
@@ -1235,6 +1243,7 @@ function setListFocus() {
   };
 })();
 
+
   // Buttons Sichtbarkeit
   function updateFavButtonsVisibility() {
     const hasFavorites = favorites.length > 0;
@@ -1262,30 +1271,48 @@ function setListFocus() {
       audio.addEventListener("loadedmetadata", once);
     }
   }
+    
+  /* Sichtbar Favcounter:*/
+      function updateFavoriteCounter() {
+        if (!favCounter) return;
 
-  function updateFavoriteCounter() {
-    if (favCounter) {
-      favCounter.textContent = `Seçilen: ${favorites.length} / ${imageChanges.length}`;
-    }
-  }
+        const count = favorites.length;
+
+        if (count > 0) {
+          favCounter.style.display = "block";   // anzeigen
+          favCounter.textContent = `Seçilen: ${count} / ${imageChanges.length}`;
+        } else {
+          favCounter.style.display = "none";    // verstecken
+        }
+      }
 
   function isFavorite(id) {
     return favorites.includes(id);
   }
 
   // 👉 Favoriten setzen/entfernen + sofort sortieren
-  function toggleFavorite(id) {
-    if (favorites.includes(id)) {
-      favorites = favorites.filter(f => f !== id);
-    } else {
-      favorites.push(id);
-    }
-    favorites.sort((a, b) => imageChanges[a].time - imageChanges[b].time);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    updateFavoriteCounter();
-    buildNameList();
-    updateFavButtonsVisibility();
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
   }
+  // sortiert nach Zeit
+  favorites.sort((a, b) => imageChanges[a].time - imageChanges[b].time);
+
+  // speichern
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+
+  // ⬇️ WICHTIG: wenn keine Favoriten mehr → normale Liste erzwingen
+  if (favorites.length === 0) {
+    showOnlyFavorites = false;
+  }
+
+  updateFavoriteCounter();
+  buildNameList();
+  updateFavButtonsVisibility();
+}
+
 
 function setListFocus(realIndex) {
   document.querySelectorAll("#namesBody td").forEach(td => {
@@ -1644,35 +1671,33 @@ function resetPlayed() {
 
   const cells = namesBody.querySelectorAll("td");
 
-  cells.forEach(td => {
-    const idx = Number(td.dataset.realIndex);
-    if (Number.isNaN(idx)) return;
+cells.forEach(td => {
+  const idx = Number(td.dataset.realIndex);
+  if (Number.isNaN(idx)) return;
 
-    const start = imageChanges[idx]?.time ?? Infinity;
-    const next = imageChanges[idx + 1]?.time ?? Infinity;
+  const start = imageChanges[idx]?.time ?? Infinity;
+  const next  = imageChanges[idx + 1]?.time ?? Infinity;
 
-      //Status setzen
-      td.classList.remove("past");
+  /* STATUS RESET */
+  td.classList.remove("current", "played", "past");
 
-      if (t >= start) {
-        td.classList.add("past");
-      } else if (t >= next) {
-        td.classList.add("played");
-    }
-      if (t >= start && t < next) {
-        td.classList.remove("past");
-        td.classList.add("current");
-      }
+  /* STATUS SETZEN */
+  if (t >= next) {
+    td.classList.add("played");
+  } else if (t >= start && t < next) {
+    td.classList.add("current");
+  } else if (t >= start) {
+    td.classList.add("past");
+  }
 
-      // 📊 Mini-Progress NUR für aktuellen Eintrag
-      if (td.classList.contains("current")) {
-        const duration = Math.max(0.01, next - start);
-        const p = Math.min(100, Math.max(0, ((t - start) / duration) * 100));
-        td.style.setProperty("--p", `${p}%`);
-      } else {
-        td.style.setProperty("--p", "0%");
-        
-      }
+  /* 📊 MINI-PROGRESS – NUR CURRENT */
+  if (td.classList.contains("current")) {
+    const duration = Math.max(0.01, next - start);
+    const p = Math.min(100, Math.max(0, ((t - start) / duration) * 100));
+    td.style.setProperty("--p", `${p}%`);
+  } else {
+    td.style.setProperty("--p", "0%");
+  }
 
 /* ================================
      3) CONTENT / AUTO-FORTSCHRITT

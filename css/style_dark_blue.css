@@ -501,13 +501,18 @@ audio:focus {
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
   box-sizing: border-box;   /* verhindert Überlauf */
  --progress-hit-height: 18px; /* klickbarer Bereich */
-
+ touch-action: manipulation; /* verhindert Scroll-Hover-Bugs */
 }
+
+/* Aktives Feedback bei Touch */
+#ALLAHIN_ISIMLERI td:active {
+  transform: scale(0.985);
+}
+
 
 #ALLAHIN_ISIMLERI td:active {
   background: #00c2fd60;
 }
-
 
 #ALLAHIN_ISIMLERI td:hover {
   background: #00c2fd60;   /* sanfte Akzentfarbe im Hintergrund */
@@ -515,6 +520,16 @@ audio:focus {
   box-shadow: 0 4px 10px rgba(105, 245, 255, 0.3); /* dezenter Glow */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;    /* weiche Übergänge */
 }
+
+/* Hover-Effekte NUR bei Maus */
+@media (hover: hover) and (pointer: fine) {
+  #ALLAHIN_ISIMLERI td:hover {
+    background: rgba(41, 161, 79, 0.18);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(56, 217, 107, 0.3);
+  }
+}
+
 
 /* Basis für Balken */
 #ALLAHIN_ISIMLERI td::before,
@@ -615,6 +630,8 @@ audio:focus {
 
 /* Favoriten-Stern – Original-Abstand */
 .favStar {
+  padding: 6px;              /* größere Touch-Fläche */
+  touch-action: manipulation;
   font-size: 1.2rem;
   margin-top: 6px;        /* ❗ exakt wie Original */
   color: var(--Isim_Anlam_Ayet);
@@ -758,42 +775,56 @@ footer {
 }
 
 /* =========================
-   MINI-PROGRESS IM TD
+   MINI-PROGRESS – FINAL FIX
+   ✔ nur CURRENT zeigt Balken
+   ✔ KEINE Balken bei anderen
+   ✔ Fortschritt korrekt (0–100%)
+   ✔ kein Doppelbalken
 ========================= */
 
 #ALLAHIN_ISIMLERI td {
   position: relative;
-  --p: 0%;
+  padding-bottom: 14px; /* Platz für Progress */
 }
 
-/* Grundbalken */
+/* 🔴 WICHTIG: KEINE Default-Balken */
+#ALLAHIN_ISIMLERI td::before,
 #ALLAHIN_ISIMLERI td::after {
+  content: none;
+}
+
+/* 🟩 EINZIGER Mini-Progress */
+#ALLAHIN_ISIMLERI td.current::after {
   content: "";
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 10px;
   bottom: 6px;
   height: 4px;
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    currentColor var(--p),
-    rgba(255,255,255,0.12) var(--p)
-  );
-  opacity: 0;
-  transition: width 0.25s linear, opacity 0.25s;
+
+  /* Fortschritt kommt DIREKT aus JS */
+  width: var(--p, 0%);
+  max-width: calc(100% - 20px);
+
+  background: linear-gradient(90deg, #38d96b, #2fbf62);
+  border-radius: 999px;
+
+  opacity: 1;
+  pointer-events: none;
+  transition: width 0.25s linear;
 }
 
-/* sichtbar nur bei played / current */
-#ALLAHIN_ISIMLERI td.current::after,
+/* ❌ gespielt → KEIN Balken */
 #ALLAHIN_ISIMLERI td.played::after {
-  opacity: 0.85;
+  content: none;
 }
 
-/* played = immer voll */
-#ALLAHIN_ISIMLERI td.played {
-  --p: 100%;
+/* ❌ alle anderen → KEIN Balken */
+#ALLAHIN_ISIMLERI td:not(.current)::after {
+  content: none;
 }
+
+
+
 
 
 /* =========================
@@ -919,4 +950,8 @@ footer {
     bottom: 3px;
     right: 20px;
   }
+}
+#ALLAHIN_ISIMLERI td:focus-visible {
+  outline: 2px solid #38d96b;
+  outline-offset: 2px;
 }
