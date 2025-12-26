@@ -5,7 +5,7 @@
   --TextColorNormal: #ffffff;
   --TextColorPlayed:#a50303f8;
   --TextColorCurrend: #ffffff;
-  --TextColor_td: #fdfdfd;
+  --TextColor_td: #ffffff;
   --Isim_Anlam_Ayet:#c9a44d;
   --BgHeader: linear-gradient(90deg, #161b2c, #1f2640);
   --BgBody: linear-gradient(180deg,#040612 0%, #071021 90%);
@@ -18,7 +18,7 @@
   --BoxLinks_Rechts: rgba(255,255,255,0.03);
   --radius: 14px;
 
-  --globalPlayBtn: linear-gradient(135deg,  #ffd369, #c9a44d);
+  --globalPlayBtn: linear-gradient(135deg,  #bd8709,#6b4c05);
   --mini-progress-height: 4px;
   --progressbar-bg: linear-gradient(90deg, #ffd369, #c9a44d);
   --miniprogressbar-bg: linear-gradient(90deg, rgba(94, 255, 62, 0.808), rgba(37, 114, 27, 0.623));
@@ -294,24 +294,51 @@ header .header-icons button:hover { color: #fff; }
   gap: 10px;
 }
 
-/* Global Play / Pause */
+/* =========================
+   GLOBAL PLAY BUTTON – HOVER / ACTIVE
+========================= */
+
 #globalPlayBtn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: none;
 
-  background: var(--globalPlayBtn);
-  color: #fff;
-  font-size: 16px;
+  background:  var(--globalPlayBtn);
+  color: #ffffff;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   cursor: pointer;
-  flex-shrink: 0;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
+
+/* Hover NUR auf Geräten mit echter Maus */
+@media (hover: hover) {
+  #globalPlayBtn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px  var(--globalPlayBtn);
+    filter: brightness(1.05);
+  }
+}
+
+/* Active (Touch + Klick) */
+#globalPlayBtn:active {
+  transform: scale(0.92);
+  box-shadow: 0 0 6px  var(--globalPlayBtn);
+}
+
+/* Fokus (Accessibility) */
+#globalPlayBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px  var(--globalPlayBtn);
+}
+
 
 /* Progressbar nimmt restliche Breite */
 #progressBarContainer {
